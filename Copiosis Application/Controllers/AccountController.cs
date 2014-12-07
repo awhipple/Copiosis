@@ -123,14 +123,37 @@ namespace Copiosis_Application.Controllers
         }
 
         // GET: /Account/Overview
+        // Overview of transactions for the current user
         public ActionResult Overview()
         {
             return View();
         }
-        
+
+        // Need actions for producer and consumer add transactions
+
+        // GET: /Account/Items
+        // This will serve as the Item Library to show all the items a user has. Probably takes some kind of GUID.
+        public ActionResult Items()
+        {
+            return View();
+        }
+
+        // GET: /Account/AddItem
+        // Add an item
+        public ActionResult AddItem()
+        {
+            return View();
+        }
+
+        // GET: /Account/EditItem
+        // Edit an item. Probably takes some kind of GUID.
+        public ActionResult EditItem()
+        {
+            return View();
+        }
+
         //
         // GET: /Account/Manage
-
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
