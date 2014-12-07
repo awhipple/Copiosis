@@ -129,8 +129,29 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
-        // Need actions for producer and consumer add transactions
+        // GET: /Account/View
+        // View a specific transaction. Probably takes some kind of GUID.
+        public ActionResult View(Guid tranId)
+        {
+            return View();
+        }
 
+        // GET: /Account/Create
+        // Create a new transaction whether producer or consumer. Just returns the view.
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // GET: /Account/Confirm // Maybe its a POST?
+        // Confirm a transaction. Probably takes a GUID.
+        public ActionResult Confirm(Guid tranId)
+        {
+            return View();
+        }
+
+        // Need a post action to save a transaction
+        
         // GET: /Account/Items
         // This will serve as the Item Library to show all the items a user has. Probably takes some kind of GUID.
         public ActionResult Items()
@@ -139,7 +160,7 @@ namespace Copiosis_Application.Controllers
         }
 
         // GET: /Account/AddItem
-        // Add an item
+        // Add an item. Just returns the view.
         public ActionResult AddItem()
         {
             return View();
@@ -147,10 +168,12 @@ namespace Copiosis_Application.Controllers
 
         // GET: /Account/EditItem
         // Edit an item. Probably takes some kind of GUID.
-        public ActionResult EditItem()
+        public ActionResult EditItem(Guid itemId)
         {
             return View();
         }
+
+        // Need some post actions for saving items
 
         //
         // GET: /Account/Manage
