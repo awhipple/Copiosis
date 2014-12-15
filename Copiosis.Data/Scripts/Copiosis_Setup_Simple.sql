@@ -7,18 +7,25 @@ neighborhood varchar(55),
 signupKey varchar(55)
 );
 
+-- Insert the initial neighborhood needed for the Copiosis Application
+INSERT INTO location VALUES(
+	'USA',
+	'Oregon',
+	'Portland',
+	'Kenton',
+	'kenton2014trial'
+);
+
 CREATE TABLE [user] (
 userID int IDENTITY(1,1) NOT NULL PRIMARY KEY, 
-username varchar(55), 
-password varchar(255), 
-email varchar(155), 
+username varchar(55) NOT NULL, 
+email varchar(200), 
 firstName varchar(55), 
 lastName varchar(55), 
 status int NOT NULL,	
 nbr float,
-created datetime,
 lastLogin datetime,
-locationID int FOREIGN KEY REFERENCES location(locationID)
+locationID int NOT NULL FOREIGN KEY REFERENCES location(locationID)
 );
 
 CREATE TABLE itemClass (
@@ -43,27 +50,27 @@ sH smallint
 );
 
 CREATE TABLE product (
-	productID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
-name varchar(155),
-description varchar(255),
-gateway int,
-itemClass int FOREIGN KEY REFERENCES itemClass(classID),
-createdDate datetime, 
-deletedDate datetime
+productID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+name varchar(155) NOT NULL,
+description varchar(255) NOT NULL,
+gateway int NOT NULL,
+itemClass int NOT NULL FOREIGN KEY REFERENCES itemClass(classID),
+createdDate datetime NOT NULL, 
+deletedDate datetime NOT NULL
 );
 
 CREATE TABLE [transaction] (
 transactionID uniqueidentifier NOT NULL DEFAULT newid() PRIMARY KEY, 
-providerID int FOREIGN KEY REFERENCES [user](userID),
+providerID int NOT NULL FOREIGN KEY REFERENCES [user](userID),
 providerNotes text,
-receiverID int FOREIGN KEY REFERENCES [user](userID),
+receiverID int NOT NULL FOREIGN KEY REFERENCES [user](userID),
 receiverNotes text,
 date date, 
-productID int FOREIGN KEY REFERENCES product(productID),
-productDesc varchar(255),
+productID int NOT NULL FOREIGN KEY REFERENCES product(productID),
+productDesc varchar(255) NOT NULL,
 status varchar(16),
-dateAdded datetime,
-createdBy int FOREIGN KEY REFERENCES [user](userID),
+dateAdded datetime NOT NULL,
+createdBy int NOT NULL FOREIGN KEY REFERENCES [user](userID),
 dateClosed datetime,
 nbr float,
 satisfaction smallint
