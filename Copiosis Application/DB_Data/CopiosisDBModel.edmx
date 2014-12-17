@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CopiosisDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="itemClass">
+          <Key>
+            <PropertyRef Name="classID" />
+          </Key>
+          <Property Name="classID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="55" />
+          <Property Name="suggestedGateway" Type="int" />
+          <Property Name="cPdb" Type="float" />
+          <Property Name="a" Type="float" />
+          <Property Name="aMax" Type="int" />
+          <Property Name="d" Type="int" />
+          <Property Name="aPrime" Type="int" />
+          <Property Name="cCb" Type="float" />
+          <Property Name="m1" Type="float" />
+          <Property Name="pO" Type="int" />
+          <Property Name="m2" Type="float" />
+          <Property Name="cEb" Type="float" />
+          <Property Name="s" Type="int" />
+          <Property Name="m3" Type="float" />
+          <Property Name="sE" Type="smallint" />
+          <Property Name="m4" Type="float" />
+          <Property Name="sH" Type="smallint" />
+        </EntityType>
+        <EntityType Name="location">
+          <Key>
+            <PropertyRef Name="locationID" />
+          </Key>
+          <Property Name="locationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="country" Type="varchar" MaxLength="55" />
+          <Property Name="state" Type="varchar" MaxLength="55" />
+          <Property Name="city" Type="varchar" MaxLength="55" />
+          <Property Name="neighborhood" Type="varchar" MaxLength="55" />
+          <Property Name="signupKey" Type="varchar" MaxLength="55" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="productID" />
+          </Key>
+          <Property Name="productID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="155" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="gateway" Type="int" Nullable="false" />
+          <Property Name="itemClass" Type="int" Nullable="false" />
+          <Property Name="createdDate" Type="datetime" Nullable="false" />
+          <Property Name="deletedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="transaction">
+          <Key>
+            <PropertyRef Name="transactionID" />
+          </Key>
+          <Property Name="transactionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="providerID" Type="int" Nullable="false" />
+          <Property Name="providerNotes" Type="text" />
+          <Property Name="receiverID" Type="int" Nullable="false" />
+          <Property Name="receiverNotes" Type="text" />
+          <Property Name="date" Type="date" />
+          <Property Name="productID" Type="int" Nullable="false" />
+          <Property Name="productDesc" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="16" />
+          <Property Name="dateAdded" Type="datetime" Nullable="false" />
+          <Property Name="createdBy" Type="int" Nullable="false" />
+          <Property Name="dateClosed" Type="datetime" />
+          <Property Name="nbr" Type="float" />
+          <Property Name="satisfaction" Type="smallint" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="55" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="200" />
+          <Property Name="firstName" Type="varchar" MaxLength="55" />
+          <Property Name="lastName" Type="varchar" MaxLength="55" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="nbr" Type="float" />
+          <Property Name="lastLogin" Type="datetime" />
+          <Property Name="locationID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__product__itemCla__173876EA">
+          <End Role="itemClass" Type="Self.itemClass" Multiplicity="1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemClass">
+              <PropertyRef Name="classID" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="itemClass" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__creat__1DE57479">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="createdBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__produ__1CF15040">
+          <End Role="product" Type="Self.product" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="productID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="productID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__provi__1B0907CE">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="providerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__recei__1BFD2C07">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="receiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user__locationID__1273C1CD">
+          <End Role="location" Type="Self.location" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="location">
+              <PropertyRef Name="locationID" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="locationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CopiosisDBModelStoreContainer">
+          <EntitySet Name="itemClass" EntityType="Self.itemClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="location" EntityType="Self.location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="transaction" EntityType="Self.transaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__product__itemCla__173876EA" Association="Self.FK__product__itemCla__173876EA">
+            <End Role="itemClass" EntitySet="itemClass" />
+            <End Role="product" EntitySet="product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__creat__1DE57479" Association="Self.FK__transacti__creat__1DE57479">
+            <End Role="user" EntitySet="user" />
+            <End Role="transaction" EntitySet="transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__produ__1CF15040" Association="Self.FK__transacti__produ__1CF15040">
+            <End Role="product" EntitySet="product" />
+            <End Role="transaction" EntitySet="transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__provi__1B0907CE" Association="Self.FK__transacti__provi__1B0907CE">
+            <End Role="user" EntitySet="user" />
+            <End Role="transaction" EntitySet="transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__recei__1BFD2C07" Association="Self.FK__transacti__recei__1BFD2C07">
+            <End Role="user" EntitySet="user" />
+            <End Role="transaction" EntitySet="transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user__locationID__1273C1CD" Association="Self.FK__user__locationID__1273C1CD">
+            <End Role="location" EntitySet="location" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CopiosisDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="itemClass">
+          <Key>
+            <PropertyRef Name="classID" />
+          </Key>
+          <Property Name="classID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="suggestedGateway" Type="Int32" />
+          <Property Name="cPdb" Type="Double" />
+          <Property Name="a" Type="Double" />
+          <Property Name="aMax" Type="Int32" />
+          <Property Name="d" Type="Int32" />
+          <Property Name="aPrime" Type="Int32" />
+          <Property Name="cCb" Type="Double" />
+          <Property Name="m1" Type="Double" />
+          <Property Name="pO" Type="Int32" />
+          <Property Name="m2" Type="Double" />
+          <Property Name="cEb" Type="Double" />
+          <Property Name="s" Type="Int32" />
+          <Property Name="m3" Type="Double" />
+          <Property Name="sE" Type="Int16" />
+          <Property Name="m4" Type="Double" />
+          <Property Name="sH" Type="Int16" />
+          <NavigationProperty Name="products" Relationship="Self.FK__product__itemCla__173876EA" FromRole="itemClass" ToRole="product" />
+        </EntityType>
+        <EntityType Name="location">
+          <Key>
+            <PropertyRef Name="locationID" />
+          </Key>
+          <Property Name="locationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="country" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="neighborhood" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="signupKey" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="users" Relationship="Self.FK__user__locationID__1273C1CD" FromRole="location" ToRole="user" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="productID" />
+          </Key>
+          <Property Name="productID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="155" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gateway" Type="Int32" Nullable="false" />
+          <Property Name="itemClass" Type="Int32" Nullable="false" />
+          <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deletedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="itemClass1" Relationship="Self.FK__product__itemCla__173876EA" FromRole="product" ToRole="itemClass" />
+          <NavigationProperty Name="transactions" Relationship="Self.FK__transacti__produ__1CF15040" FromRole="product" ToRole="transaction" />
+        </EntityType>
+        <EntityType Name="transaction">
+          <Key>
+            <PropertyRef Name="transactionID" />
+          </Key>
+          <Property Name="transactionID" Type="Guid" Nullable="false" />
+          <Property Name="providerID" Type="Int32" Nullable="false" />
+          <Property Name="providerNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="receiverID" Type="Int32" Nullable="false" />
+          <Property Name="receiverNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="productID" Type="Int32" Nullable="false" />
+          <Property Name="productDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="dateAdded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="createdBy" Type="Int32" Nullable="false" />
+          <Property Name="dateClosed" Type="DateTime" Precision="3" />
+          <Property Name="nbr" Type="Double" />
+          <Property Name="satisfaction" Type="Int16" />
+          <NavigationProperty Name="product" Relationship="Self.FK__transacti__produ__1CF15040" FromRole="transaction" ToRole="product" />
+          <NavigationProperty Name="user" Relationship="Self.FK__transacti__creat__1DE57479" FromRole="transaction" ToRole="user" />
+          <NavigationProperty Name="user1" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="transaction" ToRole="user" />
+          <NavigationProperty Name="user2" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="transaction" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="55" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="firstName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="lastName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="nbr" Type="Double" />
+          <Property Name="lastLogin" Type="DateTime" Precision="3" />
+          <Property Name="locationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="location" Relationship="Self.FK__user__locationID__1273C1CD" FromRole="user" ToRole="location" />
+          <NavigationProperty Name="transactions" Relationship="Self.FK__transacti__creat__1DE57479" FromRole="user" ToRole="transaction" />
+          <NavigationProperty Name="transactions1" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="user" ToRole="transaction" />
+          <NavigationProperty Name="transactions2" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="user" ToRole="transaction" />
+        </EntityType>
+        <Association Name="FK__product__itemCla__173876EA">
+          <End Role="itemClass" Type="Self.itemClass" Multiplicity="1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemClass">
+              <PropertyRef Name="classID" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="itemClass" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user__locationID__1273C1CD">
+          <End Role="location" Type="Self.location" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="location">
+              <PropertyRef Name="locationID" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="locationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__produ__1CF15040">
+          <End Role="product" Type="Self.product" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="productID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="productID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__creat__1DE57479">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="createdBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__provi__1B0907CE">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="providerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__transacti__recei__1BFD2C07">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="receiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CopiosisEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="itemClasses" EntityType="Self.itemClass" />
+          <EntitySet Name="locations" EntityType="Self.location" />
+          <EntitySet Name="products" EntityType="Self.product" />
+          <EntitySet Name="transactions" EntityType="Self.transaction" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK__product__itemCla__173876EA" Association="Self.FK__product__itemCla__173876EA">
+            <End Role="itemClass" EntitySet="itemClasses" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user__locationID__1273C1CD" Association="Self.FK__user__locationID__1273C1CD">
+            <End Role="location" EntitySet="locations" />
+            <End Role="user" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__produ__1CF15040" Association="Self.FK__transacti__produ__1CF15040">
+            <End Role="product" EntitySet="products" />
+            <End Role="transaction" EntitySet="transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__creat__1DE57479" Association="Self.FK__transacti__creat__1DE57479">
+            <End Role="user" EntitySet="users" />
+            <End Role="transaction" EntitySet="transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__provi__1B0907CE" Association="Self.FK__transacti__provi__1B0907CE">
+            <End Role="user" EntitySet="users" />
+            <End Role="transaction" EntitySet="transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__transacti__recei__1BFD2C07" Association="Self.FK__transacti__recei__1BFD2C07">
+            <End Role="user" EntitySet="users" />
+            <End Role="transaction" EntitySet="transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CopiosisDBModelStoreContainer" CdmEntityContainer="CopiosisEntities">
+          <EntitySetMapping Name="itemClasses">
+            <EntityTypeMapping TypeName="CopiosisDBModel.itemClass">
+              <MappingFragment StoreEntitySet="itemClass">
+                <ScalarProperty Name="classID" ColumnName="classID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="suggestedGateway" ColumnName="suggestedGateway" />
+                <ScalarProperty Name="cPdb" ColumnName="cPdb" />
+                <ScalarProperty Name="a" ColumnName="a" />
+                <ScalarProperty Name="aMax" ColumnName="aMax" />
+                <ScalarProperty Name="d" ColumnName="d" />
+                <ScalarProperty Name="aPrime" ColumnName="aPrime" />
+                <ScalarProperty Name="cCb" ColumnName="cCb" />
+                <ScalarProperty Name="m1" ColumnName="m1" />
+                <ScalarProperty Name="pO" ColumnName="pO" />
+                <ScalarProperty Name="m2" ColumnName="m2" />
+                <ScalarProperty Name="cEb" ColumnName="cEb" />
+                <ScalarProperty Name="s" ColumnName="s" />
+                <ScalarProperty Name="m3" ColumnName="m3" />
+                <ScalarProperty Name="sE" ColumnName="sE" />
+                <ScalarProperty Name="m4" ColumnName="m4" />
+                <ScalarProperty Name="sH" ColumnName="sH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="locations">
+            <EntityTypeMapping TypeName="CopiosisDBModel.location">
+              <MappingFragment StoreEntitySet="location">
+                <ScalarProperty Name="locationID" ColumnName="locationID" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="neighborhood" ColumnName="neighborhood" />
+                <ScalarProperty Name="signupKey" ColumnName="signupKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="CopiosisDBModel.product">
+              <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="productID" ColumnName="productID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="gateway" ColumnName="gateway" />
+                <ScalarProperty Name="itemClass" ColumnName="itemClass" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="deletedDate" ColumnName="deletedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="transactions">
+            <EntityTypeMapping TypeName="CopiosisDBModel.transaction">
+              <MappingFragment StoreEntitySet="transaction">
+                <ScalarProperty Name="transactionID" ColumnName="transactionID" />
+                <ScalarProperty Name="providerID" ColumnName="providerID" />
+                <ScalarProperty Name="providerNotes" ColumnName="providerNotes" />
+                <ScalarProperty Name="receiverID" ColumnName="receiverID" />
+                <ScalarProperty Name="receiverNotes" ColumnName="receiverNotes" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="productID" ColumnName="productID" />
+                <ScalarProperty Name="productDesc" ColumnName="productDesc" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="dateAdded" ColumnName="dateAdded" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="dateClosed" ColumnName="dateClosed" />
+                <ScalarProperty Name="nbr" ColumnName="nbr" />
+                <ScalarProperty Name="satisfaction" ColumnName="satisfaction" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="CopiosisDBModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="nbr" ColumnName="nbr" />
+                <ScalarProperty Name="lastLogin" ColumnName="lastLogin" />
+                <ScalarProperty Name="locationID" ColumnName="locationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

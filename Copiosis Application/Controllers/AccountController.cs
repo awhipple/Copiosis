@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using Copiosis_Application.Filters;
 using Copiosis_Application.Models;
+using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Controllers
 {
@@ -23,6 +24,8 @@ namespace Copiosis_Application.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //var db = new CopiosisEntities();
+            //var x = db.locations.FirstOrDefault(l => l.neighborhood == "Kenton");
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

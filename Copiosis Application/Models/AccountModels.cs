@@ -8,7 +8,7 @@ using System.Web.Security;
 
 namespace Copiosis_Application.Models
 {
-    public class UsersContext : DbContext
+    /*public class UsersContext : DbContext
     {
         public UsersContext()
             : base("DefaultConnection")
@@ -26,7 +26,7 @@ namespace Copiosis_Application.Models
         public int UserId { get; set; }
         public string UserName { get; set; }
     }
-
+    */
     /* This model may need to change once we have the db schema and seed script */
     public class LocalPasswordModel
     {

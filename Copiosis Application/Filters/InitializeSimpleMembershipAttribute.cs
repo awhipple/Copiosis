@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web.Mvc;
 using WebMatrix.WebData;
 using Copiosis_Application.Models;
+using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Filters
 {
@@ -25,11 +26,11 @@ namespace Copiosis_Application.Filters
         {
             public SimpleMembershipInitializer()
             {
-                Database.SetInitializer<UsersContext>(null);
+                Database.SetInitializer<CopiosisEntities>(null);
 
                 try
                 {
-                    using (var context = new UsersContext())
+                    using (var context = new CopiosisEntities())
                     {
                         if (!context.Database.Exists())
                         {
@@ -38,7 +39,7 @@ namespace Copiosis_Application.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection("CopiosisConnection", "user", "userID", "username", autoCreateTables: true);
                 }
                 catch (Exception ex)
                 {
