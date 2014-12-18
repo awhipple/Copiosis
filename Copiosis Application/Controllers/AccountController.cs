@@ -82,6 +82,7 @@ namespace Copiosis_Application.Controllers
                 // Attempt to register the user
                 try
                 {
+                    // Need to pass the propertyValues parameter along with the other information stored in dbo.user
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");

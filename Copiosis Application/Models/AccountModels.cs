@@ -62,7 +62,8 @@ namespace Copiosis_Application.Models
         public bool RememberMe { get; set; }
     }
 
-    /* Will likely need to add a token field to this so that only users with the Kenton token can register */
+    /* Will likely need to add a token field to this so that only users with the Kenton token can register.
+     * The mockup for Signup has the fields that will need to be here */
     public class RegisterModel
     {
         [Required]

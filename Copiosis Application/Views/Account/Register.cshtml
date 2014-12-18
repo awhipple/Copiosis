@@ -1,6 +1,8 @@
 ﻿@model Copiosis_Application.Models.RegisterModel
 
-@* This will likely need to be changed to use more modern techniques... *@
+@* The RegisterModel will need the other properties for signup (i.e. token, email, etc). Once the RegisterModel
+    has that, it is just a matter of adding those inputs to the form below. Note: This could probably be reworked
+    to use a true form instead of this ol, as long as the model is populated once the submit happens. *@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
