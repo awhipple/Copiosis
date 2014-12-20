@@ -20,7 +20,6 @@ namespace Copiosis_Application.Controllers
     {
         //
         // GET: /Account/Login
-
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -56,7 +55,6 @@ namespace Copiosis_Application.Controllers
         public ActionResult LogOff()
         {
             WebSecurity.Logout();
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -71,7 +69,6 @@ namespace Copiosis_Application.Controllers
 
         //
         // POST: /Account/Register
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -99,7 +96,6 @@ namespace Copiosis_Application.Controllers
 
         //
         // POST: /Account/Disassociate
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Disassociate(string provider, string providerUserId)
@@ -147,15 +143,22 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
-        // GET: /Account/Confirm // Maybe its a POST?
-        // Confirm a transaction. Probably takes a GUID.
-        public ActionResult Confirm(Guid tranId)
+        // POST: /Account/Create
+        // Create a new transaction. Needs to take a model that matchs the form.
+        [HttpPost]
+        public ActionResult Create()
         {
             return View();
         }
 
-        // Need a post action to save a transaction
-        
+        // POST: /Account/Confirm 
+        // Confirm a transaction. Takes a GUID and the satisfaction rating provided by the consumer.
+        [HttpPost]
+        public ActionResult Confirm(Guid tranId, int satisfactionRating)
+        {
+            return View();
+        }
+
         // GET: /Account/Items
         // This will serve as the Item Library to show all the items a user has. Probably takes some kind of GUID.
         public ActionResult Items()
@@ -177,7 +180,21 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
-        // Need some post actions for saving items
+        // POST: /Account/SaveItem
+        // Save a new item to the database. Takes a model of the new item.
+        [HttpPost]
+        public ActionResult SaveItem()
+        {
+            return View();
+        }
+
+        // POST: /Account/UpdateItem
+        // Update an existing item in the database. Takes a model of the new item.
+        [HttpPost]
+        public ActionResult SaveItem()
+        {
+            return View();
+        }
 
         //
         // GET: /Account/Manage
@@ -195,7 +212,6 @@ namespace Copiosis_Application.Controllers
 
         //
         // POST: /Account/Manage
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model)
