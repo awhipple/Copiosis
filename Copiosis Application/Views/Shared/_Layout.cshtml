@@ -12,26 +12,50 @@
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
-        @* This will need to be changed to match the header design the frontend team comes up with *@
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
+        @* Check if logged in, and display the full navigation if user is logged in*@
+@if (Request.IsAuthenticated)
+{
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("Copiosis", "Index", "Home")</p>
             </div>
-        </header>
+            <div class="float-right">
+                <section id="login"></section>
+                <nav>
+                    <ul id="menu">@Html.Partial("_LoginPartial")</ul>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Transaction Overview", "Overview", "Account")</li>
+                        <li>@Html.ActionLink("Item Management", "Items", "Account")</li>
+                        <li>@Html.ActionLink("Consumer Form", "Contact", "Home")</li>
+                        <li class="last">@Html.ActionLink("Producer Form", "Contact", "Home")</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+}
+@*If user is not logged in, display the simple navigation*@
+else
+{
+
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("Copiosis", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <nav>
+                    <ul id="menu">
+                        @Html.Partial("_LoginPartial")
+                        <li class="last">@Html.ActionLink("About Copiosis", "About", "Home")</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+}
         <div id="body">
             @RenderSection("featured", required: false)
             <section class="content-wrapper main-content clear-fix">
@@ -41,7 +65,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                    <p>&copy; @DateTime.Now.Year - Copiosis</p>
                 </div>
             </div>
         </footer>

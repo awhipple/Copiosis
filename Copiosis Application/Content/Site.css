@@ -130,8 +130,9 @@ footer {
 .site-title {
     color: #c8c8c8;
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
-    font-size: 2.3em;
-    margin: 0;
+    font-size: 2.8em;
+    text-align:center;
+    margin-top:-17px;
 }
 
 .site-title a, .site-title a:hover, .site-title a:active {
@@ -188,8 +189,17 @@ ul#menu {
 
     ul#menu li {
         display: inline;
+        border-right:1px solid black;
         list-style: none;
-        padding-left: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    li.last {
+        display: inline;
+        border-right:none !important;
+        list-style: none;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
         ul#menu li a {
@@ -601,7 +611,7 @@ tr.pager td {
     /* logo */
     header .site-title {
         margin: 10px;
-        text-align: center;
+        
     }
 
     /* login */
