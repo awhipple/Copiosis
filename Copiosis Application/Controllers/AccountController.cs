@@ -146,7 +146,7 @@ namespace Copiosis_Application.Controllers
         // POST: /Account/Create
         // Create a new transaction. Needs to take a model that matchs the form.
         [HttpPost]
-        public ActionResult Create()
+        public ActionResult Create(int foo)
         {
             return View();
         }
@@ -191,7 +191,7 @@ namespace Copiosis_Application.Controllers
         // POST: /Account/UpdateItem
         // Update an existing item in the database. Takes a model of the new item.
         [HttpPost]
-        public ActionResult SaveItem()
+        public ActionResult UpdateItem()
         {
             return View();
         }
