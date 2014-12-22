@@ -1,0 +1,59 @@
+﻿body {
+}
+
+p.title{
+    font-size:3.0em;
+}
+
+a:link{
+    color:black;
+}
+
+a:visited{
+    color:black;
+}
+
+a:hover{
+    text-decoration:none;
+    color: #c7d1d6;
+}
+
+a:active{
+    text-decoration:none;
+}
+
+.title a:hover{
+    color:black;
+}
+.title{
+    margin:0;
+    text-align:center;
+}
+@media(max-width:565px){
+    .title{
+        padding-right:4em;
+        padding-left:2em;
+    }
+}
+
+#registerLink, #loginLink,#aboutLink {
+    font-size:1.4em;
+    text-align:center;
+}
+@media(max-width:565px){
+    #registerLink{
+        padding-left:5em;
+    }
+}
+
+.bottom-column {
+    float: none;
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+.nav-header div {
+        display: inline-block;
+        vertical-align: bottom;
+        float: none;
+}
