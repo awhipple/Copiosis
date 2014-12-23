@@ -1,53 +1,53 @@
 ﻿@* This is the master page for all pages it essentially establishes the footer and header layout *@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Copiosis Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <link href="/Content/bootstrap.css" rel="stylesheet">
-        <link href="/Content/bootstrap-theme.css" rel="stylesheet">
-        <link href="/Content/site.css" rel="stylesheet">
-        <link href="/Content/master.css" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale= 1" />
-        <script src="/Scripts/modernizr-2.6.2.js"></script>
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <title>Copiosis Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="/Content/bootstrap.css" rel="stylesheet">
+    <link href="/Content/bootstrap-theme.css" rel="stylesheet">
+    <link href="/Content/site.css" rel="stylesheet">
+    <link href="/Content/master.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale= 1" />
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+</head>
 <body>
     @* Display the full navigation if user is logged in*@
     @if (Request.IsAuthenticated)
     {
-        <header>
-            <div class="container-fluid">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <p class="title">@Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "title" })</p>
-                        </div>
-                        @Html.Partial("_LoginPartial")
-                        <div class="col-sm-2">@Html.ActionLink("Transaction Overview", "Overview", "Account")</div>
-                        <div class="col-sm-2">@Html.ActionLink("Item Management", "Items", "Account")</div>
-                        <div class="col-sm-2">@Html.ActionLink("Consumer Form", "Contact", "Home")</div>
-                        <div class="col-sm-2">@Html.ActionLink("Producer Form", "Contact", "Home")</div>
-                    </div>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse pull-right">
+                    @Html.Partial("_LoginPartial")
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Transaction Overview", "Overview", "Account")</li>
+                        <li>@Html.ActionLink("Item Management", "Items", "Account")</li>
+                        <li>@Html.ActionLink("Consumer Form", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("Producer Form", "Contact", "Home")</li>
+                    </ul>
                 </div>
             </div>
-        </header>
+        </nav>
     }
     @*If user is not logged in, display the simple navigation*@
     else
     {
-
-        <header>
-            <div class="container-fluid">
-                <div class="content-wrapper">
-                    <div class="row nav-header">
-                        <div class="col-md-2"><p class="title">@Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "title" })</p></div>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse pull-right">
+                    <ul class="nav navbar-nav">
                         @Html.Partial("_LoginPartial")
-                    </div>
+                    </ul>
                 </div>
             </div>
-        </header>
-
+        </nav>
     }
     <div id="body">
         @RenderSection("featured", required: false)

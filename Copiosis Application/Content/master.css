@@ -34,22 +34,25 @@ a:active{
         padding-right:4em;
         padding-left:2em;
     }
+
+    #registerLink{
+        padding-left:5em;
+    }
 }
 
 #registerLink, #loginLink,#aboutLink {
     font-size:1.4em;
     text-align:center;
 }
-@media(max-width:565px){
-    #registerLink{
-        padding-left:5em;
-    }
-}
 
 .bottom-column {
     float: none;
     display: table-cell;
     vertical-align: bottom;
+}
+
+.navbar-brand {
+    font-size: 40px;
 }
 
 .nav-header div {
