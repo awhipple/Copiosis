@@ -12,8 +12,7 @@ namespace Copiosis_Application.Controllers
         /* The landing page will be a login area, could redirect to the Login action? */
         public ActionResult Index()
         {
-            //return RedirectToAction("Login", "Account");
-            return View();
+            return RedirectToAction("Login", "Account");
         }
     }
 }
