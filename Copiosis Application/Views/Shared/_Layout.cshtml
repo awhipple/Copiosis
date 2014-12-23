@@ -12,59 +12,57 @@
         <meta name="viewport" content="width=device-width, initial-scale= 1" />
         <script src="/Scripts/modernizr-2.6.2.js"></script>
     </head>
-    <body>
-        @* Display the full navigation if user is logged in*@
-@if (Request.IsAuthenticated)
-{
-    <header>
-        <div class="container-fluid">
-            <div class="content-wrapper">
-                <div class="row">
-                        <div class="col-md-4">><p class="title">@Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "title" })</p></div>
-                        
-                                    @Html.Partial("_LoginPartial")
-                                    <div class="col-sm-2">@Html.ActionLink("Transaction Overview", "Overview", "Account")</div>
-                                    <div class="col-sm-2">@Html.ActionLink("Item Management", "Items", "Account")</div>
-                                    <div class="col-sm-2">@Html.ActionLink("Consumer Form", "Contact", "Home")</div>
-                                    <div class="col-sm-2">@Html.ActionLink("Producer Form", "Contact", "Home")</div>
-                        
+<body>
+    @* Display the full navigation if user is logged in*@
+    @if (Request.IsAuthenticated)
+    {
+        <header>
+            <div class="container-fluid">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="title">@Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "title" })</p>
+                        </div>
+                        @Html.Partial("_LoginPartial")
+                        <div class="col-sm-2">@Html.ActionLink("Transaction Overview", "Overview", "Account")</div>
+                        <div class="col-sm-2">@Html.ActionLink("Item Management", "Items", "Account")</div>
+                        <div class="col-sm-2">@Html.ActionLink("Consumer Form", "Contact", "Home")</div>
+                        <div class="col-sm-2">@Html.ActionLink("Producer Form", "Contact", "Home")</div>
                     </div>
                 </div>
             </div>
-    </header>
-}
-@*If user is not logged in, display the simple navigation*@
-else
-{
+        </header>
+    }
+    @*If user is not logged in, display the simple navigation*@
+    else
+    {
 
-    <header>
-        <div class="container-fluid">
-            <div class="content-wrapper">
+        <header>
+            <div class="container-fluid">
+                <div class="content-wrapper">
                     <div class="row nav-header">
                         <div class="col-md-2"><p class="title">@Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "title" })</p></div>
                         @Html.Partial("_LoginPartial")
-                        <div class="col-md-2">@Html.ActionLink("About Copiosis", "About", "Home", null, new { @id = "aboutLink" })</div>
-                    
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-}
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
-        </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - Copiosis</p>
-                </div>
+    }
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - Copiosis</p>
             </div>
-        </footer>
-    </body>
+        </div>
+    </footer>
+</body>
 @* Include javascript files that will be used across pages *@
 <script src="/Scripts/jquery-1.11.2.min.js"></script>
 <script src="/Scripts/bootstrap.min.js"></script>
