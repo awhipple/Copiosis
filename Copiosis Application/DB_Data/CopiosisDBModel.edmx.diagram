@@ -16,6 +16,7 @@
         <AssociationConnector Association="CopiosisDBModel.FK__transacti__creat__1DE57479" ManuallyRouted="false" />
         <AssociationConnector Association="CopiosisDBModel.FK__transacti__provi__1B0907CE" ManuallyRouted="false" />
         <AssociationConnector Association="CopiosisDBModel.FK__transacti__recei__1BFD2C07" ManuallyRouted="false" />
+        <AssociationConnector Association="CopiosisDBModel.FK__product__ownerID__5AEE82B9" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
