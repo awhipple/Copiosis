@@ -13,59 +13,18 @@
     <script src="/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
-    @* Display the full navigation if user is logged in*@
-    @if (Request.IsAuthenticated == false)
-    {
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="col-md-2">
-                    <div class="navbar-header">
-                    @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-md-3 col-md-offset-9" style="padding-right:0;">
-                            <div class="navbar-text text-right pull-right">
-                                   @Html.Partial("_LoginPartial")
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="nav navbar-nav text-right pull-right">
-                                <li>@Html.ActionLink("Transaction Overview", "Overview", "Account")</li>
-                                <li>@Html.ActionLink("Item Management", "Items", "Account")</li>
-                                <li>@Html.ActionLink("Consumer Form", "Contact", "Home")</li>
-                                <li>@Html.ActionLink("Producer Form", "Contact", "Home")</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-        </nav>
-
-    }
-    @*If user is not logged in, display the simple navigation*@
-    else
-    {
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="col-md-2">
-                    <div class="navbar-header">
-                        @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="nav navbar-nav text-right pull-right">
-                            @Html.Partial("_LoginPartial")
-                        </ul>
-                    </div>
-                </div>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
-        </nav>
-    }
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul id="customNav" class="nav navbar-nav text-right pull-right">
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div id="body">
         @RenderSection("featured", required: false)
         <section class="content-wrapper main-content clear-fix">

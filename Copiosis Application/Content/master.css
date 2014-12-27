@@ -51,6 +51,12 @@ a:active{
     vertical-align: bottom;
 }
 
+#customNav {
+    margin-top: 15px;
+}
+.navbar {
+    min-height: 100px;
+}
 .navbar-brand {
     font-size: 60px;
 }
