@@ -25,31 +25,26 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul id="customNav" class="nav navbar-nav text-right pull-right">
                         @Html.Partial("_LoginPartial")
-                        
-                    </ul>  
+
+                    </ul>
                 </div>
             </div>
         </nav>
-
     }
     @*If user is not logged in, display the simple navigation*@
     else
     {
         <nav class="navbar navbar-default">
             <div class="container">
-                <div class="col-md-2" id="brandHolder">
-                    <div class="navbar-header">
-                        @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
-                    </div>
+                <div class="navbar-header">
+                    @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="nav navbar-nav text-right pull-right" id="navLoggedOut">
-                            @Html.Partial("_LoginPartial")
-                        </ul>
-                    </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul id="customNav" class="nav navbar-nav text-right pull-right">
+                        @Html.Partial("_LoginPartial")
+                    </ul>
                 </div>
-            </div>
+            </div>   
         </nav>
     }
     <div id="body">
