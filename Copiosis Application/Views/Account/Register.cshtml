@@ -7,24 +7,27 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-        </ol>
+    <form>
+        <div class="form-group">
+            <input type="text" class="form-control" id="firstNameInput" placeholder="First Name">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="userNameInput" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="tokenInput" placeholder="Token">
+        </div>
         <input type="submit" value="Register" />
-    </fieldset>
+    </form>
 }
 
 @section Scripts {

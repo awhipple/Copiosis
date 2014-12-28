@@ -29,16 +29,6 @@ a:active{
     margin:0;
     text-align:center;
 }
-@media(max-width:565px){
-    .title{
-        padding-right:4em;
-        padding-left:2em;
-    }
-
-    #registerLink{
-        padding-left:5em;
-    }
-}
 
 #registerLink, #loginLink,#aboutLink {
     font-size:1.4em;

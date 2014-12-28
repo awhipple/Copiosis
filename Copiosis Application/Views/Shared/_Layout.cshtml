@@ -11,22 +11,24 @@
     <link href="/Content/master.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale= 1" />
     <script src="/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-1.11.2.min.js"></script>
+    <script src="~/Scripts/custom.js"></script>
 </head>
 <body>
     @* Display the full navigation if user is logged in*@
-    @if (Request.IsAuthenticated == false)
+    @if (Request.IsAuthenticated)
     {
         <nav class="navbar navbar-default">
             <div class="container">
-                <div class="col-md-2">
+                <div class="col-md-2" id="brandHolder">
                     <div class="navbar-header">
                     @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
                     </div>
                 </div>
                 <div class="col-md-10">
                     <div class="row">
-                        <div class="col-md-3 col-md-offset-9" style="padding-right:0;">
-                            <div class="navbar-text text-right pull-right">
+                        <div class="col-md-3 col-md-offset-9" id="navUserHolder" style="padding-right:0;">
+                            <div class="navbar-text text-right pull-right" id="loginDiv">
                                    @Html.Partial("_LoginPartial")
                             </div>
                         </div>
@@ -34,7 +36,7 @@
                 </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <ul class="nav navbar-nav text-right pull-right">
+                            <ul class="nav navbar-nav text-right pull-right" id="navLoggedIn">
                                 <li>@Html.ActionLink("Transaction Overview", "Overview", "Account")</li>
                                 <li>@Html.ActionLink("Item Management", "Items", "Account")</li>
                                 <li>@Html.ActionLink("Consumer Form", "Contact", "Home")</li>
@@ -51,14 +53,14 @@
     {
         <nav class="navbar navbar-default">
             <div class="container">
-                <div class="col-md-2">
+                <div class="col-md-2" id="brandHolder">
                     <div class="navbar-header">
                         @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="nav navbar-nav text-right pull-right">
+                        <ul class="nav navbar-nav text-right pull-right" id="navLoggedOut">
                             @Html.Partial("_LoginPartial")
                         </ul>
                     </div>

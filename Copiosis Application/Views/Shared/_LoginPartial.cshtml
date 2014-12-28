@@ -1,4 +1,4 @@
-﻿@if (Request.IsAuthenticated == false) {
+﻿@if (Request.IsAuthenticated) {
     <text>
         Hello, @Html.ActionLink(@*User.Identity.Name*@"TestUser", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
