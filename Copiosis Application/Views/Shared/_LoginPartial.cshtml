@@ -6,6 +6,19 @@
             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         }
     </text>
+=======
+﻿@if (Request.IsAuthenticated)
+{
+    <li>@Html.ActionLink("Transaction Overview", "Overview", "Account")</li>
+    <li>@Html.ActionLink("Item Management", "Items", "Account")</li>
+    <li>@Html.ActionLink("Consumer Form", "Contact", "Home")</li>
+    <li>@Html.ActionLink("Producer Form", "Contact", "Home")</li>
+    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+>>>>>>> origin/master
 }
 else
 {

@@ -15,6 +15,7 @@
     <script src="~/Scripts/custom.js"></script>
 </head>
 <body>
+<<<<<<< HEAD
     @* Display the full navigation if user is logged in*@
     @if (Request.IsAuthenticated)
     {
@@ -65,9 +66,20 @@
                         </ul>
                     </div>
                 </div>
+=======
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
+>>>>>>> origin/master
             </div>
-        </nav>
-    }
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul id="customNav" class="nav navbar-nav text-right pull-right">
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div id="body">
         @RenderSection("featured", required: false)
         <section class="content-wrapper main-content clear-fix">
