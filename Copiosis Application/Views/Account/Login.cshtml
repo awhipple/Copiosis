@@ -1,31 +1,27 @@
 ﻿@model Copiosis_Application.Models.LoginModel
 
-<section id="loginForm">
-    <h2>Use a local account to log in.</h2>
-    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2 id="copiosis_login" class="text-center">Copiosis Log In</h2>
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
 
-        <form class="form-horizontal" role="form">
             @*User Name*@
             <div class="form-group">
                 @Html.LabelFor(m => m.UserName, new { @class = "col-sm-3 control-label" })
-                <div class="col-sm-9">
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                </div>
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control form-control-6" })
                 @Html.ValidationMessageFor(m => m.UserName)
             </div>
             @*Password*@
             <div class="form-group">
                 @Html.LabelFor(m => m.Password, new { @class = "col-sm-3 control-label" })
-                <div class="col-sm-9">
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                </div>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-6" })
                 @Html.ValidationMessageFor(m => m.Password)
             </div>
             @*Remember Me*@
-            <div class="form-group">
+            <!--<div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <div class="checkbox">
                         @Html.CheckBoxFor(m => m.RememberMe)
@@ -34,18 +30,15 @@
                         </label>
                     </div>
                 </div>
-            </div>
+            </div>-->
             @*Submit button*@
             <div class="form-group">
-                <div class="col-sm-offset-1 col-sm-11">
-                    <button type="submit" class="btn btn-default">Sign in</button>
-                </div>
+                <button type="submit" class="btn btn-default center-block">Sign in</button>
             </div>
             @*Register link*@
             <div class="form-group">
-                @Html.ActionLink("Register", "Register") if you do not have an account.
+                <p class="text-center">@Html.ActionLink("Register", "Register") if you do not have an account.</p>
             </div>
-        </form>
-    }
-</section>
-
+        }
+    </div>
+</div>
