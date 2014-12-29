@@ -6,7 +6,7 @@
         @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+            @Html.Partial("ValidationSummary", ViewData.ModelState)
 
             @*User Name*@
             <div class="form-group">
