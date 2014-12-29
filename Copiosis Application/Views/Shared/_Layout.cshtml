@@ -54,13 +54,13 @@
     }
     <div id="body">
         @RenderSection("featured", required: false)
-        <section class="content-wrapper main-content clear-fix">
+        <div class="container">
             @RenderBody()
-        </section>
+        </div>
     </div>
     <footer>
-        <div class="content-wrapper">
-            <div class="float-left">
+        <div class="container">
+            <div class="row">
                 <p>&copy; @DateTime.Now.Year - Copiosis</p>
             </div>
         </div>
