@@ -22,7 +22,7 @@ username varchar(55) NOT NULL,
 email varchar(200), 
 firstName varchar(55), 
 lastName varchar(55), 
-status int NOT NULL,	
+type int NOT NULL,	
 nbr float,
 lastLogin datetime,
 locationID int NOT NULL FOREIGN KEY REFERENCES location(locationID)

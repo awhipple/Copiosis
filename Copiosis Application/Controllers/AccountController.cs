@@ -20,7 +20,6 @@ namespace Copiosis_Application.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
-        private CopiosisEntities db = new CopiosisEntities();
         
         //
         // GET: /Account/Login
@@ -81,13 +80,17 @@ namespace Copiosis_Application.Controllers
             if (ModelState.IsValid)
             {
 
+                DB_Data.location location;
                 // Check if signup code is valid.
-                var keyCheck = db.locations.Where(s => s.signupKey.Equals(model.Token));
-                var location = keyCheck.FirstOrDefault();
-                if (keyCheck.Any() == false)
+                using (var db = new CopiosisEntities())
                 {
-                    ModelState.AddModelError("", "Invalid signup code.");
-                    return View(model);
+                    var keyCheck = db.locations.Where(s => s.signupKey.Equals(model.Token));
+                    location = keyCheck.FirstOrDefault();
+                    if (keyCheck.Any() == false)
+                    {
+                        ModelState.AddModelError("", "Invalid signup code.");
+                        return View(model);
+                    }
                 }
 
                 // Attempt to register the user
@@ -102,7 +105,7 @@ namespace Copiosis_Application.Controllers
                                 firstName   = model.FirstName,
                                 lastName    = model.LastName,
                                 email       = model.Email,
-                                status      = 1,
+                                type        = 1,
                                 nbr         = 100,
                                 lastLogin   = DateTime.Now,
                                 locationID  = location.locationID 
