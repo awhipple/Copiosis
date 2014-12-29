@@ -1,3 +1,66 @@
-﻿@* Page for creating new items *@
+﻿@*@model Copiosis_Application.Models.AddItemModel*@
+<link href="~/Content/chosen.css" rel="stylesheet"/>
+<script src="~/Scripts/chosen.jquery.js"></script>
+@* Page for adding new items*@
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2 id="add-item-title" class="text-center">Create A New Item</h2>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
 
-<h1>New Item</h1>
+    @* Use the placeholder for now, so that the application still compiles
+        @Html.LabelFor(m => m.ItemClass, new { @class = "control-label" })
+        @foreach(var ItemClass in Model.ItemClass)
+        {
+            <li><a href='#'>@ItemClass.name</a></li>
+        }
+        @Html.ValidationMessageFor(m => m.ItemClass)
+    *@
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                <select data-placeholder="Select Item Class" class="chosen-select" tabindex="1">
+                    <option value=""></option>
+                    <option value="Apple">Apple</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Potato">Potato</option>
+                    <option value="Appliance">Appliance</option>
+                    <option value="Popuri">Popuri</option>
+                    <option value="Powdered Sugar">Powdered Sugar</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                <label class=" sr-only" for="itemNameInput">Item Name</label>
+                <input type="text" class="form-control" id="itemNameInput" placeholder="Item Name">
+                @* Use the placeholder for now, so that the application still compiles
+                    @Html.LabelFor(m => m.ItemName, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.ItemName, new { @class = "form-control", @placeholder = "Item Name" })
+                    @Html.ValidationMessageFor(m => m.Item Name)
+                *@
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class=" form-group">
+                <label class="sr-only" for="suggestedGatewayInput">Suggested Gateway</label>
+                <input type="text" class="form-control" id="suggestedGatewayInput" placeholder="Suggested Gateway">
+                @* Use the placeholder for now, so that the application still compiles
+                    @Html.LabelFor(m => m.SuggestedGateway, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.SuggestedGateway, new { @class = "form-control", @placeholder = "Suggested Gateway" })
+                    @Html.ValidationMessageFor(m => m.SuggestedGateway)
+                *@
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3" style="text-align:center;">
+            <input type="submit" value="Submit" />
+        </div>
+
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
