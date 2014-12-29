@@ -20,6 +20,8 @@ namespace Copiosis_Application.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private static string ADMINROLE = "ADMIN";
+        private static string USERROLE = "USER";
         
         //
         // GET: /Account/Login
@@ -42,7 +44,7 @@ namespace Copiosis_Application.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Overview");
             }
 
             // If we got this far, something failed, redisplay form
@@ -84,6 +86,7 @@ namespace Copiosis_Application.Controllers
                 // Check if signup code is valid.
                 using (var db = new CopiosisEntities())
                 {
+                    
                     var keyCheck = db.locations.Where(s => s.signupKey.Equals(model.Token));
                     location = keyCheck.FirstOrDefault();
                     if (keyCheck.Any() == false)
@@ -96,7 +99,18 @@ namespace Copiosis_Application.Controllers
                 // Attempt to register the user
                 try
                 {
-                    
+                    //Make sure admin role is created in the roles table, if not create it
+                    //Do not ever assign a user to admin role via the application, this should be done via a sql query
+                    if(!Roles.RoleExists(ADMINROLE))
+                    {
+                        Roles.CreateRole(ADMINROLE);
+                    }
+                    //Make sure user role is created in the roles table, if not create it
+                    if (!Roles.RoleExists(USERROLE))
+                    {
+                        Roles.CreateRole(USERROLE);
+                    }
+
                     // Make calls for .NET to handle authentication.
                     WebSecurity.CreateUserAndAccount(
                         model.UserName, 
@@ -111,8 +125,10 @@ namespace Copiosis_Application.Controllers
                                 locationID  = location.locationID 
                             }
                         );
+
+                    Roles.AddUserToRole(model.UserName, USERROLE);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Account", "Overview");
                 }
                 catch (MembershipCreateUserException e)
                 {
