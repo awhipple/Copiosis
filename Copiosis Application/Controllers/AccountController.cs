@@ -105,7 +105,7 @@ namespace Copiosis_Application.Controllers
                                 firstName   = model.FirstName,
                                 lastName    = model.LastName,
                                 email       = model.Email,
-                                type        = 1,
+                                status        = 1,
                                 nbr         = 100,
                                 lastLogin   = DateTime.Now,
                                 locationID  = location.locationID 
