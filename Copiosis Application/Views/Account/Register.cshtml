@@ -3,64 +3,52 @@
 @* The RegisterModel will need the other properties for signup (i.e. token, email, etc). Once the RegisterModel
     has that, it is just a matter of adding those inputs to the form below. Note: This could probably be reworked
     to use a true form instead of this ol, as long as the model is populated once the submit happens. *@
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+<div class="row">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
 
-    <div class="container">
-        <form>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-2">
-                    <div class="form-inline inline-override inline-form-padding-overide">
-                        <label class="sr-only" for="firstNameInput">First</label>
-                        <input type="text" class="form-control" id="firstNameInput" placeholder="First Name">
-                    </div>
-                    <div class="form-inline inline-override" style="padding-right:0; margin-right:0;">
-                        <label class=" sr-only" for="lastNameInput"> Last</label>
-                        <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
-                    </div>
-                </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-inline inline-override inline-form-padding-overide">
+                <label class="sr-only" for="firstNameInput">First</label>
+                <input type="text" class="form-control" id="firstNameInput" placeholder="First Name">
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-2">
-                    <div class=" form-group">
-                        <label class="sr-only" for="emailInput">Email</label>
-                        <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
-                    </div>
-                </div>
+            <div class="form-inline inline-override" style="padding-right:0; margin-right:0;">
+                <label class=" sr-only" for="lastNameInput"> Last</label>
+                <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-2">
-                    <div class="form-group">
-                        <label class="sr-only" for="userNameInput">Username</label>
-                        <input type="text" class="form-control" id="userNameInput" placeholder="Username">
-                    </div>
-                </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class=" form-group">
+                <label class="sr-only" for="emailInput">Email</label>
+                <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-2">
-                    <div class="form-group">
-                        <label class="sr-only" for="passwordInput">Password</label>
-                        <input type="password" class="form-control" id="passwordInput" placeholder="Password">
-                    </div>
-                </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                <label class="sr-only" for="userNameInput">Username</label>
+                <input type="text" class="form-control" id="userNameInput" placeholder="Username">
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-2">
-                    <div class="form-group">
-                        <label class="sr-only" for="tokenInput">Token</label>
-                        <input type="text" class="form-control" id="tokenInput" placeholder="Token">
-                    </div>
-                </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                <label class="sr-only" for="passwordInput">Password</label>
+                <input type="password" class="form-control" id="passwordInput" placeholder="Password">
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-2">
-                    <input type="submit" value="Register" />
-                </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                <label class="sr-only" for="tokenInput">Token</label>
+                <input type="text" class="form-control" id="tokenInput" placeholder="Token">
             </div>
-        </form>
-    </div>
-}
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <input type="submit" value="Register" />
+        </div>
+
+    }
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
