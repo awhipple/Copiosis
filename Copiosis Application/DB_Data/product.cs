@@ -26,8 +26,10 @@ namespace Copiosis_Application.DB_Data
         public int itemClass { get; set; }
         public System.DateTime createdDate { get; set; }
         public System.DateTime deletedDate { get; set; }
+        public int ownerID { get; set; }
     
         public virtual itemClass itemClass1 { get; set; }
         public virtual ICollection<transaction> transactions { get; set; }
+        public virtual user user { get; set; }
     }
 }

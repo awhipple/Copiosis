@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CopiosisDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CopiosisDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="itemClass">
           <Key>
             <PropertyRef Name="classID" />
@@ -50,6 +50,7 @@
           <Property Name="itemClass" Type="int" Nullable="false" />
           <Property Name="createdDate" Type="datetime" Nullable="false" />
           <Property Name="deletedDate" Type="datetime" Nullable="false" />
+          <Property Name="ownerID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="transaction">
           <Key>
@@ -93,6 +94,18 @@
             </Principal>
             <Dependent Role="product">
               <PropertyRef Name="itemClass" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__product__ownerID__5AEE82B9">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="ownerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -166,6 +179,10 @@
             <End Role="itemClass" EntitySet="itemClass" />
             <End Role="product" EntitySet="product" />
           </AssociationSet>
+          <AssociationSet Name="FK__product__ownerID__5AEE82B9" Association="Self.FK__product__ownerID__5AEE82B9">
+            <End Role="user" EntitySet="user" />
+            <End Role="product" EntitySet="product" />
+          </AssociationSet>
           <AssociationSet Name="FK__transacti__creat__1DE57479" Association="Self.FK__transacti__creat__1DE57479">
             <End Role="user" EntitySet="user" />
             <End Role="transaction" EntitySet="transaction" />
@@ -187,8 +204,7 @@
             <End Role="user" EntitySet="user" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CopiosisDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -241,6 +257,8 @@
           <Property Name="deletedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="itemClass1" Relationship="Self.FK__product__itemCla__173876EA" FromRole="product" ToRole="itemClass" />
           <NavigationProperty Name="transactions" Relationship="Self.FK__transacti__produ__1CF15040" FromRole="product" ToRole="transaction" />
+          <Property Name="ownerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="CopiosisDBModel.FK__product__ownerID__5AEE82B9" FromRole="product" ToRole="user" />
         </EntityType>
         <EntityType Name="transaction">
           <Key>
@@ -282,6 +300,7 @@
           <NavigationProperty Name="transactions" Relationship="Self.FK__transacti__creat__1DE57479" FromRole="user" ToRole="transaction" />
           <NavigationProperty Name="transactions1" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="user" ToRole="transaction" />
           <NavigationProperty Name="transactions2" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="user" ToRole="transaction" />
+          <NavigationProperty Name="products" Relationship="CopiosisDBModel.FK__product__ownerID__5AEE82B9" FromRole="user" ToRole="product" />
         </EntityType>
         <Association Name="FK__product__itemCla__173876EA">
           <End Role="itemClass" Type="Self.itemClass" Multiplicity="1" />
@@ -385,7 +404,23 @@
             <End Role="user" EntitySet="users" />
             <End Role="transaction" EntitySet="transactions" />
           </AssociationSet>
+          <AssociationSet Name="FK__product__ownerID__5AEE82B9" Association="CopiosisDBModel.FK__product__ownerID__5AEE82B9">
+            <End Role="user" EntitySet="users" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK__product__ownerID__5AEE82B9">
+          <End Type="CopiosisDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="CopiosisDBModel.product" Role="product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="ownerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -431,6 +466,7 @@
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CopiosisDBModel.product">
               <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="ownerID" ColumnName="ownerID" />
                 <ScalarProperty Name="productID" ColumnName="productID" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="description" ColumnName="description" />
