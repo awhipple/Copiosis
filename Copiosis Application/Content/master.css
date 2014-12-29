@@ -30,11 +30,6 @@ a:active{
     text-align:center;
 }
 
-#registerLink, #loginLink,#aboutLink {
-    font-size:1.4em;
-    text-align:center;
-}
-
 .bottom-column {
     float: none;
     display: table-cell;
@@ -69,6 +64,10 @@ a:active{
 
 h2#copiosis_login {
     margin-bottom: 20px;
+}
+
+h2#register-title {
+    margin-bottom:20px;
 }
 .form-control-6 {
     width: 60%;
