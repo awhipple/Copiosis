@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.SqlClient;
 using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
@@ -14,10 +15,13 @@ using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Controllers
 {
+    
     [Authorize]
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private CopiosisEntities db = new CopiosisEntities();
+        
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -76,11 +80,34 @@ namespace Copiosis_Application.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Check if signup code is valid.
+                var keyCheck = db.locations.Where(s => s.signupKey.Equals(model.Token));
+                var location = keyCheck.FirstOrDefault();
+                if (keyCheck.Any() == false)
+                {
+                    ModelState.AddModelError("", "Invalid signup code.");
+                    return View(model);
+                }
+
                 // Attempt to register the user
                 try
                 {
-                    // Need to pass the propertyValues parameter along with the other information stored in dbo.user
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    
+                    // Make calls for .NET to handle authentication.
+                    WebSecurity.CreateUserAndAccount(
+                        model.UserName, 
+                        model.Password,
+                        new {
+                                firstName   = model.FirstName,
+                                lastName    = model.LastName,
+                                email       = model.Email,
+                                status      = 1,
+                                nbr         = 100,
+                                lastLogin   = DateTime.Now,
+                                locationID  = location.locationID 
+                            }
+                        );
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
@@ -88,6 +115,7 @@ namespace Copiosis_Application.Controllers
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
                 }
+                
             }
 
             // If we got this far, something failed, redisplay form
@@ -350,3 +378,20 @@ namespace Copiosis_Application.Controllers
         #endregion
     }
 }
+
+
+// Register user by adding them to Users table.
+// Apparently this is not necessary because WebSecurity.CreateUserAndAccount() does this.
+// Leaving this for future reference. DELETE before delivery.
+/*
+user u = new user
+{
+    username = model.UserName,
+    email = model.Email,
+    status = 1,
+    nbr = 100,
+    locationID = location.locationID
+};
+db.users.Add(u);
+db.SaveChanges();
+*/
