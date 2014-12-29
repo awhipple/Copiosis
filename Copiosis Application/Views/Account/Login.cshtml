@@ -12,13 +12,11 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.UserName, new { @class = "col-sm-3 control-label" })
                 @Html.TextBoxFor(m => m.UserName, new { @class = "form-control form-control-6" })
-                @Html.ValidationMessageFor(m => m.UserName)
             </div>
             @*Password*@
             <div class="form-group">
                 @Html.LabelFor(m => m.Password, new { @class = "col-sm-3 control-label" })
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-6" })
-                @Html.ValidationMessageFor(m => m.Password)
             </div>
             @*Remember Me*@
             <!--<div class="form-group">
