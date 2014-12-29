@@ -56,3 +56,13 @@ a:active{
         vertical-align: bottom;
         float: none;
 }
+.navbar-collapse.collapse.in { 
+    display: block!important; 
+}
+.inline-override{
+    display: inline-block!important;
+}
+
+.inline-form-padding-overide{
+    padding-right:8px;
+}

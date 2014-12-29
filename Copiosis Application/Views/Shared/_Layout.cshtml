@@ -19,14 +19,19 @@
     {
         <nav class="navbar navbar-default">
             <div class="container">
-                <div class="navbar-header">
-                    @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul id="customNav" class="nav navbar-nav text-right pull-right">
-                        @Html.Partial("_LoginPartial")
-
-                    </ul>
+                <div class="row">
+                    <div class="col-md-2" id="brandHolder">
+                        <div class="navbar-header">
+                            @Html.ActionLink("Copiosis", "Index", "Home", null, new { @class = "navbar-brand" })
+                        </div>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                       <div class="col-md-10">
+                            <ul id="customNav" class="nav navbar-nav text-right pull-right">
+                                @Html.Partial("_LoginPartial")
+                            </ul>
+                       </div>
+                    </div>
                 </div>
             </div>
         </nav>
