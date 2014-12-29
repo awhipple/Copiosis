@@ -3,45 +3,87 @@
 @* The RegisterModel will need the other properties for signup (i.e. token, email, etc). Once the RegisterModel
     has that, it is just a matter of adding those inputs to the form below. Note: This could probably be reworked
     to use a true form instead of this ol, as long as the model is populated once the submit happens. *@
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2 id="register-title" class="text-center">New User Registration</h2>
+    </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
 
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.FirstName)
-                @Html.TextBoxFor(m => m.FirstName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.LastName)
-                @Html.TextBoxFor(m => m.LastName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Token)
-                @Html.TextBoxFor(m => m.Token)
-            </li>
-        </ol>
-        <input type="submit" value="Register" />
-    </fieldset>
-}
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-group">
+                    <label class="sr-only" for="firstNameInput">First</label>
+                    <input type="text" class="form-control" id="firstNameInput" placeholder="First Name">
+                    @* Use the placeholder for now, so that the application still compiles
+                        @Html.LabelFor(m => m.FirstName, new { @class = "sr-only" })
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                        @Html.ValidationMessageFor(m => m.FirstName)
+                    *@
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-group">
+                    <label class=" sr-only" for="lastNameInput"> Last</label>
+                    <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
+                    @* Use the placeholder for now, so that the application still compiles
+                        @Html.LabelFor(m => m.LastName, new { @class = "sr-only" })
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                        @Html.ValidationMessageFor(m => m.LastName)
+                    *@
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <div class=" form-group">
+                    <label class="sr-only" for="emailInput">Email</label>
+                    <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
+                    @* Use the placeholder for now, so that the application still compiles
+                        @Html.LabelFor(m => m.Email, new { @class = "sr-only" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "E-mail Address" })
+                        @Html.ValidationMessageFor(m => m.Email)
+                    *@
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username" })
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </div>
+
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-group">
+                    <label class="sr-only" for="tokenInput">Token</label>
+                    <input type="text" class="form-control" id="tokenInput" placeholder="Token">
+                    @* Use the placeholder for now, so that the application still compiles
+                        @Html.LabelFor(m => m.Token, new { @class = "sr-only" })
+                        @Html.TextBoxFor(m => m.Token, new { @class = "form-control", @placeholder = "Token" })
+                        @Html.ValidationMessageFor(m => m.Token)
+                    *@
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-3" style="text-align:center;">
+                <input type="submit" value="Register" />
+            </div>
+
+        }
+    </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
