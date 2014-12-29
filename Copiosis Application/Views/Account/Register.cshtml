@@ -10,34 +10,32 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary()
+            <div class="col-md-6 col-md-offset-3">
+                @Html.Partial("ValidationSummary", ViewData.ModelState)
+            </div>
 
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.FirstName, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
-                    @Html.ValidationMessageFor(m => m.FirstName)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.LastName, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
-                    @Html.ValidationMessageFor(m => m.LastName)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class=" form-group">
                     @Html.LabelFor(m => m.Email, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "E-mail Address" })
-                    @Html.ValidationMessageFor(m => m.Email)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.UserName, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Username" })
-                    @Html.ValidationMessageFor(m => m.UserName)
                 </div>
 
             </div>
@@ -45,21 +43,18 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Password, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
-                    @Html.ValidationMessageFor(m => m.Password)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.ConfirmPassword, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
-                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.Token, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.Token, new { @class = "form-control", @placeholder = "Token" })
-                    @Html.ValidationMessageFor(m => m.Token)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3" style="text-align:center;">
