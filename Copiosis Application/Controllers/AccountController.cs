@@ -381,20 +381,3 @@ namespace Copiosis_Application.Controllers
         #endregion
     }
 }
-
-
-// Register user by adding them to Users table.
-// Apparently this is not necessary because WebSecurity.CreateUserAndAccount() does this.
-// Leaving this for future reference. DELETE before delivery.
-/*
-user u = new user
-{
-    username = model.UserName,
-    email = model.Email,
-    status = 1,
-    nbr = 100,
-    locationID = location.locationID
-};
-db.users.Add(u);
-db.SaveChanges();
-*/
