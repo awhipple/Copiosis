@@ -14,35 +14,23 @@
 
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
-                    <label class="sr-only" for="firstNameInput">First</label>
-                    <input type="text" class="form-control" id="firstNameInput" placeholder="First Name">
-                    @* Use the placeholder for now, so that the application still compiles
-                        @Html.LabelFor(m => m.FirstName, new { @class = "sr-only" })
-                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
-                        @Html.ValidationMessageFor(m => m.FirstName)
-                    *@
+                    @Html.LabelFor(m => m.FirstName, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                    @Html.ValidationMessageFor(m => m.FirstName)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
-                    <label class=" sr-only" for="lastNameInput"> Last</label>
-                    <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
-                    @* Use the placeholder for now, so that the application still compiles
-                        @Html.LabelFor(m => m.LastName, new { @class = "sr-only" })
-                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
-                        @Html.ValidationMessageFor(m => m.LastName)
-                    *@
+                    @Html.LabelFor(m => m.LastName, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                    @Html.ValidationMessageFor(m => m.LastName)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class=" form-group">
-                    <label class="sr-only" for="emailInput">Email</label>
-                    <input type="email" class="form-control" id="emailInput" placeholder="Email Address">
-                    @* Use the placeholder for now, so that the application still compiles
-                        @Html.LabelFor(m => m.Email, new { @class = "sr-only" })
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "E-mail Address" })
-                        @Html.ValidationMessageFor(m => m.Email)
-                    *@
+                    @Html.LabelFor(m => m.Email, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "E-mail Address" })
+                    @Html.ValidationMessageFor(m => m.Email)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
@@ -69,13 +57,9 @@
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
-                    <label class="sr-only" for="tokenInput">Token</label>
-                    <input type="text" class="form-control" id="tokenInput" placeholder="Token">
-                    @* Use the placeholder for now, so that the application still compiles
-                        @Html.LabelFor(m => m.Token, new { @class = "sr-only" })
-                        @Html.TextBoxFor(m => m.Token, new { @class = "form-control", @placeholder = "Token" })
-                        @Html.ValidationMessageFor(m => m.Token)
-                    *@
+                    @Html.LabelFor(m => m.Token, new { @class = "sr-only" })
+                    @Html.TextBoxFor(m => m.Token, new { @class = "form-control", @placeholder = "Token" })
+                    @Html.ValidationMessageFor(m => m.Token)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3" style="text-align:center;">
