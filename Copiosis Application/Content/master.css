@@ -62,13 +62,11 @@ a:active{
     padding-right:8px;
 }
 
-h2#copiosis_login {
-    margin-bottom: 20px;
-}
-
-h2#register-title {
+h2#copiosis_login,h2#register-title,h2#add-item-title {
     margin-bottom:20px;
 }
+
+
 .form-control-6 {
     width: 60%;
 }
