@@ -82,4 +82,24 @@ namespace Copiosis_Application.Models
         public string ConfirmPassword { get; set; }
     }
 
+    /*  */
+    public class ItemsModel
+    {
+        [Required]
+        [Display(Name = "Product name")]
+        public string ProductName { get; set; }
+
+        [Required]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Required]
+        [Display(Name = "Gateway")]
+        public int Gateway { get; set; }
+
+        [Required]
+        [Display(Name = "Item Class")]
+        public int ItemClass { get; set; }
+    }
+
 }
