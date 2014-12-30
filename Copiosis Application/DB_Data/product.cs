@@ -30,5 +30,6 @@ namespace Copiosis_Application.DB_Data
     
         public virtual itemClass itemClass1 { get; set; }
         public virtual ICollection<transaction> transactions { get; set; }
+        public virtual user user { get; set; }
     }
 }

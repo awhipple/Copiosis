@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.SqlClient;
 using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
@@ -14,10 +15,14 @@ using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Controllers
 {
+    
     [Authorize]
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private static string ADMINROLE = "ADMIN";
+        private static string USERROLE = "USER";
+        
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -39,7 +44,7 @@ namespace Copiosis_Application.Controllers
         {
             if(ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Overview");
             }
 
             // If we got this far, something failed, redisplay form
@@ -76,18 +81,60 @@ namespace Copiosis_Application.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                DB_Data.location location;
+                // Check if signup code is valid.
+                using (var db = new CopiosisEntities())
+                {
+                    
+                    var keyCheck = db.locations.Where(s => s.signupKey.Equals(model.Token));
+                    location = keyCheck.FirstOrDefault();
+                    if (keyCheck.Any() == false)
+                    {
+                        ModelState.AddModelError("", "Invalid signup code.");
+                        return View(model);
+                    }
+                }
+
                 // Attempt to register the user
                 try
                 {
-                    // Need to pass the propertyValues parameter along with the other information stored in dbo.user
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    //Make sure admin role is created in the roles table, if not create it
+                    //Do not ever assign a user to admin role via the application, this should be done via a sql query
+                    if(!Roles.RoleExists(ADMINROLE))
+                    {
+                        Roles.CreateRole(ADMINROLE);
+                    }
+                    //Make sure user role is created in the roles table, if not create it
+                    if (!Roles.RoleExists(USERROLE))
+                    {
+                        Roles.CreateRole(USERROLE);
+                    }
+
+                    // Make calls for .NET to handle authentication.
+                    WebSecurity.CreateUserAndAccount(
+                        model.UserName, 
+                        model.Password,
+                        new {
+                                firstName   = model.FirstName,
+                                lastName    = model.LastName,
+                                email       = model.Email,
+                                status        = 1,
+                                nbr         = 100,
+                                lastLogin   = DateTime.Now,
+                                locationID  = location.locationID 
+                            }
+                        );
+
+                    Roles.AddUserToRole(model.UserName, USERROLE);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Account", "Overview");
                 }
                 catch (MembershipCreateUserException e)
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
                 }
+                
             }
 
             // If we got this far, something failed, redisplay form

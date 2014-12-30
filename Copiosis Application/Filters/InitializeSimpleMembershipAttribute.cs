@@ -40,6 +40,7 @@ namespace Copiosis_Application.Filters
                     }
 
                     WebSecurity.InitializeDatabaseConnection("CopiosisConnection", "user", "userID", "username", autoCreateTables: true);
+
                 }
                 catch (Exception ex)
                 {

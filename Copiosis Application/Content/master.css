@@ -29,21 +29,6 @@ a:active{
     margin:0;
     text-align:center;
 }
-@media(max-width:565px){
-    .title{
-        padding-right:4em;
-        padding-left:2em;
-    }
-
-    #registerLink{
-        padding-left:5em;
-    }
-}
-
-#registerLink, #loginLink,#aboutLink {
-    font-size:1.4em;
-    text-align:center;
-}
 
 .bottom-column {
     float: none;
@@ -51,12 +36,55 @@ a:active{
     vertical-align: bottom;
 }
 
+#customNav {
+    margin-top: 15px;
+}
+.navbar {
+    min-height: 100px;
+}
 .navbar-brand {
-    font-size: 40px;
+    font-size: 60px;
 }
 
 .nav-header div {
         display: inline-block;
         vertical-align: bottom;
         float: none;
+}
+.navbar-collapse.collapse.in { 
+    display: block!important; 
+}
+.inline-override{
+    display: inline-block!important;
+}
+
+.inline-form-padding-overide{
+    padding-right:8px;
+}
+
+h2#copiosis_login,h2#register-title,h2#add-item-title {
+    margin-bottom:20px;
+}
+
+.form-control-6 {
+    width: 60%;
+}
+
+.panel-body {
+    padding: 10px;
+}
+
+ul, ol
+{
+    margin-bottom: 0;
+    padding-left: 17px;
+}
+
+.panel
+{
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 0;
 }

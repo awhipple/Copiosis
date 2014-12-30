@@ -22,7 +22,7 @@ username varchar(55) NOT NULL,
 email varchar(200), 
 firstName varchar(55), 
 lastName varchar(55), 
-status int NOT NULL,	
+type int NOT NULL,	
 nbr float,
 lastLogin datetime,
 locationID int NOT NULL FOREIGN KEY REFERENCES location(locationID)
@@ -56,7 +56,8 @@ description varchar(255) NOT NULL,
 gateway int NOT NULL,
 itemClass int NOT NULL FOREIGN KEY REFERENCES itemClass(classID),
 createdDate datetime NOT NULL, 
-deletedDate datetime NOT NULL
+deletedDate datetime NOT NULL,
+ownerID int NOT NULL FOREIGN KEY REFERENCES [user](userID)
 );
 
 CREATE TABLE [transaction] (
