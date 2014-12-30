@@ -42,7 +42,7 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if(ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
                 using(var db = new CopiosisEntities())
                 {
@@ -213,27 +213,38 @@ namespace Copiosis_Application.Controllers
 
         // GET: /Account/Items
         // This will serve as the Item Library to show all the items a user has. Probably takes some kind of GUID.
+        [AllowAnonymous]
         public ActionResult Items()
         {
-            /* Down below is essentially your connection to the database. By saying new CopiosisEntities() you are essentially
-             * creating a new connection in the database. */
-            /*using (var db = new CopiosisEntities())
-            {
-                * This is essentially how you are going to write your database queries. When you enter db. you are given the tables
-                 * in the database, in this case locations. From there you can do a Where or something else to select something from 
-                 * the database using a lambda expression. So for the rows in locations, give me the first one with the country
-                 * equal to USA 
-                var x = db.locations.Where(a => a.country == "USA").FirstOrDefault();
-            }*/
-
-            /* Now you need to return your results to the client through some model that you are going to create in the Models folder.
+            List<ItemsModel> model = new List<ItemsModel>();
+            /* 
+             * Down below is essentially your connection to the database. By saying new CopiosisEntities() you are essentially
+             * creating a new connection in the database. 
+             */
+            using(var db = new CopiosisEntities()){
+                 /*
+                  * This is essentially how you are going to write your database queries. When you enter db. you are given the tables
+                  * in the database, in this case locations. From there you can do a Where or something else to select something from 
+                  * the database using a lambda expression. So for the rows in locations, give me the first one with the country
+                  * equal to USA 
+                  */ 
+                int userId = WebSecurity.CurrentUserId;
+                var items = db.products.Where(a => a.ownerID == userId).ToList();
+                foreach (var value in items){
+                    ItemsModel item = new ItemsModel();
+                    item.ProductName = value.name;
+                    item.Description = value.description;
+                    item.Gateway = value.gateway;
+                    item.ItemClass = value.itemClass;
+                }
+            }
+            /* 
+             * Now you need to return your results to the client through some model that you are going to create in the Models folder.
              * What you are going to want in the model is everything that the frontend guys will need to show in the page. So you
              * are probably going to want the name, description, gateway,and item class. When you create this model, make sure you put it 
-             * in the Models folder in the solution */
-            //return View(model);
-
-            return View();
-            
+             * in the Models folder in the solution 
+             */
+            return View(model);
         }
 
         // GET: /Account/AddItem

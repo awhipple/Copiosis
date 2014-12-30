@@ -12,7 +12,7 @@ namespace Copiosis_Application.Models
     {
         public UsersContext()
             : base("DefaultConnection")
-        {
+        {s
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
@@ -97,6 +97,18 @@ namespace Copiosis_Application.Models
         [Required]
         [Display(Name = "Signup Token")]
         public string Token { get; set; }
+    }
+
+    /*  */
+    public class ItemsModel
+    {
+        public string ProductName { get; set; }
+
+        public string Description { get; set; }
+
+        public int Gateway { get; set; }
+
+        public int ItemClass { get; set; }
     }
 
 }
