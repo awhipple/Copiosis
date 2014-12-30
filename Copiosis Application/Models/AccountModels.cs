@@ -12,7 +12,7 @@ namespace Copiosis_Application.Models
     {
         public UsersContext()
             : base("DefaultConnection")
-        {
+        {s
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
@@ -102,20 +102,12 @@ namespace Copiosis_Application.Models
     /*  */
     public class ItemsModel
     {
-        [Required]
-        [Display(Name = "Product name")]
         public string ProductName { get; set; }
 
-        [Required]
-        [Display(Name = "Description")]
         public string Description { get; set; }
 
-        [Required]
-        [Display(Name = "Gateway")]
         public int Gateway { get; set; }
 
-        [Required]
-        [Display(Name = "Item Class")]
         public int ItemClass { get; set; }
     }
 
