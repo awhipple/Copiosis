@@ -44,6 +44,12 @@ namespace Copiosis_Application.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                using(var db = new CopiosisEntities())
+                {
+                    var x = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).First();
+                    x.lastLogin = DateTime.Now;
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Overview");
             }
 
@@ -81,12 +87,11 @@ namespace Copiosis_Application.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                DB_Data.location location;
+                
+                location location;
                 // Check if signup code is valid.
                 using (var db = new CopiosisEntities())
                 {
-                    
                     var keyCheck = db.locations.Where(s => s.signupKey.Equals(model.Token));
                     location = keyCheck.FirstOrDefault();
                     if (keyCheck.Any() == false)
@@ -128,7 +133,7 @@ namespace Copiosis_Application.Controllers
 
                     Roles.AddUserToRole(model.UserName, USERROLE);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Account", "Overview");
+                    return RedirectToAction("Overview", "Account");
                 }
                 catch (MembershipCreateUserException e)
                 {
