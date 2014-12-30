@@ -46,7 +46,7 @@ namespace Copiosis_Application.Controllers
             {
                 using(var db = new CopiosisEntities())
                 {
-                    var x = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).First();
+                    var x = db.users.Where(u => u.username == model.UserName).First();
                     x.lastLogin = DateTime.Now;
                     db.SaveChanges();
                 }
