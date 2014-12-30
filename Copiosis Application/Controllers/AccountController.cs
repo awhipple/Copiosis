@@ -325,6 +325,19 @@ namespace Copiosis_Application.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Calculate NBR will calculate the NBR that a producer is to receive based on the 
+        /// satisfaction rating the consumer has provided for the transaction.
+        /// </summary>
+        /// <param name="satisfactionRating">Satisfaction Rating the consumer provided for the transaction</param>
+        /// <param name="productId">The ID# of the product involved in the transaction</param>
+        /// <param name="providerId">The ID# of the producer in the transaction</param>
+        /// <returns>A float for the NBR calculated</returns>
+        private float CalculateNBR(int satisfactionRating, int productId, int providerId)
+        {
+            throw new NotImplementedException();
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
