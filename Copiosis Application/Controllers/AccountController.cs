@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.SqlClient;
@@ -208,6 +209,7 @@ namespace Copiosis_Application.Controllers
                     item.Description = value.description;
                     item.Gateway = value.gateway;
                     item.ItemClass = value.itemClass;
+                    model.Add(item);
                 }
             }
             /* 
