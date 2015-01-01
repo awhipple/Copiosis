@@ -327,6 +327,18 @@ namespace Copiosis_Application.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult UsersNBR()
+        {
+            double? nbr = 0;
+            using (var db = new CopiosisEntities())
+            {
+                nbr = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(n => n.nbr).First();
+            }
+
+            return Json(new {success = true, nbr = nbr}, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// Calculate NBR will calculate the NBR that a producer is to receive based on the 
         /// satisfaction rating the consumer has provided for the transaction.

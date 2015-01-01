@@ -88,3 +88,7 @@ ul, ol
 .form-group {
     margin-bottom: 0;
 }
+
+#userNBR {
+    padding-right: 15px;
+}
