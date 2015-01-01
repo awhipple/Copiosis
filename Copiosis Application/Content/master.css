@@ -90,5 +90,11 @@ ul, ol
 }
 
 #userNBR {
+    color: #777;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
     padding-right: 15px;
+}
+#nbr-number{
+    color:black;
+    background-color:lightgreen;
 }

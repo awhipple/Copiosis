@@ -1,7 +1,7 @@
 ﻿﻿@if (Request.IsAuthenticated)
 {
-    <div class="col-lg-2 col-md-2 col-xs-2 pull-right text-right">
-        <p id="userNBR">NBR:<span>1000</span></p>
+    <div class="pull-right text-right">
+        <p id="userNBR" class="">Hello, @User.Identity.Name, your Current NBR is:<span id="nbr-number"></span></p>
     </div>
     <script>
         $(function () {
@@ -12,7 +12,10 @@
                     /* If the result.success == true then the get worked and then you grab result.nbr to get
                     * the current users NBR. You can take a look at the UsersNBR in AccountController to see what I
                     * did. It should probably have some error checking as right now it will just crash and burn if something goes wrong */
-                    alert("it worked");
+                    $("#userNBR span").text(result.nbr);
+                },
+                error: function (result) {
+                    console.log("Error receiving nbr result");
                 }
             });
         });

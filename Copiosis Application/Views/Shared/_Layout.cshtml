@@ -32,7 +32,10 @@
                         @Html.Partial("_LoginPartial")
                     </ul>
                 </div>
-                @Html.Partial("_UserNBR")
+                ﻿@if (Request.IsAuthenticated)
+                {
+                    @Html.Partial("_UserNBR");
+                }
             </div>
         </div>
     </nav>
