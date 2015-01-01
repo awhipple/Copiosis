@@ -46,7 +46,29 @@ s int,
 m3 float,
 sE smallint,
 m4 float,
-sH smallint
+sH smallint,
+m5 float
+);
+
+INSERT INTO itemClass VALUES (
+	'Default',
+	1,
+	1.0,
+	10,
+	10,
+	2,
+	1,
+	1.0,
+	1.0,
+	1.0,
+	1.0,
+	1.0,
+	1,
+	1.0,
+	1,
+	1.0,
+	1.0,
+	1.0
 );
 
 CREATE TABLE product (
