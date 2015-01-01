@@ -50,6 +50,7 @@ sH smallint,
 m5 float
 );
 
+-- Insert the Default itemClass values needed for the Copiosis Application
 INSERT INTO itemClass VALUES (
 	'Default',
 	1,
