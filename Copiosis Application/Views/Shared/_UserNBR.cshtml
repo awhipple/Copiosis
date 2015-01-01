@@ -5,19 +5,17 @@
     </div>
     <script>
         $(function () {
-            $(function () {
-                $.ajax({
-                    url: '/Account/UsersNBR/',
-                    type: 'GET',
-                    success: function (result) {
-                        /* If the result.success == true then the get worked and then you grab result.nbr to get 
-                        * the current users NBR. You can take a look at the UsersNBR in AccountController to see what I 
-                        * did. It should probably have some error checking as right now it will just crash and burn if something goes wrong */
-                        alert("it worked");
-                    }
-            })
+            $.ajax({
+                url: '/Account/UsersNBR/',
+                type: 'GET',
+                success: function (result) {
+                    /* If the result.success == true then the get worked and then you grab result.nbr to get
+                    * the current users NBR. You can take a look at the UsersNBR in AccountController to see what I
+                    * did. It should probably have some error checking as right now it will just crash and burn if something goes wrong */
+                    alert("it worked");
+                }
+            });
         });
-        })
     </script>
 }
 
