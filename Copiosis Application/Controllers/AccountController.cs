@@ -186,7 +186,7 @@ namespace Copiosis_Application.Controllers
 
         // GET: /Account/Items
         // This will serve as the Item Library to show all the items a user has. Probably takes some kind of GUID.
-        [AllowAnonymous]
+        [HttpGet]
         public ActionResult Items()
         {
             List<ItemsModel> model = new List<ItemsModel>();
@@ -209,6 +209,7 @@ namespace Copiosis_Application.Controllers
                     item.Description = value.description;
                     item.Gateway = value.gateway;
                     item.ItemClass = value.itemClass;
+                    item.ItemGuid = value.guid;
                     model.Add(item);
                 }
             }
@@ -242,6 +243,7 @@ namespace Copiosis_Application.Controllers
         // POST: /Account/AddItem
         // Save a new item to the database. Takes a model of the new item.
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddItem(AddItemModel model)
         {
             if (model.Name == null || model.Name == string.Empty)
@@ -290,11 +292,20 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
-        // POST: /Account/UpdateItem
+        // POST: /Account/EditItem
         // Update an existing item in the database. Takes a model of the new item.
         [HttpPost]
-        public ActionResult UpdateItem()
+        public ActionResult EditItem(AddItemModel model)
         {
+            return View();
+        }
+
+        // POST: /Account/DeleteItem
+        // Deactivate an item. Take the GUID of the item as a parameter
+        [HttpPost]
+        public ActionResult DeleteItem(Guid itemId)
+        {
+            //this will actually probably return some Json result for the client to handle
             return View();
         }
 
