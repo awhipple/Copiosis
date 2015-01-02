@@ -333,7 +333,12 @@ namespace Copiosis_Application.Controllers
             double? nbr = 0;
             using (var db = new CopiosisEntities())
             {
-                nbr = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(n => n.nbr).First();
+                var user = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).FirstOrDefault();
+                if (user == null)
+                {
+                    throw new Exception(string.Format("User: {0} was not found", WebSecurity.CurrentUserName));
+                }
+                nbr = user.nbr.HasValue ? user.nbr : 0;
             }
 
             return Json(new {success = true, nbr = nbr}, JsonRequestBehavior.AllowGet);
