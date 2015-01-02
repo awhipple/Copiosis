@@ -111,4 +111,19 @@ namespace Copiosis_Application.Models
         public int ItemClass { get; set; }
     }
 
+    public class AddItemModel
+    {
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string ItemClass { get; set; }
+
+        public int Gateway { get; set; }
+
+        //This is needed for the get portion of AddItem
+        public Dictionary<string, int> ItemClassTemplates { get; set; }
+
+    }
+
 }

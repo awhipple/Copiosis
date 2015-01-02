@@ -225,20 +225,67 @@ namespace Copiosis_Application.Controllers
         // Add an item. Just returns the view.
         public ActionResult AddItem()
         {
+            AddItemModel model = new AddItemModel();
+            Dictionary<string, int> itemClassGateway = new Dictionary<string, int>();
+            using (var db = new CopiosisEntities())
+            {
+                var items = db.itemClasses.ToList();
+                foreach (var item in items)
+                {
+                    itemClassGateway.Add(item.name, (int)item.suggestedGateway);
+                }
+            }
+            model.ItemClassTemplates = itemClassGateway;
+            return View(model);
+        }
+        
+        // POST: /Account/AddItem
+        // Save a new item to the database. Takes a model of the new item.
+        [HttpPost]
+        public ActionResult AddItem(AddItemModel model)
+        {
+            if (model.Name == null || model.Name == string.Empty)
+            {
+                throw new ArgumentException("Product name is required");
+            }
+
+            if (model.Gateway < 0)
+            {
+                throw new ArgumentException("Product cannot have a negative gateway");
+            }
+
+            if (model.Description == null || model.Description == string.Empty)
+            {
+                throw new ArgumentException("Product description is required");
+            }
+
+            product p = new product();
+            using (var db = new CopiosisEntities())
+            {
+                int? itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).FirstOrDefault();
+                if (itemClassId == null)
+                {
+                    throw new ArgumentException("Product item class not found");
+                }
+
+                p.name = model.Name;
+                p.ownerID = WebSecurity.CurrentUserId;
+                p.guid = Guid.NewGuid();
+                p.gateway = model.Gateway;
+                p.description = model.Description;
+                p.createdDate = DateTime.Now;
+                p.itemClass = (int)itemClassId;
+
+                db.SaveChanges();
+            }
+
+
             return View();
         }
 
         // GET: /Account/EditItem
         // Edit an item. Probably takes some kind of GUID.
         public ActionResult EditItem(Guid itemId)
-        {
-            return View();
-        }
-
-        // POST: /Account/SaveItem
-        // Save a new item to the database. Takes a model of the new item.
-        [HttpPost]
-        public ActionResult SaveItem()
         {
             return View();
         }
