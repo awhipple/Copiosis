@@ -331,17 +331,18 @@ namespace Copiosis_Application.Controllers
         public ActionResult UsersNBR()
         {
             double? nbr = 0;
+            bool result = true;
             using (var db = new CopiosisEntities())
             {
                 var user = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).FirstOrDefault();
                 if (user == null)
                 {
-                    throw new Exception(string.Format("User: {0} was not found", WebSecurity.CurrentUserName));
+                    result = false;    
                 }
                 nbr = user.nbr.HasValue ? user.nbr : 0;
             }
 
-            return Json(new {success = true, nbr = nbr}, JsonRequestBehavior.AllowGet);
+            return Json(new {success = result, nbr = result ? nbr : null}, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
