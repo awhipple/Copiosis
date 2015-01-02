@@ -66,8 +66,12 @@ h2#copiosis_login,h2#register-title,h2#add-item-title {
     margin-bottom:20px;
 }
 
-.form-control-6 {
-    width: 60%;
+.login-label {
+    margin-top: 8px;
+}
+
+.login-group {
+    padding-left: 0;
 }
 
 .panel-body {
