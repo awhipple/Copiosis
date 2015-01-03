@@ -208,7 +208,7 @@ namespace Copiosis_Application.Controllers
                     item.ProductName = value.name;
                     item.Description = value.description;
                     item.Gateway = value.gateway;
-                    item.ItemClass = value.itemClass;
+                    item.ItemClass = value.itemClass1.name;
                     item.ItemGuid = value.guid;
                     model.Add(item);
                 }

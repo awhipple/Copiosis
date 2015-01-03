@@ -108,7 +108,7 @@ namespace Copiosis_Application.Models
 
         public int Gateway { get; set; }
 
-        public int ItemClass { get; set; }
+        public string ItemClass { get; set; }
 
         public Guid ItemGuid { get; set; }
     }
