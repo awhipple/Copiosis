@@ -25,7 +25,7 @@ namespace Copiosis_Application.DB_Data
         public int gateway { get; set; }
         public int itemClass { get; set; }
         public System.DateTime createdDate { get; set; }
-        public System.DateTime deletedDate { get; set; }
+        public Nullable<System.DateTime> deletedDate { get; set; }
         public int ownerID { get; set; }
         public System.Guid guid { get; set; }
     

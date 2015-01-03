@@ -50,7 +50,7 @@
           <Property Name="gateway" Type="int" Nullable="false" />
           <Property Name="itemClass" Type="int" Nullable="false" />
           <Property Name="createdDate" Type="datetime" Nullable="false" />
-          <Property Name="deletedDate" Type="datetime" Nullable="false" />
+          <Property Name="deletedDate" Type="datetime" />
           <Property Name="ownerID" Type="int" Nullable="false" />
           <Property Name="guid" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
@@ -257,7 +257,7 @@
           <Property Name="gateway" Type="Int32" Nullable="false" />
           <Property Name="itemClass" Type="Int32" Nullable="false" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="deletedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deletedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="itemClass1" Relationship="Self.FK__product__itemCla__173876EA" FromRole="product" ToRole="itemClass" />
           <NavigationProperty Name="transactions" Relationship="Self.FK__transacti__produ__1CF15040" FromRole="product" ToRole="transaction" />
           <Property Name="ownerID" Type="Int32" Nullable="false" />
