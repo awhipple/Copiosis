@@ -281,11 +281,11 @@ namespace Copiosis_Application.Controllers
                 p.createdDate = DateTime.Now;
                 p.itemClass = (int)itemClassId;
 
+                db.products.Add(p);
                 db.SaveChanges();
             }
 
-
-            return View();
+            return RedirectToAction("Items");
         }
 
         public ActionResult GatewayNBR(string name)
