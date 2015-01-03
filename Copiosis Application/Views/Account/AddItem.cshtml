@@ -22,14 +22,14 @@
         *@
         <div class="col-md-6 col-md-offset-3">
             <div class="form-group">
-                @*Html.LabelFor(m => m.ItemClass)*@
+                @Html.LabelFor(m => m.ItemClass)
                 @Html.DropDownListFor(m => m.ItemClass, new SelectList(Model.ItemClassTemplates.Keys), new { @id = "class-dropdown" })
                 @Html.ValidationMessageFor(m => m.ItemClass)
             </div>
         </div>
         <div class="col-md-6 col-md-offset-3">
             <div class="form-group">
-                @Html.LabelFor(m => m.Name, new { @class = "sr-only" })
+                @Html.LabelFor(m => m.Name)
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Item Name" })
                 @Html.ValidationMessageFor(m => m.Name)
 
@@ -37,14 +37,14 @@
         </div>
         <div class="col-md-6 col-md-offset-3">
             <div class=" form-group">
-                @Html.LabelFor(m => m.Description, new { @class = "sr-only" })
+                @Html.LabelFor(m => m.Description)
                 @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @placeholder = "Item Description", @style="min-height:30px"})
                 @Html.ValidationMessageFor(m => m.Description)
             </div>
         </div>
         <div class="col-md-6 col-md-offset-3">
             <div class=" form-group">
-                @Html.LabelFor(m => m.Gateway, new { @class = "sr-only" })
+                @Html.LabelFor(m => m.Gateway)
                 @Html.TextBoxFor(m => m.Gateway, new { @class = "form-control", @placeholder = "Suggested Gateway", @id="suggested-gateway"})
                 @Html.ValidationMessageFor(m => m.Gateway)
                 <script type="text/javascript">
@@ -65,7 +65,7 @@
 
                         });
 
-                    });
+                    }).trigger('change');
 
                 </script>
             </div>

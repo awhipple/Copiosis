@@ -236,7 +236,7 @@ namespace Copiosis_Application.Controllers
                     item.ProductName = value.name;
                     item.Description = value.description;
                     item.Gateway = value.gateway;
-                    item.ItemClass = value.itemClass;
+                    item.ItemClass = value.itemClass1.name;
                     item.ItemGuid = value.guid;
                     model.Add(item);
                 }
@@ -309,13 +309,14 @@ namespace Copiosis_Application.Controllers
                 p.createdDate = DateTime.Now;
                 p.itemClass = (int)itemClassId;
 
+                db.products.Add(p);
                 db.SaveChanges();
             }
 
-
-            return View();
+            return RedirectToAction("Items");
         }
 
+        [HttpGet]
         public ActionResult GatewayNBR(string name)
         {
             double? defaultGateway = 0;
@@ -332,6 +333,7 @@ namespace Copiosis_Application.Controllers
 
             return Json(new { success = result, defaultGateway = result ? defaultGateway : null }, JsonRequestBehavior.AllowGet);
         }
+
         // GET: /Account/EditItem
         // Edit an item. Probably takes some kind of GUID.
         public ActionResult EditItem(Guid itemId)
