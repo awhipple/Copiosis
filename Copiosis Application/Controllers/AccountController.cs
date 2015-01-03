@@ -202,7 +202,7 @@ namespace Copiosis_Application.Controllers
 
         // GET: /Account/Items
         // This will serve as the Item Library to show all the items a user has. Probably takes some kind of GUID.
-        [AllowAnonymous]
+        [HttpGet]
         public ActionResult Items()
         {
             List<ItemsModel> model = new List<ItemsModel>();
@@ -225,6 +225,7 @@ namespace Copiosis_Application.Controllers
                     item.Description = value.description;
                     item.Gateway = value.gateway;
                     item.ItemClass = value.itemClass;
+                    item.ItemGuid = value.guid;
                     model.Add(item);
                 }
             }
@@ -241,9 +242,84 @@ namespace Copiosis_Application.Controllers
         // Add an item. Just returns the view.
         public ActionResult AddItem()
         {
+            AddItemModel model = new AddItemModel();
+            Dictionary<string, int> itemClassGateway = new Dictionary<string, int>();
+            using (var db = new CopiosisEntities())
+            {
+                var items = db.itemClasses.ToList();
+                if (items != null)
+                {
+                    foreach (var item in items)
+                    {
+                        itemClassGateway.Add(item.name, (int)item.suggestedGateway);
+                    }
+                }
+            }
+            model.ItemClassTemplates = itemClassGateway;
+            return View(model);
+        }
+        
+        // POST: /Account/AddItem
+        // Save a new item to the database. Takes a model of the new item.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddItem(AddItemModel model)
+        {
+            if (model.Name == null || model.Name == string.Empty)
+            {
+                throw new ArgumentException("Product name is required");
+            }
+
+            if (model.Gateway < 0)
+            {
+                throw new ArgumentException("Product cannot have a negative gateway");
+            }
+
+            if (model.Description == null || model.Description == string.Empty)
+            {
+                throw new ArgumentException("Product description is required");
+            }
+
+            product p = new product();
+            using (var db = new CopiosisEntities())
+            {
+                int? itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).FirstOrDefault();
+                if (itemClassId == null)
+                {
+                    throw new ArgumentException("Product item class not found");
+                }
+
+                p.name = model.Name;
+                p.ownerID = WebSecurity.CurrentUserId;
+                p.guid = Guid.NewGuid();
+                p.gateway = model.Gateway;
+                p.description = model.Description;
+                p.createdDate = DateTime.Now;
+                p.itemClass = (int)itemClassId;
+
+                db.SaveChanges();
+            }
+
+
             return View();
         }
 
+        public ActionResult GatewayNBR(string name)
+        {
+            double? defaultGateway = 0;
+            bool result = true;
+            using (var db = new CopiosisEntities())
+            {
+                defaultGateway = db.itemClasses.Where(ic => ic.name == name).Select(i => i.suggestedGateway).FirstOrDefault();
+                if (defaultGateway == null)
+                {
+                    result = false;
+                    defaultGateway = 0;
+                }
+            }
+
+            return Json(new { success = result, defaultGateway = result ? defaultGateway : null }, JsonRequestBehavior.AllowGet);
+        }
         // GET: /Account/EditItem
         // Edit an item. Probably takes some kind of GUID.
         public ActionResult EditItem(Guid itemId)
@@ -251,19 +327,20 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
-        // POST: /Account/SaveItem
-        // Save a new item to the database. Takes a model of the new item.
+        // POST: /Account/EditItem
+        // Update an existing item in the database. Takes a model of the new item.
         [HttpPost]
-        public ActionResult SaveItem()
+        public ActionResult EditItem(AddItemModel model)
         {
             return View();
         }
 
-        // POST: /Account/UpdateItem
-        // Update an existing item in the database. Takes a model of the new item.
+        // POST: /Account/DeleteItem
+        // Deactivate an item. Take the GUID of the item as a parameter
         [HttpPost]
-        public ActionResult UpdateItem()
+        public ActionResult DeleteItem(Guid itemId)
         {
+            //this will actually probably return some Json result for the client to handle
             return View();
         }
 
@@ -347,12 +424,18 @@ namespace Copiosis_Application.Controllers
         public ActionResult UsersNBR()
         {
             double? nbr = 0;
+            bool result = true;
             using (var db = new CopiosisEntities())
             {
-                nbr = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(n => n.nbr).First();
+                var user = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).FirstOrDefault();
+                if (user == null)
+                {
+                    result = false;    
+                }
+                nbr = user.nbr.HasValue ? user.nbr : 0;
             }
 
-            return Json(new {success = true, nbr = nbr}, JsonRequestBehavior.AllowGet);
+            return Json(new {success = result, nbr = result ? nbr : null}, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

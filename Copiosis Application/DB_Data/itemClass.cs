@@ -37,6 +37,7 @@ namespace Copiosis_Application.DB_Data
         public Nullable<short> sE { get; set; }
         public Nullable<double> m4 { get; set; }
         public Nullable<short> sH { get; set; }
+        public Nullable<double> m5 { get; set; }
     
         public virtual ICollection<product> products { get; set; }
     }

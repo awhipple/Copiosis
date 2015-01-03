@@ -27,6 +27,7 @@
           <Property Name="sE" Type="smallint" />
           <Property Name="m4" Type="float" />
           <Property Name="sH" Type="smallint" />
+          <Property Name="m5" Type="float" />
         </EntityType>
         <EntityType Name="location">
           <Key>
@@ -51,6 +52,7 @@
           <Property Name="createdDate" Type="datetime" Nullable="false" />
           <Property Name="deletedDate" Type="datetime" Nullable="false" />
           <Property Name="ownerID" Type="int" Nullable="false" />
+          <Property Name="guid" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="transaction">
           <Key>
@@ -231,6 +233,7 @@
           <Property Name="m4" Type="Double" />
           <Property Name="sH" Type="Int16" />
           <NavigationProperty Name="products" Relationship="Self.FK__product__itemCla__173876EA" FromRole="itemClass" ToRole="product" />
+          <Property Name="m5" Type="Double" />
         </EntityType>
         <EntityType Name="location">
           <Key>
@@ -259,6 +262,7 @@
           <NavigationProperty Name="transactions" Relationship="Self.FK__transacti__produ__1CF15040" FromRole="product" ToRole="transaction" />
           <Property Name="ownerID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="user" Relationship="CopiosisDBModel.FK__product__ownerID__5AEE82B9" FromRole="product" ToRole="user" />
+          <Property Name="guid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="transaction">
           <Key>
@@ -430,6 +434,7 @@
           <EntitySetMapping Name="itemClasses">
             <EntityTypeMapping TypeName="CopiosisDBModel.itemClass">
               <MappingFragment StoreEntitySet="itemClass">
+                <ScalarProperty Name="m5" ColumnName="m5" />
                 <ScalarProperty Name="classID" ColumnName="classID" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="suggestedGateway" ColumnName="suggestedGateway" />
@@ -466,6 +471,7 @@
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CopiosisDBModel.product">
               <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="guid" ColumnName="guid" />
                 <ScalarProperty Name="ownerID" ColumnName="ownerID" />
                 <ScalarProperty Name="productID" ColumnName="productID" />
                 <ScalarProperty Name="name" ColumnName="name" />

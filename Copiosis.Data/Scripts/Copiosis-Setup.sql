@@ -81,6 +81,7 @@ itemClass int NOT NULL FOREIGN KEY REFERENCES itemClass(classID),
 createdDate datetime NOT NULL, 
 deletedDate datetime NOT NULL,
 ownerID int NOT NULL FOREIGN KEY REFERENCES [user](userID)
+guid uniqueidentifier NOT NULL DEFAULT newid() 
 );
 
 CREATE TABLE [transaction] (
