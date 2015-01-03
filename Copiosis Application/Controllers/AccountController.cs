@@ -288,6 +288,7 @@ namespace Copiosis_Application.Controllers
             return RedirectToAction("Items");
         }
 
+        [HttpGet]
         public ActionResult GatewayNBR(string name)
         {
             double? defaultGateway = 0;
@@ -304,6 +305,7 @@ namespace Copiosis_Application.Controllers
 
             return Json(new { success = result, defaultGateway = result ? defaultGateway : null }, JsonRequestBehavior.AllowGet);
         }
+
         // GET: /Account/EditItem
         // Edit an item. Probably takes some kind of GUID.
         public ActionResult EditItem(Guid itemId)
