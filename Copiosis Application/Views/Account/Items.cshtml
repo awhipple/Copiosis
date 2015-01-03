@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <h3>Previously Created Items</h3>
-            @{ 
+            @{
                 @* detemine if model list has data available *@
                 bool hasItems = Model.Count() > 0;
 
@@ -15,7 +15,8 @@
                     <h4>No Items In Library</h4>
                 }
                 @* Items available to display *@
-                else { 
+                else
+                {
                     <div class="table-responsive">
                         <table data-link="row" class="table table-bordered table-hover table-striped">
                             <thead>
@@ -24,11 +25,13 @@
                                     <th>Description</th>
                                     <th>Gateway</th>
                                     <th>Item Class</th>
-                                </tr>                        
+                                    <th>Edit/Delete</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @* Need to make rows selectable and track which one is selected
                                     for passing to edit or delete*@
+
                                 @foreach (var item in Model)
                                 {
                                     <tr id="@item.ItemGuid">
@@ -36,29 +39,23 @@
                                         <td>@item.Description</td>
                                         <td>@item.Gateway</td>
                                         <td>@item.ItemClass</td>
-                                    </tr>                                                           
-                                }    
+                                        <td>
+                                            <div class="btn-group-sm">
+                                                <button type="button" class="btn-sm" onclick="location.href='@Url.Action("EditItem", "Account", new { itemId = item.ItemGuid })'">Edit</button>
+                                                <button type="button" class="btn-sm" onclick="location.href='@Url.Action("DeleteItem", "Account", new { itemId = item.ItemGuid })'">Delete</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
                             </tbody>
                         </table>
                     </div>
                 }
-                @* Library has Items so display all available option buttons *@
-                if (hasItems) { 
-                    <div class="btn-group col-md-3 col-sm-4 col-xs-5 col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
-                        <button type="button" class="btn" onclick="location.href='@Url.Action("AddItem","Account")'">Create</button>
-                        <button type="button" class="btn">Delete</button>
-                        <button type="button" class="btn">Edit</button>
-                    </div>
-                }
-                @* Library is empty so only include the create button*@
-                else
-                {
-                    <div class="btn-group col-md-3 col-sm-4 col-xs-5 col-md-offset-9 col-sm-offset-8 col-xs-offset-7">
-                        <button type="button" class="btn" onclick="location.href='@Url.Action("AddItem","Account")'">Create Item</button>
-                    </div>
-                }
-            }            
+            }
+            <div class="btn-group col-lg-2 col-md-2 col-sm-3 col-xs-1 col-lg-offset-10 col-md-offset-10 col-sm-offset-9 col-xs-offset-9">
+                <button type="button" class="btn" onclick="location.href='@Url.Action("AddItem","Account")'">Create Item</button>
+            </div>
         </div>
     </div>
 </div>
-
