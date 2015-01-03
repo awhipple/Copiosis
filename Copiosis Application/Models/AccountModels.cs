@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
+using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Models
 {
@@ -125,5 +126,14 @@ namespace Copiosis_Application.Models
 
         //This is needed for the get portion of AddItem
         public Dictionary<string, int> ItemClassTemplates { get; set; }
+    }
+
+
+    public class TransactionOverviewModel
+    {
+        public List<transaction> pendingUser = new List<transaction>();
+        //public Enumerable<transaction> pendingUser = new List<transaction>();
+        public List<transaction> pendingOther = new List<transaction>();
+        public List<transaction> completed = new List<transaction>();
     }
 }

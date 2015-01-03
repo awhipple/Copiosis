@@ -151,20 +151,32 @@ namespace Copiosis_Application.Controllers
         // Overview of transactions for the current user
         public ActionResult Overview()
         {
-            List<List<transaction>> model = new List<List<transaction>>();
-            List<transaction> pendingUser = new List<transaction>();
-            List<transaction> pendingOther = new List<transaction>();
-            List<transaction> completed = new List<transaction>();
+            TransactionOverviewModel model = new TransactionOverviewModel();
+            
             using (var db = new CopiosisEntities())
             {
                 int userId = WebSecurity.CurrentUserId;
-                var items = db.transaction.Where(a => a.providerID == userId).ToList();
-                location = keyCheck.FirstOrDefault();
-                if (keyCheck.Any() == false)
-                {
-                    ModelState.AddModelError("", "Invalid signup code.");
-                    return View(model);
-                }
+
+                model.pendingUser = db.transactions.Where(
+                    a =>
+                    (a.providerID == userId || a.receiverID == userId) &&
+                    a.dateClosed == null &&
+                    a.createdBy != userId
+                ).ToList();
+
+                model.pendingOther = db.transactions.Where(
+                    a =>
+                    (a.providerID == userId || a.receiverID == userId) &&
+                    a.dateClosed == null &&
+                    a.createdBy == userId
+                ).ToList();
+
+                model.completed = db.transactions.Where(
+                    a => 
+                    (a.providerID == userId || a.receiverID == userId) &&
+                    a.dateClosed != null
+                ).ToList();
+                
             }
             
             return View(model);
