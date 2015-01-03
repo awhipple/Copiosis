@@ -231,9 +231,12 @@ namespace Copiosis_Application.Controllers
             using (var db = new CopiosisEntities())
             {
                 var items = db.itemClasses.ToList();
-                foreach (var item in items)
+                if (items != null)
                 {
-                    itemClassGateway.Add(item.name, (int)item.suggestedGateway);
+                    foreach (var item in items)
+                    {
+                        itemClassGateway.Add(item.name, (int)item.suggestedGateway);
+                    }
                 }
             }
             model.ItemClassTemplates = itemClassGateway;
@@ -285,6 +288,22 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
+        public ActionResult GatewayNBR(string name)
+        {
+            double? defaultGateway = 0;
+            bool result = true;
+            using (var db = new CopiosisEntities())
+            {
+                defaultGateway = db.itemClasses.Where(ic => ic.name == name).Select(i => i.suggestedGateway).FirstOrDefault();
+                if (defaultGateway == null)
+                {
+                    result = false;
+                    defaultGateway = 0;
+                }
+            }
+
+            return Json(new { success = result, defaultGateway = result ? defaultGateway : null }, JsonRequestBehavior.AllowGet);
+        }
         // GET: /Account/EditItem
         // Edit an item. Probably takes some kind of GUID.
         public ActionResult EditItem(Guid itemId)

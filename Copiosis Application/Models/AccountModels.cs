@@ -125,7 +125,5 @@ namespace Copiosis_Application.Models
 
         //This is needed for the get portion of AddItem
         public Dictionary<string, int> ItemClassTemplates { get; set; }
-
     }
-
 }
