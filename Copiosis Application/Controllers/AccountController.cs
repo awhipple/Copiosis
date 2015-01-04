@@ -230,7 +230,7 @@ namespace Copiosis_Application.Controllers
                   * equal to USA 
                   */ 
                 int userId = WebSecurity.CurrentUserId;
-                var items = db.products.Where(a => a.ownerID == userId).ToList();
+                var items = db.products.Where(a => a.ownerID == userId && a.deletedDate == null).ToList();
                 foreach (var value in items){
                     ItemsModel item = new ItemsModel();
                     item.ProductName = value.name;
