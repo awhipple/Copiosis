@@ -16,14 +16,14 @@ using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Controllers
 {
-    
+
     [Authorize]
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
         private static string ADMINROLE = "ADMIN";
         private static string USERROLE = "USER";
-        
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -43,9 +43,9 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if(ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                using(var db = new CopiosisEntities())
+                using (var db = new CopiosisEntities())
                 {
                     var x = db.users.Where(u => u.username == model.UserName).First();
                     x.lastLogin = DateTime.Now;
@@ -88,7 +88,7 @@ namespace Copiosis_Application.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 location location;
                 // Check if signup code is valid.
                 using (var db = new CopiosisEntities())
@@ -107,7 +107,7 @@ namespace Copiosis_Application.Controllers
                 {
                     //Make sure admin role is created in the roles table, if not create it
                     //Do not ever assign a user to admin role via the application, this should be done via a sql query
-                    if(!Roles.RoleExists(ADMINROLE))
+                    if (!Roles.RoleExists(ADMINROLE))
                     {
                         Roles.CreateRole(ADMINROLE);
                     }
@@ -119,17 +119,18 @@ namespace Copiosis_Application.Controllers
 
                     // Make calls for .NET to handle authentication.
                     WebSecurity.CreateUserAndAccount(
-                        model.UserName, 
+                        model.UserName,
                         model.Password,
-                        new {
-                                firstName   = model.FirstName,
-                                lastName    = model.LastName,
-                                email       = model.Email,
-                                status        = 1,
-                                nbr         = 100,
-                                lastLogin   = DateTime.Now,
-                                locationID  = location.locationID 
-                            }
+                        new
+                        {
+                            firstName = model.FirstName,
+                            lastName = model.LastName,
+                            email = model.Email,
+                            status = 1,
+                            nbr = 100,
+                            lastLogin = DateTime.Now,
+                            locationID = location.locationID
+                        }
                         );
 
                     Roles.AddUserToRole(model.UserName, USERROLE);
@@ -140,7 +141,7 @@ namespace Copiosis_Application.Controllers
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
                 }
-                
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -152,7 +153,7 @@ namespace Copiosis_Application.Controllers
         public ActionResult Overview()
         {
             TransactionOverviewModel model = new TransactionOverviewModel();
-            
+
             using (var db = new CopiosisEntities())
             {
                 int userId = WebSecurity.CurrentUserId;
@@ -172,13 +173,13 @@ namespace Copiosis_Application.Controllers
                 ).ToList();
 
                 model.completed = db.transactions.Where(
-                    a => 
+                    a =>
                     (a.providerID == userId || a.receiverID == userId) &&
                     a.dateClosed != null
                 ).ToList();
-                
+
             }
-            
+
             return View(model);
         }
 
@@ -222,25 +223,7 @@ namespace Copiosis_Application.Controllers
              * Down below is essentially your connection to the database. By saying new CopiosisEntities() you are essentially
              * creating a new connection in the database. 
              */
-            using(var db = new CopiosisEntities()){
-                 /*
-                  * This is essentially how you are going to write your database queries. When you enter db. you are given the tables
-                  * in the database, in this case locations. From there you can do a Where or something else to select something from 
-                  * the database using a lambda expression. So for the rows in locations, give me the first one with the country
-                  * equal to USA 
-                  */ 
-                int userId = WebSecurity.CurrentUserId;
-                var items = db.products.Where(a => a.ownerID == userId && a.deletedDate == null).ToList();
-                foreach (var value in items){
-                    ItemsModel item = new ItemsModel();
-                    item.ProductName = value.name;
-                    item.Description = value.description;
-                    item.Gateway = value.gateway;
-                    item.ItemClass = value.itemClass1.name;
-                    item.ItemGuid = value.guid;
-                    model.Add(item);
-                }
-            }
+            model = CurrenUserItems();
             /* 
              * Now you need to return your results to the client through some model that you are going to create in the Models folder.
              * What you are going to want in the model is everything that the frontend guys will need to show in the page. So you
@@ -263,7 +246,7 @@ namespace Copiosis_Application.Controllers
             model.ItemClassTemplates = itemClassGateway;
             return View(model);
         }
-        
+
         // POST: /Account/AddItem
         // Save a new item to the database. Takes a model of the new item.
         [HttpPost]
@@ -350,7 +333,7 @@ namespace Copiosis_Application.Controllers
             {
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
                 int itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).First();
-                if(item == null)
+                if (item == null)
                 {
                     throw new ArgumentException(string.Format("Product with ID {0} not found", itemId));
                 }
@@ -369,11 +352,32 @@ namespace Copiosis_Application.Controllers
 
         // POST: /Account/DeleteItem
         // Deactivate an item. Take the GUID of the item as a parameter
-        [HttpPost]
         public ActionResult DeleteItem(Guid itemId)
         {
-            //this will actually probably return some Json result for the client to handle
-            return View();
+            bool result = true;
+            using(var db = new CopiosisEntities())
+            {
+                var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId && p.deletedDate == null).FirstOrDefault();
+                if(item == null)
+                {
+                    result = false;
+                }
+                else
+                {
+                    item.deletedDate = DateTime.Now;
+                    db.SaveChanges();
+                }
+            }
+            
+            if(result)
+            {
+                return RedirectToAction("Items");
+            }
+            else
+            {
+                ModelState.AddModelError("DeletionError", "Unable to delete item");
+                return View("Items", CurrenUserItems());
+            }
         }
 
         //
@@ -462,12 +466,12 @@ namespace Copiosis_Application.Controllers
                 var user = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).FirstOrDefault();
                 if (user == null)
                 {
-                    result = false;    
+                    result = false;
                 }
                 nbr = user.nbr.HasValue ? user.nbr : 0;
             }
 
-            return Json(new {success = result, nbr = result ? nbr : null}, JsonRequestBehavior.AllowGet);
+            return Json(new { success = result, nbr = result ? nbr : null }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -503,6 +507,28 @@ namespace Copiosis_Application.Controllers
             }
         }
 
+        private List<ItemsModel> CurrenUserItems()
+        {
+            List<ItemsModel> model = new List<ItemsModel>();
+
+            using (var db = new CopiosisEntities())
+            {
+                int userId = WebSecurity.CurrentUserId;
+                var items = db.products.Where(a => a.ownerID == userId && a.deletedDate == null).ToList();
+                foreach (var value in items)
+                {
+                    ItemsModel item = new ItemsModel();
+                    item.ProductName = value.name;
+                    item.Description = value.description;
+                    item.Gateway = value.gateway;
+                    item.ItemClass = value.itemClass1.name;
+                    item.ItemGuid = value.guid;
+                    model.Add(item);
+                }
+            }
+            return model;
+        }
+
         /// <summary>
         /// Calculate NBR will calculate the NBR that a producer is to receive based on the 
         /// satisfaction rating the consumer has provided for the transaction.
@@ -535,7 +561,7 @@ namespace Copiosis_Application.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
         }
-        
+
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
             // See http://go.microsoft.com/fwlink/?LinkID=177550 for

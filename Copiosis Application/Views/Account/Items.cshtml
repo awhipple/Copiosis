@@ -4,8 +4,14 @@
     <h1>Item Library</h1>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <h3>Previously Created Items</h3>
             @{
+                @* if there was an error deleting an item then an error message will appear here *@
+                if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger" role="alert" style="margin-top: 20px;">
+                        <p>@ViewData.ModelState["DeletionError"].Errors[0].ErrorMessage</p>
+                    </div>
+                }
                 @* detemine if model list has data available *@
                 bool hasItems = Model.Count() > 0;
 
