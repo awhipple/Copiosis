@@ -66,8 +66,14 @@ h2#copiosis_login,h2#register-title,h2#add-item-title {
     margin-bottom:20px;
 }
 
-.login-label {
+.login-label,.add-item-label {
     margin-top: 8px;
+}
+
+@media (max-width: 991px) {
+    .add-item-label {
+        text-align: center;
+    }
 }
 
 .login-group {
@@ -101,4 +107,12 @@ ul, ol
 #nbr-number{
     color:black;
     background-color:lightgreen;
+}
+.select-box {
+    width: 100%;
+    border-radius: 4px;
+}
+
+select { 
+    margin-top:8px;
 }

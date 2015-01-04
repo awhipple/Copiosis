@@ -113,13 +113,14 @@ namespace Copiosis_Application.Models
 
         public Guid ItemGuid { get; set; }
     }
-
+    
     public class AddItemModel
     {
         public string Name { get; set; }
 
         public string Description { get; set; }
 
+        [Display(Name = "Class")]
         public string ItemClass { get; set; }
 
         public int Gateway { get; set; }
