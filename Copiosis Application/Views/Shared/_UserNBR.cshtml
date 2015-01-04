@@ -12,10 +12,18 @@
                     /* If the result.success == true then the get worked and then you grab result.nbr to get
                     * the current users NBR. You can take a look at the UsersNBR in AccountController to see what I
                     * did. It should probably have some error checking as right now it will just crash and burn if something goes wrong */
-                    $("#userNBR span").text(result.nbr);
+                    if(result)
+                        $("#userNBR span").text(result.nbr);
+                    else
+                    {
+                        $('#userNBR').text("Error retrieving current NBR value");
+                        $('#userNBR').css('color', 'red');
+                    }
                 },
                 error: function (result) {
                     console.log("Error receiving nbr result");
+                    $('#userNBR').text("Error communicating with the database...");
+                    $('#userNBR').css('color', 'red');
                 }
             });
         });

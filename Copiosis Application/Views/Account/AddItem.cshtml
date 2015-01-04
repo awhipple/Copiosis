@@ -50,7 +50,6 @@
                 <script type="text/javascript">
                     $("#class-dropdown").change(function () {
                         var currentChoice = $(this).val();
-                        $(function () {
                             $.ajax({
                                 url: "/Account/GatewayNBR/",
                                 type:"get",
@@ -61,8 +60,6 @@
                                 error: function(result) {
                                     console.log("Error receiving default gateway value for: " + currentChoice);
                             }
-                        });
-
                         });
 
                     }).trigger('change');
