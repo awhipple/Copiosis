@@ -258,14 +258,7 @@ namespace Copiosis_Application.Controllers
             Dictionary<string, int> itemClassGateway = new Dictionary<string, int>();
             using (var db = new CopiosisEntities())
             {
-                var items = db.itemClasses.ToList();
-                if (items != null)
-                {
-                    foreach (var item in items)
-                    {
-                        itemClassGateway.Add(item.name, (int)item.suggestedGateway);
-                    }
-                }
+                itemClassGateway = FetchItemClassTemplates(db);
             }
             model.ItemClassTemplates = itemClassGateway;
             return View(model);
@@ -277,21 +270,7 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddItem(AddItemModel model)
         {
-            if (model.Name == null || model.Name == string.Empty)
-            {
-                throw new ArgumentException("Product name is required");
-            }
-
-            if (model.Gateway < 0)
-            {
-                throw new ArgumentException("Product cannot have a negative gateway");
-            }
-
-            if (model.Description == null || model.Description == string.Empty)
-            {
-                throw new ArgumentException("Product description is required");
-            }
-
+            ValidateItemModel(model);
             product p = new product();
             using (var db = new CopiosisEntities())
             {
@@ -336,17 +315,56 @@ namespace Copiosis_Application.Controllers
 
         // GET: /Account/EditItem
         // Edit an item. Probably takes some kind of GUID.
+        [HttpGet]
         public ActionResult EditItem(Guid itemId)
         {
-            return View();
+            AddItemModel model = new AddItemModel();
+
+            using (var db = new CopiosisEntities())
+            {
+                var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
+                if (item == null)
+                {
+                    throw new ArgumentException(string.Format("Product with ID {0} not found", itemId));
+                }
+                else
+                {
+                    model.Name = item.name;
+                    model.ItemClass = item.itemClass1.name;
+                    model.Description = item.description;
+                    model.Gateway = item.gateway;
+                    model.ItemClassTemplates = FetchItemClassTemplates(db);
+                }
+            }
+
+            return View(model);
         }
 
         // POST: /Account/EditItem
         // Update an existing item in the database. Takes a model of the new item.
         [HttpPost]
-        public ActionResult EditItem(AddItemModel model)
+        public ActionResult EditItem(AddItemModel model, Guid itemId)
         {
-            return View();
+            ValidateItemModel(model);
+            using (var db = new CopiosisEntities())
+            {
+                var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
+                int itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).First();
+                if(item == null)
+                {
+                    throw new ArgumentException(string.Format("Product with ID {0} not found", itemId));
+                }
+                else
+                {
+                    item.name = model.Name;
+                    item.description = model.Description;
+                    item.gateway = model.Gateway;
+                    item.itemClass = itemClassId;
+                    db.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Items");
         }
 
         // POST: /Account/DeleteItem
@@ -450,6 +468,39 @@ namespace Copiosis_Application.Controllers
             }
 
             return Json(new {success = result, nbr = result ? nbr : null}, JsonRequestBehavior.AllowGet);
+        }
+
+
+        private Dictionary<string, int> FetchItemClassTemplates(CopiosisEntities db)
+        {
+            Dictionary<string, int> itemClasses = new Dictionary<string, int>();
+            var items = db.itemClasses.ToList();
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    itemClasses.Add(item.name, (int)item.suggestedGateway);
+                }
+            }
+            return itemClasses;
+        }
+
+        private void ValidateItemModel(AddItemModel model)
+        {
+            if (model.Name == null || model.Name == string.Empty)
+            {
+                throw new ArgumentException("Product name is required");
+            }
+
+            if (model.Gateway < 0)
+            {
+                throw new ArgumentException("Product cannot have a negative gateway");
+            }
+
+            if (model.Description == null || model.Description == string.Empty)
+            {
+                throw new ArgumentException("Product description is required");
+            }
         }
 
         /// <summary>
