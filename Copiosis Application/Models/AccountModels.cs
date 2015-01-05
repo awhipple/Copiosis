@@ -129,12 +129,25 @@ namespace Copiosis_Application.Models
         public Dictionary<string, int> ItemClassTemplates { get; set; }
     }
 
-
     public class TransactionOverviewModel
     {
+        /* These should be {get; set;} instead of new List<>() */
         public List<transaction> pendingUser = new List<transaction>();
         //public Enumerable<transaction> pendingUser = new List<transaction>();
         public List<transaction> pendingOther = new List<transaction>();
         public List<transaction> completed = new List<transaction>();
+    }
+
+    public class NewTransactionModel
+    {
+        /*GET*/
+        public bool Producer { get; set; }
+        public List<string> Consumers { get; set; }
+        public List<string> Producers { get; set; }
+        public List<string> Products { get; set; }
+        /*POST*/
+        public string Consumer { get; set; }
+        public string ProductProvided { get; set; }
+        public string Notes { get; set; }
     }
 }
