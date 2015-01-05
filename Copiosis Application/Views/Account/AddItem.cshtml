@@ -11,14 +11,6 @@
         @Html.AntiForgeryToken()
             @Html.Partial("ValidationSummary", ViewData.ModelState)
 
-        @* Use the placeholder for now, so that the application still compiles
-            @Html.LabelFor(m => m.ItemClass, new { @class = "control-label" })
-            @foreach(var ItemClass in Model.ItemClass)
-            {
-                <li><a href='#'>@ItemClass.name</a></li>
-            }
-            @Html.ValidationMessageFor(m => m.ItemClass)
-        *@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12">

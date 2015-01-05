@@ -66,13 +66,14 @@ h2#copiosis_login,h2#register-title,h2#add-item-title {
     margin-bottom:20px;
 }
 
-.login-label,.add-item-label {
+.login-label,.add-item-label, .transaction-label {
     margin-top: 8px;
 }
 
 @media (max-width: 991px) {
-    .add-item-label {
+    .add-item-label, .transaction-label, .login-label {
         text-align: center;
+        margin-top: 0px;
     }
 }
 
@@ -115,4 +116,8 @@ ul, ol
 
 select { 
     margin-top:8px;
+}
+
+textarea {
+    max-width:100%;
 }

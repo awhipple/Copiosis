@@ -1,58 +1,76 @@
 ﻿@* Page for creating transactions for both producers and consumers, do they need to be separate pages? *@
 
 <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <h2 id="add-item-title" class="text-center">Create A New Item</h2>
-    </div>
+    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3">
+        <h2 id="add-item-title" class="text-center">Add a Transaction</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.Partial("ValidationSummary", ViewData.ModelState)
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary()
-    }
-
-    <div class="col-md-6 col-md-offset-3">
-        <div class="form-group">
-            <select data-placeholder="Select the Consumer's Name:'" class="chosen-select" tabindex="1">
-                <option value=""></option>
-                <option value="John Smith">John Smith</option>
-                <option value="Tyler Poole">Tyler Poole</option>
-                <option value="Trevor Ingram">Trevor Ingram</option>
-                <option value="Steve Moore">Steve Moore</option>
-                <option value="Scott Kropf">Scott Kropf</option>
-                <option value="Jane Doe">Jane Doe</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-md-6 col-md-offset-3">
-        <div class="form-group">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="row">
                 <div class="form-group">
-                    <select data-placeholder="Select Item Class" class="chosen-select" tabindex="1">
-                        <option value=""></option>
-                        <option value="Apple">Apple</option>
-                        <option value="Orange">Orange</option>
-                        <option value="Potato">Potato</option>
-                        <option value="Appliance">Appliance</option>
-                        <option value="Popuri">Popuri</option>
-                        <option value="Powdered Sugar">Powdered Sugar</option>
-                    </select>
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <label for="consumer-name" class="control-label transaction-label">Name:</label>
+                        @*@Html.LabelFor(m => m.ConsumerName, new { @class = "control-label transaction-label" })*@
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        <select data-placeholder="Select the Consumer's Name:" id="consumer-name" class="select-box">
+                            <option value="">Select the Consumer's Name</option>
+                            <option value="John Smith">John Smith</option>
+                            <option value="Tyler Poole">Tyler Poole</option>
+                            <option value="Trevor Ingram">Trevor Ingram</option>
+                            <option value="Steve Moore">Steve Moore</option>
+                            <option value="Scott Kropf">Scott Kropf</option>
+                            <option value="Jane Doe">Jane Doe</option>
+                        </select>
+                    </div>
                 </div>
+            </div>
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <label for="item-provided" class="control-label transaction-label">Class:</label>
+                @*@Html.LabelFor(m => m.product, new { @class = "control-label transaction-label" })*@
+            </div>
+            <div class="col-lg-9 col-md-9 col-xs-12">
+                <select data-placeholder="Select the Product you provided" id="item-provided" class="select-box">
+                    <option value="">Select the product you provided</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Potato">Potato</option>
+                    <option value="Appliance">Appliance</option>
+                    <option value="Popuri">Popuri</option>
+                    <option value="Powdered Sugar">Powdered Sugar</option>
+                </select>
             </div>
         </div>
     </div>
-        <div class="col-md-6 col-md-offset-3">
-            <div class="form-group">
-                <label class="sr-only" for="notesInput">Notes</label>
-                <input type="text" class="form-control" id="notesInput" placeholder="Notes" style="min-height:30px!important;">
+            
+    <div class="row">
+        <div class="form-group">
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <label for="notesInput" class="control-label transaction-label">Notes:</label>
+                @*@Html.LabelFor(m => m.Notes, new { @class = "control-label transaction-label" })*@
+            </div>
+            <div class="col-lg-9 col-md-9 col-xs-12">
+                <textarea id="notesInput" rows="4" cols="40" name="Notes" class="form-control"></textarea>
                 @* Use the placeholder for now, so that the application still compiles
-                    @Html.LabelFor(m => m.Notes, new { @class = "sr-only" })
-                    @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes or Comments" })
-                    @Html.ValidationMessageFor(m => m.Notes)
+                @Html.LabelFor(m => m.Notes, new { @class = "sr-only" })
+                @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes or Comments" })
+                @Html.ValidationMessageFor(m => m.Notes)
                 *@
             </div>
         </div>
-    <div class="col-md-6 col-md-offset-3" style="text-align:center;">
-        <input type="submit" value="Submit" />
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center">
+                <input type="submit" value="Submit" />
+            </div>
+        </div>
+    </div>
+        }
     </div>
 </div>
