@@ -116,13 +116,17 @@ namespace Copiosis_Application.Models
     
     public class AddItemModel
     {
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 
         [Display(Name = "Class")]
+        [Required(ErrorMessage = "Class is required")]
         public string ItemClass { get; set; }
 
+        [Required(ErrorMessage = "Gateway is required")]
         public int Gateway { get; set; }
 
         //This is needed for the get portion of AddItem

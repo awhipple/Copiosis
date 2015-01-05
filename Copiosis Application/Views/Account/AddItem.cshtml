@@ -29,6 +29,7 @@
                 </div>
                 <div class="col-lg-9 col-md-9 col-xs-12">
                     @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Item Name" })
+                    @Html.ValidationMessageFor(m => m.Name)
                 </div>
             </div>
         </div>
