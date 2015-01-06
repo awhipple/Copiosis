@@ -132,9 +132,43 @@ namespace Copiosis_Application.Models
 
     public class TransactionOverviewModel
     {
-        public List<transaction> pendingUser = new List<transaction>();
-        //public Enumerable<transaction> pendingUser = new List<transaction>();
-        public List<transaction> pendingOther = new List<transaction>();
-        public List<transaction> completed = new List<transaction>();
+        public List<TransactionModel> pendingUser { get; set; }
+        public List<TransactionModel> pendingOther { get; set; }
+        public List<TransactionModel> completed = new List<TransactionModel>();
+    }
+
+    public class TransactionModel
+    {
+        public Guid transactionID;
+        public string date;
+        public string status;
+        public DateTime dateAdded;
+        public int createdBy;
+        public DateTime dateClosed;
+        public double nbr;
+        public int? satisfaction;
+
+        public int providerID;
+        public string providerNotes;
+        public string providerFirstName;
+        public string providerLastName;
+        public string providerUsername;
+        public string providerEmail;
+
+        public int receiverID;
+        public string receiverNotes;
+        public string receiverFirstName;
+        public string receiverLastName;
+        public string receiverUsername;
+        public string receiverEmail;
+
+        public int productID;
+        public string productDesc;
+        public string productName;
+        public int productGateway;
+        public int productItemClass;
+        public DateTime productCreatedDate;
+        public DateTime productDeletedDate;
+        public Guid productGuid;
     }
 }
