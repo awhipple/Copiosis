@@ -159,7 +159,7 @@ namespace Copiosis_Application.Controllers
                 int userId = WebSecurity.CurrentUserId;
 
                 model.pendingUser = db.transactions.Where(
-                    a =>
+                    a => 
                     (a.providerID == userId || a.receiverID == userId) &&
                     a.dateClosed == null &&
                     a.createdBy != userId
@@ -192,9 +192,59 @@ namespace Copiosis_Application.Controllers
 
         // GET: /Account/Create
         // Create a new transaction whether producer or consumer. Just returns the view.
-        public ActionResult Create()
+        public ActionResult Create(string type)
         {
-            return View();
+            if(type == null)
+            {
+                throw new ArgumentException("Type of transaction must be specified");
+            }
+
+            string typelower = type.ToLower();
+            NewTransactionModel model = new NewTransactionModel();
+            if(type == "consumer")
+            {
+                model.Producer = false;
+                List<string> producers = new List<string>();
+
+                using(var db = new CopiosisEntities())
+                {
+                    var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1).Select(u => u.user).ToList();
+                    foreach(var pro in usersWithProducts)
+                    {
+                        producers.Add(string.Format("{0} {1} | {2} | {3}", pro.firstName, pro.lastName, pro.username, pro.email));
+                    }
+                }
+                model.Producers = producers;
+            }
+            else if(type == "producer")
+            {
+                model.Producer = true;
+                
+                var producerItems = CurrenUserItems();
+                List<string> products = new List<string>();
+                foreach (var item in producerItems)
+                {
+                    products.Add(item.ProductName);
+                }
+                model.Products = products;
+                
+                List<string> consumers = new List<string>();
+                using(var db = new CopiosisEntities())
+                {
+                    var c = db.users.Where(u => u.status == 1 && u.userID != WebSecurity.CurrentUserId)
+                        .Select(s => new { FirstName = s.firstName, LastName = s.lastName, Username = s.username, Email = s.email}).ToList();
+                    foreach(var con in c)
+                    {
+                        consumers.Add(string.Format("{0} {1} | {2} | {3}", con.FirstName, con.LastName, con.Username, con.Email));
+                    }
+                }
+                model.Consumers = consumers;
+            }
+            else
+            {
+                //throw some error or default to something?
+            }
+            return View(model);
         }
 
         // POST: /Account/Create
