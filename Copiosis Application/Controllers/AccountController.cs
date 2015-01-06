@@ -273,26 +273,6 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
-        private List<ItemsModel> initialProducerItems(int currentID)
-        {
-            List<ItemsModel> model = new List<ItemsModel>();
-
-            using (var db = new CopiosisEntities())
-            {
-                var items = db.products.Where(a => a.ownerID == currentID && a.deletedDate == null).ToList();
-                foreach (var value in items)
-                {
-                    ItemsModel item = new ItemsModel();
-                    item.ProductName = value.name;
-                    item.Description = value.description;
-                    item.Gateway = value.gateway;
-                    item.ItemClass = value.itemClass1.name;
-                    item.ItemGuid = value.guid;
-                    model.Add(item);
-                }
-            }
-            return model;
-        }
         // GET: /Account/Create
         // Create a new transaction whether producer or consumer. Just returns the view.
         public ActionResult Create(string type)
@@ -727,6 +707,28 @@ namespace Copiosis_Application.Controllers
         private float CalculateNBR(int satisfactionRating, int productId, int providerId)
         {
             throw new NotImplementedException();
+        }
+
+        //Used to generate the initial list of producer items so that Razor doesn't complain about the lack of objects in NewTransaction.Products.
+        private List<ItemsModel> initialProducerItems(int currentID)
+        {
+            List<ItemsModel> model = new List<ItemsModel>();
+
+            using (var db = new CopiosisEntities())
+            {
+                var items = db.products.Where(a => a.ownerID == currentID && a.deletedDate == null).ToList();
+                foreach (var value in items)
+                {
+                    ItemsModel item = new ItemsModel();
+                    item.ProductName = value.name;
+                    item.Description = value.description;
+                    item.Gateway = value.gateway;
+                    item.ItemClass = value.itemClass1.name;
+                    item.ItemGuid = value.guid;
+                    model.Add(item);
+                }
+            }
+            return model;
         }
 
         #region Helpers
