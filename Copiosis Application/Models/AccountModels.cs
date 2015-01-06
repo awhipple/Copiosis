@@ -187,8 +187,10 @@ namespace Copiosis_Application.Models
         [Display(Name = "Consumer:")]
         public string Consumer { get; set; }
 
-        [Display(Name = "Product Provided:")]
+        [Display(Name = "Product:")]
         public string ProductProvided { get; set; }
+
+        [Display(Name = "Notes:")]
         public string Notes { get; set; }
     }
 }

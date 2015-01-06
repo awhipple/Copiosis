@@ -36,16 +36,10 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-lg-3 col-md-3 col-xs-12">
-                        <label for="notesInput" class="control-label transaction-label">Notes:</label>
-                        @*@Html.LabelFor(m => m.Notes, new { @class = "control-label transaction-label" })*@
+                        @Html.LabelFor(m => m.Notes, new { @class = "control-label transaction-label" })
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
-                        <textarea id="notesInput" rows="4" cols="40" name="Notes" class="form-control"></textarea>
-                        @* Use the placeholder for now, so that the application still compiles
-                            @Html.LabelFor(m => m.Notes, new { @class = "sr-only" })
-                            @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes or Comments" })
-                            @Html.ValidationMessageFor(m => m.Notes)
-                        *@
+                        @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes", @rows= "4", @cols="40", @id="notesInput"})
                     </div>
                 </div>
             </div>
@@ -60,7 +54,56 @@
             @*If user is not using producer form*@
             else
             {
-                
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            @Html.LabelFor(m => m.Producers, new { @class = "control-label transaction-label" })
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-xs-12">
+                            @Html.DropDownListFor(m => m.Producers, new SelectList(Model.Producers), new { @id = "class-dropdown", @class = "select-box", @placeholder = "Select the Consumer's Name" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            @Html.LabelFor(m => m.ProductProvided, new { @class = "control-label transaction-label" })
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-xs-12">
+                            @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "class-dropdown", @class = "select-box", @placeholder = "Select the Product you provided" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            @Html.LabelFor(m => m.Notes, new { @class = "control-label transaction-label" })
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-xs-12">
+                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "notesInput" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            @Html.LabelFor(m => m.Notes, new { @class = "control-label transaction-label" })
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-xs-12">
+                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "notesInput" })
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center">
+                            <input type="submit" value="Submit" />
+                        </div>
+                    </div>
+                </div>
             }
         }
     </div>
