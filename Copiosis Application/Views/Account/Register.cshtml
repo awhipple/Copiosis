@@ -43,12 +43,14 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Password, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", type="password" })
+                    @Html.ValidationMessageFor(m => m.Password)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.ConfirmPassword, new { @class = "sr-only" })
                     @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", type="password" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-3">

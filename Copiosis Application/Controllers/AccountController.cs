@@ -162,21 +162,104 @@ namespace Copiosis_Application.Controllers
                     a => 
                     (a.providerID == userId || a.receiverID == userId) &&
                     a.dateClosed == null &&
-                    a.createdBy != userId
-                ).ToList();
+                    a.createdBy != userId 
+                ).Select(t => new TransactionModel {
+                    transactionID   = t.transactionID,
+                    date            = t.date.ToString(),
+                    status          = t.status,
+                    dateAdded       = t.dateAdded,
+                    createdBy       = t.createdBy,
+                    dateClosed      = t.dateClosed ?? DateTime.MinValue,
+                    nbr             = t.nbr??0.0,
+                    satisfaction    = (int)t.satisfaction,
+
+                    providerID          = t.providerID,
+                    //providerNotes       = t.providerNotes,
+                    providerFirstName   = t.user1.firstName,
+                    providerLastName    = t.user1.lastName,
+                    providerUsername    = t.user1.username,
+                    //providerEmail       = t.user1.email,
+
+                    receiverID          = t.receiverID,
+                    //receiverNotes       = t.receiverNotes,
+                    receiverFirstName   = t.user2.firstName,
+                    receiverLastName    = t.user2.lastName,
+                    receiverUsername    = t.user2.username,
+                    //receiverEmail       = t.user2.email,
+
+                    productID           = t.productID,
+                    productDesc         = t.productDesc,
+                    productName         = t.product.name,
+                    //productGateway      = t.product.gateway,
+                    //productItemClass    = t.product.itemClass,
+                    //productCreatedDate  = t.product.createdDate,
+                    //productDeletedDate  = t.product.deletedDate??DateTime.MinValue,
+                    productGuid         = t.product.guid
+                }).ToList();
 
                 model.pendingOther = db.transactions.Where(
                     a =>
                     (a.providerID == userId || a.receiverID == userId) &&
                     a.dateClosed == null &&
-                    a.createdBy == userId
-                ).ToList();
+                    userId == a.createdBy 
+                ).Select(t => new TransactionModel
+                {
+                    transactionID       = t.transactionID,
+                    date                = t.date.ToString(),
+                    status              = t.status,
+                    dateAdded           = t.dateAdded,
+                    createdBy           = t.createdBy,
+                    dateClosed          = t.dateClosed ?? DateTime.MinValue,
+                    nbr                 = t.nbr ?? 0.0,
+                    satisfaction        = t.satisfaction,
+
+                    providerID          = t.providerID,
+                    providerFirstName   = t.user1.firstName,
+                    providerLastName    = t.user1.lastName,
+                    providerUsername    = t.user1.username,
+
+                    receiverID          = t.receiverID,
+                    receiverFirstName   = t.user2.firstName,
+                    receiverLastName    = t.user2.lastName,
+                    receiverUsername    = t.user2.username,
+
+                    productID           = t.productID,
+                    productDesc         = t.productDesc,
+                    productName         = t.product.name,
+                    productGuid         = t.product.guid
+                }).ToList();
+
 
                 model.completed = db.transactions.Where(
                     a =>
                     (a.providerID == userId || a.receiverID == userId) &&
                     a.dateClosed != null
-                ).ToList();
+                ).Select(t => new TransactionModel
+                {
+                    transactionID       = t.transactionID,
+                    date                = t.date.ToString(),
+                    status              = t.status,
+                    dateAdded           = t.dateAdded,
+                    createdBy           = t.createdBy,
+                    dateClosed          = t.dateClosed ?? DateTime.MinValue,
+                    nbr                 = t.nbr ?? 0.0,
+                    satisfaction        = (int)t.satisfaction,
+
+                    providerID          = t.providerID,
+                    providerFirstName   = t.user1.firstName,
+                    providerLastName    = t.user1.lastName,
+                    providerUsername    = t.user1.username,
+
+                    receiverID          = t.receiverID,
+                    receiverFirstName   = t.user2.firstName,
+                    receiverLastName    = t.user2.lastName,
+                    receiverUsername    = t.user2.username,
+
+                    productID           = t.productID,
+                    productDesc         = t.productDesc,
+                    productName         = t.product.name,
+                    productGuid         = t.product.guid
+                }).ToList();
 
             }
 

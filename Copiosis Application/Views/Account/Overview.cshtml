@@ -20,12 +20,12 @@
                         @foreach (var item in Model.pendingUser)
                         {
                         <tr>
+                            <td>@item.productName</td>
+                            <td>@item.productDesc</td>
                             <td>@item.date</td>
-                            <td>two</td>
-                            <td>three</td>
-                            <td>four</td>
-                            <td>five</td>
-                            <td>six</td>
+                            <td>@item.dateClosed</td>
+                            <td>@item.receiverFirstName @item.receiverLastName</td>
+                            <td>@item.nbr</td>
                         </tr>
                         }
                     </tbody> 
