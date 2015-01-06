@@ -273,6 +273,26 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
+        private List<ItemsModel> initialProducerItems(int currentID)
+        {
+            List<ItemsModel> model = new List<ItemsModel>();
+
+            using (var db = new CopiosisEntities())
+            {
+                var items = db.products.Where(a => a.ownerID == currentID && a.deletedDate == null).ToList();
+                foreach (var value in items)
+                {
+                    ItemsModel item = new ItemsModel();
+                    item.ProductName = value.name;
+                    item.Description = value.description;
+                    item.Gateway = value.gateway;
+                    item.ItemClass = value.itemClass1.name;
+                    item.ItemGuid = value.guid;
+                    model.Add(item);
+                }
+            }
+            return model;
+        }
         // GET: /Account/Create
         // Create a new transaction whether producer or consumer. Just returns the view.
         public ActionResult Create(string type)
@@ -288,16 +308,27 @@ namespace Copiosis_Application.Controllers
             {
                 model.Producer = false;
                 List<string> producers = new List<string>();
+                List<string> products = new List<string>();
 
                 using(var db = new CopiosisEntities())
                 {
-                    var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1).Select(u => u.user).ToList();
+                    var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1).Select(u => u.user).Distinct().ToList();
+
                     foreach(var pro in usersWithProducts)
                     {
                         producers.Add(string.Format("{0} {1} | {2} | {3}", pro.firstName, pro.lastName, pro.username, pro.email));
                     }
+
+                    var initialProducer = usersWithProducts.First();
+                    var initialItemList = initialProducerItems(initialProducer.userID);
+                    foreach (var item in initialItemList)
+                    {
+                        products.Add(item.ProductName);
+                    }
                 }
+                model.Products = products;
                 model.Producers = producers;
+                
             }
             else if(type == "producer")
             {
@@ -427,6 +458,29 @@ namespace Copiosis_Application.Controllers
             }
 
             return Json(new { success = result, defaultGateway = result ? defaultGateway : null }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult ProducerItems(string name)
+        {
+            List<string> products = new List<string>();
+            bool result = true;
+            using (var db = new CopiosisEntities())
+            {
+                int? producerID = db.users.Where(u => u.username == name).Select(uID => uID.userID).FirstOrDefault();
+                if(producerID == null)
+                {
+                    result = false;
+                }
+                
+                products = db.products.Where(po => po.ownerID == producerID).Select(p => p.name).ToList();
+                if (products == null)
+                {
+                    result = false;
+                }
+            }
+
+            return Json(new { success = result, products = result ? products : null }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: /Account/EditItem
