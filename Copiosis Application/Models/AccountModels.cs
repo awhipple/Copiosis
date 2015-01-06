@@ -116,25 +116,28 @@ namespace Copiosis_Application.Models
     
     public class AddItemModel
     {
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 
         [Display(Name = "Class")]
+        [Required(ErrorMessage = "Class is required")]
         public string ItemClass { get; set; }
 
+        [Required(ErrorMessage = "Gateway is required")]
         public int Gateway { get; set; }
 
         //This is needed for the get portion of AddItem
         public Dictionary<string, int> ItemClassTemplates { get; set; }
     }
 
-
     public class TransactionOverviewModel
     {
         public List<TransactionModel> pendingUser { get; set; }
         public List<TransactionModel> pendingOther { get; set; }
-        public List<TransactionModel> completed = new List<TransactionModel>();
+        public List<TransactionModel> completed { get; set; }
     }
 
     public class TransactionModel
@@ -170,5 +173,18 @@ namespace Copiosis_Application.Models
         public DateTime productCreatedDate;
         public DateTime productDeletedDate;
         public Guid productGuid;
+    }
+
+    public class NewTransactionModel
+    {
+        /*GET*/
+        public bool Producer { get; set; }
+        public List<string> Consumers { get; set; }
+        public List<string> Producers { get; set; }
+        public List<string> Products { get; set; }
+        /*POST*/
+        public string Consumer { get; set; }
+        public string ProductProvided { get; set; }
+        public string Notes { get; set; }
     }
 }
