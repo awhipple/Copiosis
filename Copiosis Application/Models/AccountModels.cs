@@ -142,49 +142,62 @@ namespace Copiosis_Application.Models
 
     public class TransactionModel
     {
-        public Guid transactionID;
-        public string date;
-        public string status;
-        public DateTime dateAdded;
-        public int createdBy;
-        public DateTime dateClosed;
-        public double nbr;
-        public int? satisfaction;
+        public bool newSinceLogin { get; set; }
+        public Guid transactionID { get; set; }
+        public string date { get; set; }
+        public string status { get; set; }
+        public DateTime dateAdded { get; set; }
+        public int createdBy { get; set; }
+        public DateTime dateClosed { get; set; }
+        public double nbr { get; set; }
+        public int? satisfaction { get; set; }
 
-        public int providerID;
-        public string providerNotes;
-        public string providerFirstName;
-        public string providerLastName;
-        public string providerUsername;
-        public string providerEmail;
+        public int providerID { get; set; }
+        public string providerNotes { get; set; }
+        public string providerFirstName { get; set; }
+        public string providerLastName { get; set; }
+        public string providerUsername { get; set; }
+        public string providerEmail { get; set; }
 
-        public int receiverID;
-        public string receiverNotes;
-        public string receiverFirstName;
-        public string receiverLastName;
-        public string receiverUsername;
-        public string receiverEmail;
+        public int receiverID { get; set; }
+        public string receiverNotes { get; set; }
+        public string receiverFirstName { get; set; }
+        public string receiverLastName { get; set; }
+        public string receiverUsername { get; set; }
+        public string receiverEmail { get; set; }
 
-        public int productID;
-        public string productDesc;
-        public string productName;
-        public int productGateway;
-        public int productItemClass;
-        public DateTime productCreatedDate;
-        public DateTime productDeletedDate;
-        public Guid productGuid;
+        public int productID { get; set; }
+        public string productDesc { get; set; }
+        public string productName { get; set; }
+        public int productGateway { get; set; }
+        public int productItemClass { get; set; }
+        public DateTime productCreatedDate { get; set; }
+        public DateTime productDeletedDate { get; set; }
+        public Guid productGuid { get; set; }
     }
 
     public class NewTransactionModel
     {
         /*GET*/
-        public bool Producer { get; set; }
+        public bool IsProducer { get; set; }
         public List<string> Consumers { get; set; }
         public List<string> Producers { get; set; }
         public List<string> Products { get; set; }
         /*POST*/
+
+        [Display(Name = "Consumer:")]
         public string Consumer { get; set; }
+
+        [Display(Name = "Producer:")]
+        public string Producer { get; set; }
+
+        [Display(Name = "Product:")]
         public string ProductProvided { get; set; }
+
+        [Display(Name = "Notes:")]
         public string Notes { get; set; }
+
+        [Display(Name = "Satisfaction Rating:")]
+        public int SatisfactionRating { get; set; }
     }
 }
