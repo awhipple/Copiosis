@@ -378,6 +378,7 @@ namespace Copiosis_Application.Controllers
                     }
 
                     transaction consumerTran = new transaction();
+                    consumerTran.transactionID = Guid.NewGuid();
                     consumerTran.createdBy = WebSecurity.CurrentUserId;
                     consumerTran.dateAdded = DateTime.Now;
                     consumerTran.providerID = producer.userID;
@@ -410,6 +411,7 @@ namespace Copiosis_Application.Controllers
                     }
 
                     transaction producerTran = new transaction();
+                    producerTran.transactionID = Guid.NewGuid();
                     producerTran.createdBy = WebSecurity.CurrentUserId;
                     producerTran.dateAdded = DateTime.Now;
                     producerTran.providerID = WebSecurity.CurrentUserId;
