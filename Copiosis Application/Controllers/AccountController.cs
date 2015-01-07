@@ -298,16 +298,19 @@ namespace Copiosis_Application.Controllers
                 {
                     var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1).Select(u => u.user).Distinct().ToList();
 
-                    foreach(var pro in usersWithProducts)
+                    if (usersWithProducts.Count > 0)
                     {
-                        producers.Add(string.Format("{0} {1} | {2} | {3}", pro.firstName, pro.lastName, pro.username, pro.email));
-                    }
+                        foreach (var pro in usersWithProducts)
+                        {
+                            producers.Add(string.Format("{0} {1} | {2} | {3}", pro.firstName, pro.lastName, pro.username, pro.email));
+                        }
 
-                    var initialProducer = usersWithProducts.First();
-                    var initialItemList = initialProducerItems(initialProducer.userID);
-                    foreach (var item in initialItemList)
-                    {
-                        products.Add(item.ProductName);
+                        var initialProducer = usersWithProducts.First();
+                        var initialItemList = InitialProducerItems(initialProducer.userID);
+                        foreach (var item in initialItemList)
+                        {
+                            products.Add(item.ProductName);
+                        }
                     }
                 }
                 model.Products = products;
@@ -714,7 +717,7 @@ namespace Copiosis_Application.Controllers
         }
 
         //Used to generate the initial list of producer items so that Razor doesn't complain about the lack of objects in NewTransaction.Products.
-        private List<ItemsModel> initialProducerItems(int currentID)
+        private List<ItemsModel> InitialProducerItems(int currentID)
         {
             List<ItemsModel> model = new List<ItemsModel>();
 
