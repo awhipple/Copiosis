@@ -706,8 +706,49 @@ namespace Copiosis_Application.Controllers
         /// <returns>A float for the NBR calculated</returns>
         private float CalculateNBR(int satisfactionRating, int productId, int providerId)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            using (var db = new CopiosisEntities())
+            {
+                //
+                var product = db.products.Where(a => a.productID == productId).FirstOrDefault();
+                var provider = db.users.Where(a => a.userID == providerId).FirstOrDefault();
+                var item = db.itemClasses.Where(a => a.classID == product.itemClass).FirstOrDefault();
+
+                float Cpdb = (float)item.cPdb;
+                float Ccb = (float)item.cCb;
+                float Ceb = (float)item.cEb;
+
+                int D = (int)item.d;
+                int P0 = (int)item.pO;
+
+                float A = (float)item.a;
+                int Aprime = (int)item.aPrime;
+                int Amax = (int)item.aMax;
+
+                float M1 = (float)item.m1;
+                float M2 = (float)item.m2;
+                float M3 = (float)item.m3;
+                float M4 = (float)item.m4;
+                float M5 = (float)item.m5;
+
+                int S = (int)item.s;
+                int Se = (int)item.sE;
+                int Sh = (int)item.sH;
+
+                float nbr = Cpdb * (D / Aprime - A / Amax) + (Ccb * (satisfactionRating / M1 + P0 / M2) + Ceb * (S / M3 + Se / M4 + Sh / M5));
+                return nbr;
+            }
         }
+        /// <summary>
+        /// A temporary ActionResult used to test different functions
+        /*
+        [AllowAnonymous]
+        public ActionResult Dummy()
+        {
+            float nbr = CalculateNBR(2, 1001, 1);
+            return View();
+        }
+        */
 
         //Used to generate the initial list of producer items so that Razor doesn't complain about the lack of objects in NewTransaction.Products.
         private List<ItemsModel> initialProducerItems(int currentID)
