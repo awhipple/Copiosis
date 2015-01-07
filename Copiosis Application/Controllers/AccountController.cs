@@ -48,6 +48,7 @@ namespace Copiosis_Application.Controllers
                 using (var db = new CopiosisEntities())
                 {
                     var x = db.users.Where(u => u.username == model.UserName).First();
+                    x.prevLastLogin = x.lastLogin.HasValue ? x.lastLogin.Value : (DateTime?)null;
                     x.lastLogin = DateTime.Now;
                     db.SaveChanges();
                 }
@@ -157,6 +158,7 @@ namespace Copiosis_Application.Controllers
             using (var db = new CopiosisEntities())
             {
                 int userId = WebSecurity.CurrentUserId;
+                DateTime? userLastLogin = db.users.Where(u => u.userID == userId).Select(u => u.prevLastLogin).FirstOrDefault();
 
                 model.pendingUser = db.transactions.Where(
                     a => 
@@ -164,6 +166,7 @@ namespace Copiosis_Application.Controllers
                     a.dateClosed == null &&
                     a.createdBy != userId 
                 ).Select(t => new TransactionModel {
+                    newSinceLogin   = userLastLogin.HasValue ? (userLastLogin.Value < t.dateAdded) : false,
                     transactionID   = t.transactionID,
                     date            = t.date.ToString(),
                     status          = t.status,
@@ -204,6 +207,7 @@ namespace Copiosis_Application.Controllers
                     userId == a.createdBy 
                 ).Select(t => new TransactionModel
                 {
+                    newSinceLogin       = userLastLogin.HasValue ? (userLastLogin.Value < t.dateAdded) : false,
                     transactionID       = t.transactionID,
                     date                = t.date.ToString(),
                     status              = t.status,
@@ -279,14 +283,14 @@ namespace Copiosis_Application.Controllers
         {
             if(type == null)
             {
-                throw new ArgumentException("Type of transaction must be specified");
+                throw new ArgumentNullException("Type of transaction must be specified");
             }
 
             string typelower = type.ToLower();
             NewTransactionModel model = new NewTransactionModel();
-            if(type == "consumer")
+            if(typelower == "consumer")
             {
-                model.Producer = false;
+                model.IsProducer = false;
                 List<string> producers = new List<string>();
                 List<string> products = new List<string>();
 
@@ -294,25 +298,28 @@ namespace Copiosis_Application.Controllers
                 {
                     var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1).Select(u => u.user).Distinct().ToList();
 
-                    foreach(var pro in usersWithProducts)
+                    if (usersWithProducts.Count > 0)
                     {
-                        producers.Add(string.Format("{0} {1} | {2} | {3}", pro.firstName, pro.lastName, pro.username, pro.email));
-                    }
+                        foreach (var pro in usersWithProducts)
+                        {
+                            producers.Add(string.Format("{0} {1} | {2} | {3}", pro.firstName, pro.lastName, pro.username, pro.email));
+                        }
 
-                    var initialProducer = usersWithProducts.First();
-                    var initialItemList = initialProducerItems(initialProducer.userID);
-                    foreach (var item in initialItemList)
-                    {
-                        products.Add(item.ProductName);
+                        var initialProducer = usersWithProducts.First();
+                        var initialItemList = FetchInitialProducerItems(initialProducer.userID);
+                        foreach (var item in initialItemList)
+                        {
+                            products.Add(item.ProductName);
+                        }
                     }
                 }
                 model.Products = products;
                 model.Producers = producers;
                 
             }
-            else if(type == "producer")
+            else if(typelower == "producer")
             {
-                model.Producer = true;
+                model.IsProducer = true;
                 
                 var producerItems = CurrenUserItems();
                 List<string> products = new List<string>();
@@ -336,7 +343,7 @@ namespace Copiosis_Application.Controllers
             }
             else
             {
-                //throw some error or default to something?
+                throw new ArgumentException("Transaction type not recognized");
             }
             return View(model);
         }
@@ -344,9 +351,85 @@ namespace Copiosis_Application.Controllers
         // POST: /Account/Create
         // Create a new transaction. Needs to take a model that matchs the form.
         [HttpPost]
-        public ActionResult Create(int foo)
+        public ActionResult Create(string type, NewTransactionModel model)
         {
-            return View();
+            if (type == null)
+            {
+                throw new ArgumentNullException("Type of transaction must be specified");
+            }
+
+            string typeLower = type.ToLower();
+            if(type == "consumer")
+            {
+                var x = model.Producer.Split('|');
+                string producerUN = x[1];
+                using(var db = new CopiosisEntities())
+                {
+                    var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
+                    if (producer == null)
+                    {
+                        throw new ArgumentException("Producer not found");
+                    }
+
+                    var product = db.products.Where(p => p.ownerID == producer.userID && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
+                    if(product == null)
+                    {
+                        throw new ArgumentException("Product not found");
+                    }
+
+                    transaction consumerTran = new transaction();
+                    consumerTran.transactionID = Guid.NewGuid();
+                    consumerTran.createdBy = WebSecurity.CurrentUserId;
+                    consumerTran.dateAdded = DateTime.Now;
+                    consumerTran.providerID = producer.userID;
+                    consumerTran.productID = product.productID;
+                    consumerTran.productDesc = product.description;
+                    consumerTran.receiverID = WebSecurity.CurrentUserId;
+                    consumerTran.status = "PENDING";
+                    consumerTran.receiverNotes = model.Notes;
+
+                    db.transactions.Add(consumerTran);
+                    db.SaveChanges();
+                }
+            }
+            else if(type == "producer")
+            {
+                var x = model.Consumer.Split('|');
+                string consumerUN = x[1].Trim();
+                using(var db = new CopiosisEntities())
+                {
+                    var consumer = db.users.Where(u => u.username == consumerUN && u.status == 1).FirstOrDefault();
+                    if(consumer == null)
+                    {
+                        throw new ArgumentException("Consumer not found");
+                    }
+
+                    var product = db.products.Where(p => p.ownerID == WebSecurity.CurrentUserId && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
+                    if(product == null)
+                    {
+                        throw new ArgumentException("Product not found");
+                    }
+
+                    transaction producerTran = new transaction();
+                    producerTran.transactionID = Guid.NewGuid();
+                    producerTran.createdBy = WebSecurity.CurrentUserId;
+                    producerTran.dateAdded = DateTime.Now;
+                    producerTran.providerID = WebSecurity.CurrentUserId;
+                    producerTran.productID = product.productID;
+                    producerTran.productDesc = product.description;
+                    producerTran.receiverID = consumer.userID;
+                    producerTran.status = "PENDING";
+                    producerTran.providerNotes = model.Notes;
+
+                    db.transactions.Add(producerTran);
+                    db.SaveChanges();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Transaction type not recognized");
+            }
+            return RedirectToAction("Overview");
         }
 
         // POST: /Account/Confirm 
@@ -441,7 +524,7 @@ namespace Copiosis_Application.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProducerItems(string name)
+        public ActionResult FetchProducerItems(string name)
         {
             List<string> products = new List<string>();
             bool result = true;
@@ -453,7 +536,7 @@ namespace Copiosis_Application.Controllers
                     result = false;
                 }
                 
-                products = db.products.Where(po => po.ownerID == producerID).Select(p => p.name).ToList();
+                products = db.products.Where(po => po.ownerID == producerID).Select(p => p.name).Distinct().ToList();
                 if (products == null)
                 {
                     result = false;
@@ -751,7 +834,7 @@ namespace Copiosis_Application.Controllers
         */
 
         //Used to generate the initial list of producer items so that Razor doesn't complain about the lack of objects in NewTransaction.Products.
-        private List<ItemsModel> initialProducerItems(int currentID)
+        private List<ItemsModel> FetchInitialProducerItems(int currentID)
         {
             List<ItemsModel> model = new List<ItemsModel>();
 

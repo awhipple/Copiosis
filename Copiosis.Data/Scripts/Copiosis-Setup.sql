@@ -25,6 +25,7 @@ lastName varchar(55),
 type int NOT NULL,	
 nbr float,
 lastLogin datetime,
+prevLastLogin datetime,
 locationID int NOT NULL FOREIGN KEY REFERENCES location(locationID)
 );
 
