@@ -48,6 +48,7 @@ namespace Copiosis_Application.Controllers
                 using (var db = new CopiosisEntities())
                 {
                     var x = db.users.Where(u => u.username == model.UserName).First();
+                    x.prevLastLogin = x.lastLogin.HasValue ? x.lastLogin.Value : (DateTime?)null;
                     x.lastLogin = DateTime.Now;
                     db.SaveChanges();
                 }
@@ -157,6 +158,7 @@ namespace Copiosis_Application.Controllers
             using (var db = new CopiosisEntities())
             {
                 int userId = WebSecurity.CurrentUserId;
+                DateTime? userLastLogin = db.users.Where(u => u.userID == userId).Select(u => u.prevLastLogin).FirstOrDefault();
 
                 model.pendingUser = db.transactions.Where(
                     a => 
@@ -164,6 +166,7 @@ namespace Copiosis_Application.Controllers
                     a.dateClosed == null &&
                     a.createdBy != userId 
                 ).Select(t => new TransactionModel {
+                    newSinceLogin   = userLastLogin.HasValue ? (userLastLogin.Value < t.dateAdded) : false,
                     transactionID   = t.transactionID,
                     date            = t.date.ToString(),
                     status          = t.status,
@@ -204,6 +207,7 @@ namespace Copiosis_Application.Controllers
                     userId == a.createdBy 
                 ).Select(t => new TransactionModel
                 {
+                    newSinceLogin       = userLastLogin.HasValue ? (userLastLogin.Value < t.dateAdded) : false,
                     transactionID       = t.transactionID,
                     date                = t.date.ToString(),
                     status              = t.status,
