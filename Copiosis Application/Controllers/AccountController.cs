@@ -789,13 +789,20 @@ namespace Copiosis_Application.Controllers
         /// <returns>A float for the NBR calculated</returns>
         private float CalculateNBR(int satisfactionRating, int productId, int providerId)
         {
-            //throw new NotImplementedException();
             using (var db = new CopiosisEntities())
             {
                 //
-                var product = db.products.Where(a => a.productID == productId).FirstOrDefault();
-                var provider = db.users.Where(a => a.userID == providerId).FirstOrDefault();
+                var product = db.products.Where(a => a.productID == productId && a.ownerID == providerId).FirstOrDefault();
+                if(product == null)
+                {
+                    throw new ArgumentException("Product not found for this provider");
+                }
+
                 var item = db.itemClasses.Where(a => a.classID == product.itemClass).FirstOrDefault();
+                if(item == null)
+                {
+                    throw new ArgumentException("Item class not found for this product");
+                }
 
                 float Cpdb = (float)item.cPdb;
                 float Ccb = (float)item.cCb;
@@ -828,7 +835,7 @@ namespace Copiosis_Application.Controllers
         [AllowAnonymous]
         public ActionResult Dummy()
         {
-            float nbr = CalculateNBR(2, 1001, 1);
+            float nbr = CalculateNBR(2, 9, 2);
             return View();
         }
         */
