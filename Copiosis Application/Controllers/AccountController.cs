@@ -343,7 +343,7 @@ namespace Copiosis_Application.Controllers
             }
             else
             {
-                //throw some error or default to something?
+                throw new ArgumentException("Transaction type not recognized");
             }
             return View(model);
         }
