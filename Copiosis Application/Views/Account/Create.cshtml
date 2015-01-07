@@ -123,14 +123,21 @@
                 type: "get",
                 data: { name: currentChoice },
                 success: function (result) {
-                    //For reach result we get, store a string in our temp array of what we need the html to look like.
-                    $.each(result.products, function (idx, str) {
-                        temp.push('<option value="' + str + '">' + str + '</option>');
-                    });
-                    //Empty the current list of items
-                    $('#product-dropdown').find('option').remove();
-                    //Drop in our array of strings
-                    $('#product-dropdown').empty().append(temp.join(''));
+                    if (result) {
+                        //For reach result we get, store a string in our temp array of what we need the html to look like.
+                        $.each(result.products, function (idx, str) {
+                            temp.push('<option value="' + str + '">' + str + '</option>');
+                        });
+                        //Empty the current list of items
+                        $('#product-dropdown').find('option').remove();
+                        //Drop in our array of strings
+                        $('#product-dropdown').empty().append(temp.join(''));
+                    }
+                    else {
+                        $('#product-dropdown').find('option').remove();
+                        
+                        $('#product-dropdown').empty().append("No products made by this producer");
+                    }
                 },
                 error: function (result) {
                     console.log("Error receiving list of products owned by: " + currentChoice);

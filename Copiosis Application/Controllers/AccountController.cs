@@ -533,7 +533,7 @@ namespace Copiosis_Application.Controllers
                 int? producerID = db.users.Where(u => u.username == name).Select(uID => uID.userID).FirstOrDefault();
                 if(producerID == null)
                 {
-                    result = false;
+                    throw new ArgumentException(string.Format("No user found with name {0}", name));
                 }
                 
                 products = db.products.Where(po => po.ownerID == producerID).Select(p => p.name).Distinct().ToList();
