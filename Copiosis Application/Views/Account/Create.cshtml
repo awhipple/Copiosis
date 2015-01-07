@@ -128,7 +128,7 @@
                         temp.push('<option value="' + str + '">' + str + '</option>');
                     });
                     //Empty the current list of items
-                    $('#product-dropdown').find('option').remove().end();
+                    $('#product-dropdown').find('option').remove();
                     //Drop in our array of strings
                     $('#product-dropdown').empty().append(temp.join(''));
                 },
