@@ -179,7 +179,7 @@ namespace Copiosis_Application.Models
     public class NewTransactionModel
     {
         /*GET*/
-        public bool Producer { get; set; }
+        public bool IsProducer { get; set; }
         public List<string> Consumers { get; set; }
         public List<string> Producers { get; set; }
         public List<string> Products { get; set; }
