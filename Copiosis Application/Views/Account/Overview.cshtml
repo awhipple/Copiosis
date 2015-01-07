@@ -4,43 +4,85 @@
     <div class="row">
         <div class="col2-sm-12 col-md-12 col-lg-12">
             <h3>Pending Personal Transactions Awaiting Your Approval</h3>
-            <div class="table-responsive">
-                <table data-link="row" class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Item Type</th>
-                            <th>Service/Item Name</th>
-                            <th>Date Created</th>
-                            <th>Date Completed</th>
-                            <th>Other Party</th>
-                            <th>NBR Reward</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.pendingUser)
-                        {
-                        <tr>
-                            <td>@item.productName</td>
-                            <td>@item.productDesc</td>
-                            <td>@item.date</td>
-                            <td>@item.dateClosed</td>
-                            <td>@item.receiverFirstName @item.receiverLastName</td>
-                            <td>@item.nbr</td>
-                        </tr>
-                        }
-                    </tbody> 
-                </table>
-            </div>
+
+            @if (Model.pendingUser.Count() < 1) { 
+                <h4>No Pending Personal Transactions</h4>
+            }
+            else { 
+                <div class="table-responsive">
+                    <table data-link="row" class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Service/Item Name</th>
+                                <th>Date Created</th>
+                                <th>Other Party</th>
+                                <th>NBR Reward</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.pendingUser)
+                            {
+                                <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })' ">
+                                    <td>@item.productDesc</td>
+                                    <td>@item.dateAdded</td>
+                                    <td>@item.receiverFirstName @item.receiverLastName</td>
+                                    <td>@item.nbr</td>
+                                </tr>
+                            }
+                        </tbody> 
+                    </table>
+                </div>
+            }
         </div>
     </div>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <h3>Pending Requested Transactions Awaiting Other Parties Approval</h3>
+                @if (Model.pendingOther.Count() < 1)
+                {
+                    <h4>No Pending Requested Transactions</h4>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Service/Item Name</th>
+                                    <th>Date Created</th>
+                                    <th>Other Party</th>
+                                    <th>NBR Reward</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.pendingOther)
+                                {
+                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })' ">
+                                        <td>@item.productDesc</td>
+                                        <td>@item.dateAdded</td>
+                                        <td>@item.receiverFirstName @item.receiverLastName</td>
+                                        <td>@item.nbr</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+
+        </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <h3>Completed Transactions</h3>
+            @if (Model.completed.Count() < 1)
+            {
+                <h4>No Recently Completed Transactions</h4>
+            }
+            else { 
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Item Type</th>
                                 <th>Service/Item Name</th>
                                 <th>Date Created</th>
                                 <th>Date Completed</th>
@@ -49,53 +91,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.pendingOther)
+                            @foreach (var item in Model.completed)
                             {
-                            <tr>
-                                <td>@item.status</td>
-                                <td>two</td>
-                                <td>three</td>
-                                <td>four</td>
-                                <td>five</td>
-                                <td>six</td>
-                            </tr>
+                                <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })'">
+                                    <td>@item.productDesc</td>
+                                    <td>@item.dateAdded</td>
+                                    <td>@item.dateClosed</td>
+                                    <td>@item.providerFirstName @item.providerLastName</td>
+                                    <td>@item.nbr</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-        </div>
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-            <h3>Completed Transactions</h3>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>Item Type</th>
-                            <th>Service/Item Name</th>
-                            <th>Date Created</th>
-                            <th>Date Completed</th>
-                            <th>Other Party</th>
-                            <th>NBR Reward</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.completed)
-                        {
-                            <tr>
-                                <td>@item.status</td>
-                                <td>two</td>
-                                <td>three</td>
-                                <td>four</td>
-                                <td>five</td>
-                                <td>six</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            }
         </div>
     </div>
 </div>
