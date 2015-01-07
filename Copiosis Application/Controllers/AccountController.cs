@@ -306,7 +306,7 @@ namespace Copiosis_Application.Controllers
                         }
 
                         var initialProducer = usersWithProducts.First();
-                        var initialItemList = InitialProducerItems(initialProducer.userID);
+                        var initialItemList = FetchInitialProducerItems(initialProducer.userID);
                         foreach (var item in initialItemList)
                         {
                             products.Add(item.ProductName);
@@ -524,7 +524,7 @@ namespace Copiosis_Application.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProducerItems(string name)
+        public ActionResult FetchProducerItems(string name)
         {
             List<string> products = new List<string>();
             bool result = true;
@@ -536,7 +536,7 @@ namespace Copiosis_Application.Controllers
                     result = false;
                 }
                 
-                products = db.products.Where(po => po.ownerID == producerID).Select(p => p.name).ToList();
+                products = db.products.Where(po => po.ownerID == producerID).Select(p => p.name).Distinct().ToList();
                 if (products == null)
                 {
                     result = false;
@@ -793,7 +793,7 @@ namespace Copiosis_Application.Controllers
         }
 
         //Used to generate the initial list of producer items so that Razor doesn't complain about the lack of objects in NewTransaction.Products.
-        private List<ItemsModel> InitialProducerItems(int currentID)
+        private List<ItemsModel> FetchInitialProducerItems(int currentID)
         {
             List<ItemsModel> model = new List<ItemsModel>();
 
