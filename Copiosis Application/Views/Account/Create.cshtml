@@ -8,48 +8,48 @@
         {
             @Html.AntiForgeryToken()
             @Html.Partial("ValidationSummary", ViewData.ModelState)
-            
-            @*If user is using producer form*@
-            if (Model.IsProducer == true)
-            {
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-lg-3 col-md-3 col-xs-12">
-                        @Html.LabelFor(m => m.Consumer, new { @class = "control-label transaction-label" })
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-xs-12">
-                        @Html.DropDownListFor(m => m.Consumer, new SelectList(Model.Consumers), new { @id = "consumer-dropdown", @class = "select-box", @placeholder = "Select the Consumer's Name" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-lg-3 col-md-3 col-xs-12">
-                        @Html.LabelFor(m => m.ProductProvided, new { @class = "control-label transaction-label" })
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-xs-12">
-                        @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "product-dropdown", @class = "select-box", @placeholder = "Select the Product you provided" })
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-lg-3 col-md-3 col-xs-12">
-                        @Html.LabelFor(m => m.Notes, new { @class = "control-label transaction-label" })
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-xs-12">
-                        @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes", @rows= "4", @cols="40", @id="notesInput"})
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center">
-                        <input type="submit" value="Submit" />
+            @*If user is using producer form*@
+            if (Model.isProducer == true)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            @Html.LabelFor(m => m.Consumer, new { @class = "control-label transaction-label" })
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-xs-12">
+                            @Html.DropDownListFor(m => m.Consumer, new SelectList(Model.Consumers), new { @id = "consumer-dropdown", @class = "select-box", @placeholder = "Select the Consumer's Name" })
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            @Html.LabelFor(m => m.ProductProvided, new { @class = "control-label transaction-label" })
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-xs-12">
+                            @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "product-dropdown", @class = "select-box", @placeholder = "Select the Product you provided" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-3 col-md-3 col-xs-12">
+                            @Html.LabelFor(m => m.Notes, new { @class = "control-label transaction-label" })
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-xs-12">
+                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "notesInput" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center">
+                            <input type="submit" value="Submit" />
+                        </div>
+                    </div>
+                </div>
             }
             @*If user is not using producer form*@
             else
@@ -85,14 +85,14 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="row">
                     <div class="form-group">
                         <div class="col-lg-3 col-md-3 col-xs-12">
                             <label for="satisfactionRating" class="control-label transaction-label">Satisfaction Rating:</label>
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -112,15 +112,25 @@
     <script type="text/javascript">
         $("#producer-dropdown").change(function () {
             var currentChoice = $(this).val();
+            //This is a bit sloppy currently, but I thought it would be easiest just to slice up the currently selected entry on producer to get the username
+            var start = currentChoice.indexOf("|") + 2;
+            var end = currentChoice.lastIndexOf("|") - 1;
+            currentChoice = currentChoice.substring(start, end);
+            //Transfer the list of items to an array before finding where to put them in the DOM, that way I can just drop it all in together.
+            var temp = [];
             $.ajax({
-                url: "/Account/ProducerItems/",
+                url: "/Account/FetchProducerItems/",
                 type: "get",
                 data: { name: currentChoice },
                 success: function (result) {
-                    $('#producer.dropdown').find('option').remove().end();
-                    $.each(result.products, function (idx, obj) {
-                        $('#producer.dropdown').append('<option value="whatever">text</option>').val('whatever');
+                    //For reach result we get, store a string in our temp array of what we need the html to look like.
+                    $.each(result.products, function (idx, str) {
+                        temp.push('<option value="' + str + '">' + str + '</option>');
                     });
+                    //Empty the current list of items
+                    $('#product-dropdown').find('option').remove().end();
+                    //Drop in our array of strings
+                    $('#product-dropdown').empty().append(temp.join(''));
                 },
                 error: function (result) {
                     console.log("Error receiving list of products owned by: " + currentChoice);
