@@ -288,66 +288,73 @@ namespace Copiosis_Application.Controllers
                 {
                     throw new ArgumentNullException("Transaction with specified transaction ID does not exist");
                 }
-
-                var product = db.products.Where(p => p.productID == transaction.productID).FirstOrDefault();
-                if(product == null)
+                if ((WebSecurity.CurrentUserId == transaction.receiverID) || (WebSecurity.CurrentUserId == transaction.receiverID))
                 {
-                    throw new ArgumentNullException("Transaction with specified transaction ID does not exist");
-                }
 
-                var receiver = db.users.Where(u => u.userID == transaction.receiverID).FirstOrDefault();
-                if(receiver == null)
-                {
-                    throw new ArgumentNullException("No consumer found for this transaction");
-                }
-
-                var provider = db.users.Where(u => u.userID == transaction.providerID).FirstOrDefault();
-                if (provider == null)
-                {
-                    throw new ArgumentNullException("No producer found for this transaction");
-                }
-                var lastLogin = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.prevLastLogin).FirstOrDefault();
-
-                model.createdBy = transaction.createdBy;
-                model.date = transaction.date.ToString();
-                model.dateAdded = transaction.dateAdded;
-                model.dateClosed = transaction.dateClosed;
-                model.nbr = transaction.nbr;
-                model.providerID = transaction.providerID;
-                model.receiverID = transaction.receiverID;
-                model.productID = transaction.productID;
-                model.productDesc = transaction.productDesc;
-                model.providerNotes = transaction.providerNotes;
-                model.receiverNotes = transaction.receiverNotes;
-                model.status = transaction.status;
-                model.satisfaction = transaction.satisfaction;
-                model.transactionID = transaction.transactionID;
-
-                model.newSinceLogin = false;
-                if(lastLogin != null)
-                {
-                    if(transaction.dateAdded > lastLogin)
+                    var product = db.products.Where(p => p.productID == transaction.productID).FirstOrDefault();
+                    if (product == null)
                     {
-                        model.newSinceLogin = true;
+                        throw new ArgumentNullException("Transaction with specified transaction ID does not exist");
                     }
+
+                    var receiver = db.users.Where(u => u.userID == transaction.receiverID).FirstOrDefault();
+                    if (receiver == null)
+                    {
+                        throw new ArgumentNullException("No consumer found for this transaction");
+                    }
+
+                    var provider = db.users.Where(u => u.userID == transaction.providerID).FirstOrDefault();
+                    if (provider == null)
+                    {
+                        throw new ArgumentNullException("No producer found for this transaction");
+                    }
+                    var lastLogin = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.prevLastLogin).FirstOrDefault();
+
+                    model.createdBy = transaction.createdBy;
+                    model.date = transaction.date.ToString();
+                    model.dateAdded = transaction.dateAdded;
+                    model.dateClosed = transaction.dateClosed;
+                    model.nbr = transaction.nbr;
+                    model.providerID = transaction.providerID;
+                    model.receiverID = transaction.receiverID;
+                    model.productID = transaction.productID;
+                    model.productDesc = transaction.productDesc;
+                    model.providerNotes = transaction.providerNotes;
+                    model.receiverNotes = transaction.receiverNotes;
+                    model.status = transaction.status;
+                    model.satisfaction = transaction.satisfaction;
+                    model.transactionID = transaction.transactionID;
+
+                    model.newSinceLogin = false;
+                    if (lastLogin != null)
+                    {
+                        if (transaction.dateAdded > lastLogin)
+                        {
+                            model.newSinceLogin = true;
+                        }
+                    }
+
+                    model.productName = product.name;
+                    model.productGateway = product.gateway;
+                    model.productItemClass = product.itemClass;
+                    model.productCreatedDate = product.createdDate;
+                    model.productDeletedDate = product.deletedDate;
+                    model.productGuid = product.guid;
+
+                    model.receiverEmail = receiver.email;
+                    model.receiverFirstName = receiver.firstName;
+                    model.receiverLastName = receiver.lastName;
+                    model.receiverUsername = receiver.username;
+
+                    model.providerEmail = provider.email;
+                    model.providerFirstName = provider.firstName;
+                    model.providerLastName = provider.lastName;
+                    model.providerUsername = provider.username;
                 }
-
-                model.productName = product.name;
-                model.productGateway = product.gateway;
-                model.productItemClass = product.itemClass;
-                model.productCreatedDate = product.createdDate;
-                model.productDeletedDate = product.deletedDate;
-                model.productGuid = product.guid;
-
-                model.receiverEmail = receiver.email;
-                model.receiverFirstName = receiver.firstName;
-                model.receiverLastName = receiver.lastName;
-                model.receiverUsername = receiver.username;
-
-                model.providerEmail = provider.email;
-                model.providerFirstName = provider.firstName;
-                model.providerLastName = provider.lastName;
-                model.providerUsername = provider.username;
+                else
+                {
+                    throw new ArgumentException("Current user not authorized to view this transaction");
+                }
             }
             return View(model);
         }
