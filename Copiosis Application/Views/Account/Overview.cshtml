@@ -22,12 +22,23 @@
                         <tbody>
                             @foreach (var item in Model.pendingUser)
                             {
-                                <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })' ">
-                                    <td>@item.productDesc</td>
-                                    <td>@item.dateAdded</td>
-                                    <td>@item.receiverFirstName @item.receiverLastName</td>
-                                    <td>@item.nbr</td>
-                                </tr>
+                                if(item.newSinceLogin)
+                                {
+                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })' " style="background-color: #F4FA58; ">
+                                        <td> <span class="glyphicon glyphicon-flag"> @item.productDesc</td>
+                                        <td>@item.dateAdded</td>
+                                        <td>@item.receiverFirstName @item.receiverLastName</td>
+                                        <td>@item.nbr</td>
+                                    </tr>
+                                }
+                                else { 
+                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })' ">
+                                        <td>@item.productDesc</td>
+                                        <td>@item.dateAdded</td>
+                                        <td>@item.receiverFirstName @item.receiverLastName</td>
+                                        <td>@item.nbr</td>
+                                    </tr>
+                                }
                             }
                         </tbody> 
                     </table>
@@ -57,12 +68,25 @@
                             <tbody>
                                 @foreach (var item in Model.pendingOther)
                                 {
-                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })' ">
-                                        <td>@item.productDesc</td>
-                                        <td>@item.dateAdded</td>
-                                        <td>@item.receiverFirstName @item.receiverLastName</td>
-                                        <td>@item.nbr</td>
-                                    </tr>
+                                    if (item.newSinceLogin)
+                                    {
+                                        <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })'" style="background-color: #F4FA58; ">
+                                            <td> <span class="glyphicon glyphicon-flag"></span> @item.productDesc</td>
+                                            <td>@item.dateAdded</td>
+                                            <td>@item.receiverFirstName @item.receiverLastName</td>
+                                            <td>@item.nbr</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.productGuid })' ">
+                                            <td>@item.productDesc</td>
+                                            <td>@item.dateAdded</td>
+                                            <td>@item.receiverFirstName @item.receiverLastName</td>
+                                            <td>@item.nbr</td>
+                                        </tr>    
+                                    }
+                                    
                                 }
                             </tbody>
                         </table>
