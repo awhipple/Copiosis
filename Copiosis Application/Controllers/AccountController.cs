@@ -378,7 +378,7 @@ namespace Copiosis_Application.Controllers
 
                 using(var db = new CopiosisEntities())
                 {
-                    var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1).Select(u => u.user).Distinct().ToList();
+                    var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1 && p.deletedDate == null).Select(u => u.user).Distinct().ToList();
 
                     if (usersWithProducts.Count > 0)
                     {
@@ -615,7 +615,7 @@ namespace Copiosis_Application.Controllers
                 int? producerID = db.users.Where(u => u.username == name).Select(uID => uID.userID).FirstOrDefault();
                 if(producerID == null)
                 {
-                    throw new ArgumentException(string.Format("No user found with name {0}", name));
+                    throw new ArgumentNullException(string.Format("No user found with name {0}", name));
                 }
                 
                 products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name).Distinct().ToList();
