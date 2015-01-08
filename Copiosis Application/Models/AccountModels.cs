@@ -148,8 +148,8 @@ namespace Copiosis_Application.Models
         public string status { get; set; }
         public DateTime dateAdded { get; set; }
         public int createdBy { get; set; }
-        public DateTime dateClosed { get; set; }
-        public double nbr { get; set; }
+        public DateTime? dateClosed { get; set; }
+        public double? nbr { get; set; }
         public int? satisfaction { get; set; }
 
         public int providerID { get; set; }
@@ -172,7 +172,7 @@ namespace Copiosis_Application.Models
         public int productGateway { get; set; }
         public int productItemClass { get; set; }
         public DateTime productCreatedDate { get; set; }
-        public DateTime productDeletedDate { get; set; }
+        public DateTime? productDeletedDate { get; set; }
         public Guid productGuid { get; set; }
     }
 

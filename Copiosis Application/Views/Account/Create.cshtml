@@ -57,10 +57,10 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-lg-3 col-md-3 col-xs-12">
-                            @Html.LabelFor(m => m.Producers, new { @class = "control-label transaction-label" })
+                            @Html.LabelFor(m => m.Producer, new { @class = "control-label transaction-label" })
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
-                            @Html.DropDownListFor(m => m.Producers, new SelectList(Model.Producers), new { @id = "producer-dropdown", @class = "select-box", @placeholder = "Select the Consumer's Name" })
+                            @Html.DropDownListFor(m => m.Producer, new SelectList(Model.Producers), new { @id = "producer-dropdown", @class = "select-box", @placeholder = "Select the Consumer's Name" })
                         </div>
                     </div>
                 </div>
