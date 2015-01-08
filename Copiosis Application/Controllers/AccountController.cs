@@ -536,7 +536,7 @@ namespace Copiosis_Application.Controllers
                     throw new ArgumentException(string.Format("No user found with name {0}", name));
                 }
                 
-                products = db.products.Where(po => po.ownerID == producerID).Select(p => p.name).Distinct().ToList();
+                products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name).Distinct().ToList();
                 if (products == null)
                 {
                     result = false;
