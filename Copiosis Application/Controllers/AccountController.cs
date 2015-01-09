@@ -468,6 +468,7 @@ namespace Copiosis_Application.Controllers
                     consumerTran.receiverID = WebSecurity.CurrentUserId;
                     consumerTran.status = "PENDING";
                     consumerTran.receiverNotes = model.Notes;
+                    consumerTran.satisfaction = (short)model.SatisfactionRating;
 
                     db.transactions.Add(consumerTran);
                     db.SaveChanges();
