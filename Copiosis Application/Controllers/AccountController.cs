@@ -443,8 +443,7 @@ namespace Copiosis_Application.Controllers
             string typeLower = type.ToLower();
             if(type == "consumer")
             {
-                var x = model.Producer.Split('|');
-                string producerUN = x[1].Trim();
+                string producerUN = ParseOutUsername(model.Producer);
                 using(var db = new CopiosisEntities())
                 {
                     var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
@@ -476,8 +475,7 @@ namespace Copiosis_Application.Controllers
             }
             else if(type == "producer")
             {
-                var x = model.Consumer.Split('|');
-                string consumerUN = x[1].Trim();
+                string consumerUN = ParseOutUsername(model.Consumer);
                 using(var db = new CopiosisEntities())
                 {
                     var consumer = db.users.Where(u => u.username == consumerUN && u.status == 1).FirstOrDefault();
@@ -945,6 +943,11 @@ namespace Copiosis_Application.Controllers
         }
 
         #region Helpers
+        private string ParseOutUsername(string name)
+        {
+            var x = name.Split('|');
+            return x[1].Trim();
+        }
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
