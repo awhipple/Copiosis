@@ -31,7 +31,7 @@ namespace Copiosis_Application.DB_Data
     
         public virtual product product { get; set; }
         public virtual user user { get; set; }
-        public virtual user user1 { get; set; }
-        public virtual user user2 { get; set; }
+        public virtual user provider { get; set; }
+        public virtual user receiver { get; set; }
     }
 }

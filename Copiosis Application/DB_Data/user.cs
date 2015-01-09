@@ -17,8 +17,8 @@ namespace Copiosis_Application.DB_Data
         public user()
         {
             this.transactions = new HashSet<transaction>();
-            this.transactions1 = new HashSet<transaction>();
-            this.transactions2 = new HashSet<transaction>();
+            this.producerTransactions = new HashSet<transaction>();
+            this.consumerTransactions = new HashSet<transaction>();
             this.products = new HashSet<product>();
         }
     
@@ -35,8 +35,8 @@ namespace Copiosis_Application.DB_Data
     
         public virtual location location { get; set; }
         public virtual ICollection<transaction> transactions { get; set; }
-        public virtual ICollection<transaction> transactions1 { get; set; }
-        public virtual ICollection<transaction> transactions2 { get; set; }
+        public virtual ICollection<transaction> producerTransactions { get; set; }
+        public virtual ICollection<transaction> consumerTransactions { get; set; }
         public virtual ICollection<product> products { get; set; }
     }
 }

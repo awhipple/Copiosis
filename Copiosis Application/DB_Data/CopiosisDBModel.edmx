@@ -285,8 +285,8 @@
           <Property Name="satisfaction" Type="Int16" />
           <NavigationProperty Name="product" Relationship="Self.FK__transacti__produ__1CF15040" FromRole="transaction" ToRole="product" />
           <NavigationProperty Name="user" Relationship="Self.FK__transacti__creat__1DE57479" FromRole="transaction" ToRole="user" />
-          <NavigationProperty Name="user1" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="transaction" ToRole="user" />
-          <NavigationProperty Name="user2" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="transaction" ToRole="user" />
+          <NavigationProperty Name="provider" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="transaction" ToRole="user" />
+          <NavigationProperty Name="receiver" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="transaction" ToRole="user" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -303,8 +303,8 @@
           <Property Name="locationID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="location" Relationship="Self.FK__user__locationID__1273C1CD" FromRole="user" ToRole="location" />
           <NavigationProperty Name="transactions" Relationship="Self.FK__transacti__creat__1DE57479" FromRole="user" ToRole="transaction" />
-          <NavigationProperty Name="transactions1" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="user" ToRole="transaction" />
-          <NavigationProperty Name="transactions2" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="user" ToRole="transaction" />
+          <NavigationProperty Name="producerTransactions" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="user" ToRole="transaction" />
+          <NavigationProperty Name="consumerTransactions" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="user" ToRole="transaction" />
           <NavigationProperty Name="products" Relationship="CopiosisDBModel.FK__product__ownerID__5AEE82B9" FromRole="user" ToRole="product" />
           <Property Name="prevLastLogin" Type="DateTime" Precision="3" />
         </EntityType>
