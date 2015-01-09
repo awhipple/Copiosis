@@ -121,3 +121,25 @@ select {
 textarea {
     max-width:100%;
 }
+
+#satisfaction-rating-radios {
+    padding-top:20px;
+}
+
+.input_hidden {
+    display:none;
+}
+
+.selected {
+    background-color: #ccc;
+}
+
+#satisfaction-rating-radios label {
+    display: inline-block;
+    cursor: pointer;
+    margin-right:14px;
+}
+
+#satisfaction-rating-radios label img {
+    padding: 3px;
+}

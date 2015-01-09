@@ -89,10 +89,19 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-lg-3 col-md-3 col-xs-12">
-                            <label for="satisfactionRating" class="control-label transaction-label">Satisfaction Rating:</label>
+                            @Html.LabelFor(m => m.SatisfactionRating, new { @class = "control-label transaction-label" })
                         </div>
-                        <div class="col-lg-9 col-md-9 col-xs-12">
-
+                        <div class="col-lg-9 col-md-9 col-xs-12" id="satisfaction-rating-radios">
+                            @Html.RadioButtonFor(m => m.SatisfactionRating, 1, new { @name = "SR", @id="very-unsatisfied"})
+                            <label for="very-unsatisfied" style="margin-left:40px"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                            @Html.RadioButtonFor(m => m.SatisfactionRating, 2, new { @name ="SR", @id ="unsatisfied" })
+                            <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                            @Html.RadioButtonFor(m => m.SatisfactionRating, 3, new { @name = "SR", @id = "neutral" })
+                            <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32"/></label>
+                            @Html.RadioButtonFor(m => m.SatisfactionRating, 4, new { @name = "SR", @id = "satisfied" })
+                            <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                            @Html.RadioButtonFor(m => m.SatisfactionRating, 5, new { @name = "SR", @id = "very-satisfied" })
+                            <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>    
                         </div>
                     </div>
                 </div>
@@ -109,6 +118,7 @@
 </div>
 
 @section Scripts {
+    @*This handles the update to producer items*@
     <script type="text/javascript">
         $("#producer-dropdown").change(function () {
             var currentChoice = $(this).val();
@@ -144,6 +154,14 @@
                 }
             });
         }).trigger('change');
+    </script>
+
+    @*This is to handle the satisfaction rating*@
+    <script type="text/javascript">
+        $('#satisfaction-rating-radios input:radio').addClass('input_hidden');
+        $('#satisfaction-rating-radios label').click(function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
+        });
     </script>
 
     @Scripts.Render("~/bundles/jqueryval")
