@@ -286,7 +286,7 @@ namespace Copiosis_Application.Controllers
                 var transaction = db.transactions.Where(t => t.transactionID == tranId).FirstOrDefault();
                 if(transaction == null)
                 {
-                    throw new ArgumentNullException("Transaction with specified transaction ID does not exist" + tranId);
+                    throw new ArgumentNullException(string.Format("Transaction with ID does not exist", tranId));
                 }
                 if ((WebSecurity.CurrentUserId == transaction.providerID) || (WebSecurity.CurrentUserId == transaction.receiverID))
                 {
@@ -450,7 +450,7 @@ namespace Copiosis_Application.Controllers
                     var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
                     if (producer == null)
                     {
-                        throw new ArgumentException("Producer not found" + producerUN);
+                        throw new ArgumentException(string.Format("Producer {0} not found", producerUN));
                     }
 
                     var product = db.products.Where(p => p.ownerID == producer.userID && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
