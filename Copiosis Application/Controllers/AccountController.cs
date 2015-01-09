@@ -166,7 +166,7 @@ namespace Copiosis_Application.Controllers
                     a.dateClosed == null &&
                     a.createdBy != userId 
                 ).Select(t => new TransactionModel {
-                    newSinceLogin = userLastLogin.HasValue ? (userLastLogin.Value.CompareTo(t.dateAdded) > 0) : false,
+                    newSinceLogin = userLastLogin.HasValue ? (userLastLogin.Value.CompareTo(t.dateAdded) < 0) : false,
                     transactionID   = t.transactionID,
                     date            = t.date.ToString(),
                     status          = t.status,
@@ -207,7 +207,7 @@ namespace Copiosis_Application.Controllers
                     userId == a.createdBy 
                 ).Select(t => new TransactionModel
                 {
-                    newSinceLogin       = userLastLogin.HasValue ? (userLastLogin.Value.CompareTo(t.dateAdded) > 0) : false,
+                    newSinceLogin       = userLastLogin.HasValue ? (userLastLogin.Value.CompareTo(t.dateAdded) < 0) : false,
                     transactionID       = t.transactionID,
                     date                = t.date.ToString(),
                     status              = t.status,
@@ -444,13 +444,13 @@ namespace Copiosis_Application.Controllers
             if(type == "consumer")
             {
                 var x = model.Producer.Split('|');
-                string producerUN = x[1];
+                string producerUN = x[1].Trim();
                 using(var db = new CopiosisEntities())
                 {
                     var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
                     if (producer == null)
                     {
-                        throw new ArgumentException("Producer not found");
+                        throw new ArgumentException("Producer not found" + producerUN);
                     }
 
                     var product = db.products.Where(p => p.ownerID == producer.userID && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
