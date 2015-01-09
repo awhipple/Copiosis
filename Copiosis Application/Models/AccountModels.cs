@@ -151,6 +151,7 @@ namespace Copiosis_Application.Models
         public DateTime? dateClosed { get; set; }
         public double? nbr { get; set; }
         public int? satisfaction { get; set; }
+        public string otherParty { get; set; }
 
         public int providerID { get; set; }
         public string providerNotes { get; set; }

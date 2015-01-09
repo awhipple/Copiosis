@@ -175,29 +175,9 @@ namespace Copiosis_Application.Controllers
                     dateClosed      = t.dateClosed ?? DateTime.MinValue,
                     nbr             = t.nbr??0.0,
                     satisfaction    = (int)t.satisfaction,
-
-                    providerID          = t.providerID,
-                    //providerNotes       = t.providerNotes,
-                    providerFirstName   = t.provider.firstName,
-                    providerLastName    = t.provider.lastName,
-                    providerUsername    = t.provider.username,
-                    //providerEmail       = t.provider.email,
-
-                    receiverID          = t.receiverID,
-                    //receiverNotes       = t.receiverNotes,
-                    receiverFirstName   = t.receiver.firstName,
-                    receiverLastName    = t.receiver.lastName,
-                    receiverUsername    = t.receiver.username,
-                    //receiverEmail       = t.receiver.email,
-
-                    productID           = t.productID,
-                    productDesc         = t.productDesc,
-                    productName         = t.product.name,
-                    //productGateway      = t.product.gateway,
-                    //productItemClass    = t.product.itemClass,
-                    //productCreatedDate  = t.product.createdDate,
-                    //productDeletedDate  = t.product.deletedDate??DateTime.MinValue,
-                    productGuid         = t.product.guid
+                    otherParty      = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
+                    productName     = t.product.name,
+                    productDesc = t.productDesc
                 }).ToList();
 
                 model.pendingOther = db.transactions.Where(
@@ -216,21 +196,9 @@ namespace Copiosis_Application.Controllers
                     dateClosed          = t.dateClosed ?? DateTime.MinValue,
                     nbr                 = t.nbr ?? 0.0,
                     satisfaction        = t.satisfaction,
-
-                    providerID          = t.providerID,
-                    providerFirstName   = t.provider.firstName,
-                    providerLastName    = t.provider.lastName,
-                    providerUsername    = t.provider.username,
-
-                    receiverID          = t.receiverID,
-                    receiverFirstName   = t.receiver.firstName,
-                    receiverLastName    = t.receiver.lastName,
-                    receiverUsername    = t.receiver.username,
-
-                    productID           = t.productID,
-                    productDesc         = t.productDesc,
+                    otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
-                    productGuid         = t.product.guid
+                    productDesc = t.productDesc
                 }).ToList();
 
 
@@ -248,21 +216,9 @@ namespace Copiosis_Application.Controllers
                     dateClosed          = t.dateClosed ?? DateTime.MinValue,
                     nbr                 = t.nbr ?? 0.0,
                     satisfaction        = (int)t.satisfaction,
-
-                    providerID          = t.providerID,
-                    providerFirstName   = t.provider.firstName,
-                    providerLastName    = t.provider.lastName,
-                    providerUsername    = t.provider.username,
-
-                    receiverID          = t.receiverID,
-                    receiverFirstName   = t.receiver.firstName,
-                    receiverLastName    = t.receiver.lastName,
-                    receiverUsername    = t.receiver.username,
-
-                    productID           = t.productID,
-                    productDesc         = t.productDesc,
+                    otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
-                    productGuid         = t.product.guid
+                    productDesc         = t.productDesc
                 }).ToList();
 
             }
