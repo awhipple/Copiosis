@@ -2,7 +2,7 @@
 @model Copiosis_Application.Models.NewTransactionModel
 
 <div class="row">
-    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3">
+    <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-xs-8 col-xs-offset-2">
         @if (Model.IsProducer == true)
         {
             <h2 id="add-item-title" class="text-center">Producer: Add a Transaction</h2>
@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-lg-3 col-md-3 col-xs-12">
-                            @Html.LabelFor(m => m.ProductProvided, new { @class = "control-label transaction-label" })
+                            @Html.LabelFor(m => m.ProductProvided, "Product I Provided:", new { @class = "control-label transaction-label", @id="product-provided-producer"})
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
                             @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "product-dropdown", @class = "select-box", @placeholder = "Select the Product you provided" })
@@ -95,7 +95,7 @@
 
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-lg-3 col-md-3 col-xs-12">
+                        <div class="col-lg-3 col-md-3 col-xs-12" style="margin-top:13px">
                             @Html.LabelFor(m => m.SatisfactionRating, new { @class = "control-label transaction-label" })
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12" id="satisfaction-rating-radios">

@@ -143,3 +143,14 @@ textarea {
 #satisfaction-rating-radios label img {
     padding: 3px;
 }
+
+#product-provided-producer{
+    white-space:nowrap; 
+    margin-left:-66px;
+}
+
+@media (min-width:992px) {
+    #product-provided-producer {
+        margin-left: 0;
+    }
+}

@@ -192,7 +192,7 @@ namespace Copiosis_Application.Models
         [Display(Name = "Producer:")]
         public string Producer { get; set; }
 
-        [Display(Name = "Product:")]
+        [Display(Name = "Product Provided:")]
         public string ProductProvided { get; set; }
 
         [Display(Name = "Notes:")]
