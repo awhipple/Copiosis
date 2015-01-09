@@ -166,7 +166,7 @@ namespace Copiosis_Application.Controllers
                     a.dateClosed == null &&
                     a.createdBy != userId 
                 ).Select(t => new TransactionModel {
-                    newSinceLogin   = userLastLogin.HasValue ? (userLastLogin.Value < t.dateAdded) : false,
+                    newSinceLogin = userLastLogin.HasValue ? (userLastLogin.Value.CompareTo(t.dateAdded) > 0) : false,
                     transactionID   = t.transactionID,
                     date            = t.date.ToString(),
                     status          = t.status,
@@ -207,7 +207,7 @@ namespace Copiosis_Application.Controllers
                     userId == a.createdBy 
                 ).Select(t => new TransactionModel
                 {
-                    newSinceLogin       = userLastLogin.HasValue ? (userLastLogin.Value < t.dateAdded) : false,
+                    newSinceLogin       = userLastLogin.HasValue ? (userLastLogin.Value.CompareTo(t.dateAdded) > 0) : false,
                     transactionID       = t.transactionID,
                     date                = t.date.ToString(),
                     status              = t.status,
