@@ -286,9 +286,9 @@ namespace Copiosis_Application.Controllers
                 var transaction = db.transactions.Where(t => t.transactionID == tranId).FirstOrDefault();
                 if(transaction == null)
                 {
-                    throw new ArgumentNullException("Transaction with specified transaction ID does not exist");
+                    throw new ArgumentNullException("Transaction with specified transaction ID does not exist" + tranId);
                 }
-                if ((WebSecurity.CurrentUserId == transaction.receiverID) || (WebSecurity.CurrentUserId == transaction.receiverID))
+                if ((WebSecurity.CurrentUserId == transaction.providerID) || (WebSecurity.CurrentUserId == transaction.receiverID))
                 {
 
                     var product = db.products.Where(p => p.productID == transaction.productID).FirstOrDefault();

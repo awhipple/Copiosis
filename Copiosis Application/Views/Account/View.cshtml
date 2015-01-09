@@ -1,3 +1,48 @@
 ﻿@* This is the page for viewing transactions by consumers and producers *@
+@* Page for creating transactions for both producers and consumers, do they need to be separate pages? *@
+@model Copiosis_Application.Models.TransactionModel
 
-<h1>View Transaction</h1>
+<div class="row">
+    <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-2">
+        <h2 id="add-item-title" class="text-center">View Transaction</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.Partial("ValidationSummary", ViewData.ModelState)
+
+            @*If user is using producer form*@
+            if (Model.providerID == WebSecurity.CurrentUserId || Model.receiverID == WebSecurity.CurrentUserId)
+            {
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                        <p>Producer: @Model.providerFirstName @Model.providerLastName</p>
+                        <p>Consumer: @Model.receiverFirstName @Model.receiverLastName</p>
+                        <p>Product/Service: @Model.productName</p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                        <p>Date Created: @Model.dateAdded</p>
+                        @if(Model.dateClosed != null)
+                        {
+                            <p>Date Complete: @Model.dateClosed</p>
+                        }
+                    </div>
+                </div>
+               <div class="row">
+                   <div class="col-lg-6 col-md-6 col-xs-12">
+                       <p>Producer Notes -- <span id="add-provider-notes">Add Notes</span></p>
+                       @if(Model.providerNotes != null)
+                       {
+                           if(WebSecurity.CurrentUserId == Model.providerID)
+                           {
+                            <div class="col-lg-12 col-md-12 col-xs-12">
+                                @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes})
+                            </div>
+                           }
+                       }
+                   </div>
+               </div>
+            }
+            }
+        </div>
+    </div>
+                
