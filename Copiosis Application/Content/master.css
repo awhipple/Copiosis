@@ -106,8 +106,12 @@ ul, ol
     padding-right: 15px;
 }
 #nbr-number{
-    color:black;
-    background-color:lightgreen;
+    color: black;
+    background-color: lightgreen;
+    padding: 5px;
+    margin-left: 5px;
+    font-weight: bold;
+    border-radius: 2px;
 }
 .select-box {
     width: 100%;
