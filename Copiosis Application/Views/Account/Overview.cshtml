@@ -95,10 +95,11 @@
                         <thead>
                             <tr>
                                 <th>Service/Item Name</th>
-                                <th>Date Created</th>
+                                <!-- <th>Date Created</th> -->
                                 <th>Date Completed</th>
                                 <th>Other Party</th>
                                 <th>NBR Reward</th>
+                                <th>Result</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,10 +107,11 @@
                             {
                                 <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'">
                                     <td>@item.productName</td>
-                                    <td>@item.dateAdded</td>
+                                    <!-- <td>@item.dateAdded</td> -->
                                     <td>@item.dateClosed</td>
                                     <td>@item.otherParty</td>
                                     <td>@item.nbr</td>
+                                    <td>@item.status</td>
                                 </tr>
                             }
                         </tbody>

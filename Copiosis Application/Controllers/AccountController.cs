@@ -171,13 +171,11 @@ namespace Copiosis_Application.Controllers
                     date            = t.date.ToString(),
                     status          = t.status,
                     dateAdded       = t.dateAdded,
-                    createdBy       = t.createdBy,
                     dateClosed      = t.dateClosed ?? DateTime.MinValue,
                     nbr             = t.nbr??0.0,
-                    satisfaction    = (int)t.satisfaction,
                     otherParty      = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName     = t.product.name,
-                    productDesc = t.productDesc
+                    productDesc     = t.productDesc
                 }).ToList();
 
                 model.pendingOther = db.transactions.Where(
@@ -192,10 +190,8 @@ namespace Copiosis_Application.Controllers
                     date                = t.date.ToString(),
                     status              = t.status,
                     dateAdded           = t.dateAdded,
-                    createdBy           = t.createdBy,
                     dateClosed          = t.dateClosed ?? DateTime.MinValue,
                     nbr                 = t.nbr ?? 0.0,
-                    satisfaction        = t.satisfaction,
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
                     productDesc = t.productDesc
@@ -212,10 +208,8 @@ namespace Copiosis_Application.Controllers
                     date                = t.date.ToString(),
                     status              = t.status,
                     dateAdded           = t.dateAdded,
-                    createdBy           = t.createdBy,
                     dateClosed          = t.dateClosed ?? DateTime.MinValue,
                     nbr                 = t.nbr ?? 0.0,
-                    satisfaction        = (int)t.satisfaction,
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
                     productDesc         = t.productDesc
@@ -266,14 +260,14 @@ namespace Copiosis_Application.Controllers
                     }
                     var lastLogin = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.prevLastLogin).FirstOrDefault();
 
-                    model.createdBy = transaction.createdBy;
+                    //model.createdBy = transaction.createdBy;
                     model.date = transaction.date.ToString();
                     model.dateAdded = transaction.dateAdded;
                     model.dateClosed = transaction.dateClosed;
                     model.nbr = transaction.nbr;
-                    model.providerID = transaction.providerID;
-                    model.receiverID = transaction.receiverID;
-                    model.productID = transaction.productID;
+                    //model.providerID = transaction.providerID;
+                    //model.receiverID = transaction.receiverID;
+                    //model.productID = transaction.productID;
                     model.productDesc = transaction.productDesc;
                     model.providerNotes = transaction.providerNotes;
                     model.receiverNotes = transaction.receiverNotes;
@@ -291,18 +285,18 @@ namespace Copiosis_Application.Controllers
                     }
 
                     model.productName = product.name;
-                    model.productGateway = product.gateway;
-                    model.productItemClass = product.itemClass;
-                    model.productCreatedDate = product.createdDate;
-                    model.productDeletedDate = product.deletedDate;
+                    //model.productGateway = product.gateway;
+                    //model.productItemClass = product.itemClass;
+                    //model.productCreatedDate = product.createdDate;
+                    //model.productDeletedDate = product.deletedDate;
                     model.productGuid = product.guid;
 
-                    model.receiverEmail = receiver.email;
+                    //model.receiverEmail = receiver.email;
                     model.receiverFirstName = receiver.firstName;
                     model.receiverLastName = receiver.lastName;
                     model.receiverUsername = receiver.username;
 
-                    model.providerEmail = provider.email;
+                    //model.providerEmail = provider.email;
                     model.providerFirstName = provider.firstName;
                     model.providerLastName = provider.lastName;
                     model.providerUsername = provider.username;

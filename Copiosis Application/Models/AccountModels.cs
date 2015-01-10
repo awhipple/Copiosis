@@ -142,39 +142,30 @@ namespace Copiosis_Application.Models
 
     public class TransactionModel
     {
-        public bool newSinceLogin { get; set; }
+        // Things expected to be used on the Overview page.
         public Guid transactionID { get; set; }
+        public bool newSinceLogin { get; set; }       
         public string date { get; set; }
         public string status { get; set; }
         public DateTime dateAdded { get; set; }
-        public int createdBy { get; set; }
-        public DateTime? dateClosed { get; set; }
-        public double? nbr { get; set; }
-        public int? satisfaction { get; set; }
+        public DateTime? dateClosed { get; set; }           
+        public double? nbr { get; set; }        
         public string otherParty { get; set; }
+        public Guid productGuid { get; set; }
+        public string productName { get; set; }
 
-        public int providerID { get; set; }
+        // Additional things expected to be used on the Transaction View page.
+        public string productDesc { get; set; }
+        public int? satisfaction { get; set; }
         public string providerNotes { get; set; }
         public string providerFirstName { get; set; }
         public string providerLastName { get; set; }
         public string providerUsername { get; set; }
-        public string providerEmail { get; set; }
-
-        public int receiverID { get; set; }
         public string receiverNotes { get; set; }
         public string receiverFirstName { get; set; }
         public string receiverLastName { get; set; }
         public string receiverUsername { get; set; }
-        public string receiverEmail { get; set; }
-
-        public int productID { get; set; }
-        public string productDesc { get; set; }
-        public string productName { get; set; }
-        public int productGateway { get; set; }
-        public int productItemClass { get; set; }
-        public DateTime productCreatedDate { get; set; }
-        public DateTime? productDeletedDate { get; set; }
-        public Guid productGuid { get; set; }
+       
     }
 
     public class NewTransactionModel
