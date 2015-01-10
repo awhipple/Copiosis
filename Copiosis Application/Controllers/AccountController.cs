@@ -232,74 +232,60 @@ namespace Copiosis_Application.Controllers
 
             using(var db = new CopiosisEntities())
             {
+                
+                // Get transaction data
                 var transaction = db.transactions.Where(t => t.transactionID == tranId).FirstOrDefault();
+
+                // Make sure a transaction was found.
                 if(transaction == null)
                 {
                     throw new ArgumentNullException(string.Format("Transaction with ID does not exist", tranId));
                 }
-                if ((WebSecurity.CurrentUserId == transaction.providerID) || (WebSecurity.CurrentUserId == transaction.receiverID))
-                // Also need to add access for Admins.
+
+                // Check permissions to view this transaction.
+                if ((WebSecurity.CurrentUserId == transaction.providerID) || 
+                    (WebSecurity.CurrentUserId == transaction.receiverID) ||
+                    (System.Web.Security.Roles.IsUserInRole(ADMINROLE))
+                   )
                 {
-
-                    var product = db.products.Where(p => p.productID == transaction.productID).FirstOrDefault();
-                    if (product == null)
-                    {
-                        throw new ArgumentNullException("Transaction with specified transaction ID does not exist");
-                    }
-
-                    var receiver = db.users.Where(u => u.userID == transaction.receiverID).FirstOrDefault();
-                    if (receiver == null)
-                    {
-                        throw new ArgumentNullException("No consumer found for this transaction");
-                    }
-
-                    var provider = db.users.Where(u => u.userID == transaction.providerID).FirstOrDefault();
-                    if (provider == null)
-                    {
-                        throw new ArgumentNullException("No producer found for this transaction");
-                    }
                     var lastLogin = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.prevLastLogin).FirstOrDefault();
 
-                    //model.createdBy = transaction.createdBy;
-                    model.date = transaction.date.ToString();
-                    model.dateAdded = transaction.dateAdded;
-                    model.dateClosed = transaction.dateClosed;
-                    model.nbr = transaction.nbr;
+                    // Various transaction data expected to be displayed
+                    model.transactionID = transaction.transactionID;
+                    model.date          = transaction.date.ToString();  // Date the transaction took place on.
+                    model.dateAdded     = transaction.dateAdded;        // Date transaction added to system. How long pending??                   
+                    model.dateClosed    = transaction.dateClosed ??     // Date transaction was Confirmed or Rejected.
+                                          DateTime.MinValue;            //    Replaces dateAdded when not null.       
+                    model.nbr           = transaction.nbr ?? 0.0;       // NBR earned from this transaction
+                    model.status        = transaction.status;           // Pending, Confirmed, or Rejected
+                    model.satisfaction  = transaction.satisfaction;
+
+                    // Product info expected to be displayed.
+                    model.productGuid = transaction.product.guid;
+                    model.productName = transaction.product.name; 
+                    model.productDesc = transaction.productDesc;
+                    
+                    // Provider info expected to be displayed.
+                    model.providerFirstName = transaction.provider.firstName;
+                    model.providerLastName  = transaction.provider.lastName;
+                    model.providerUsername  = transaction.provider.username;
+                    model.providerNotes     = transaction.providerNotes;
+
+                    // Receiver info expected to be displayed.
+                    model.receiverFirstName = transaction.receiver.firstName;
+                    model.receiverLastName  = transaction.receiver.lastName;
+                    model.receiverUsername  = transaction.receiver.username;
+                    model.receiverNotes     = transaction.receiverNotes;
+
+                    // For calculatons
                     model.providerID = transaction.providerID;
                     model.receiverID = transaction.receiverID;
-                    //model.productID = transaction.productID;
-                    model.productDesc = transaction.productDesc;
-                    model.providerNotes = transaction.providerNotes;
-                    model.receiverNotes = transaction.receiverNotes;
-                    model.status = transaction.status;
-                    model.satisfaction = transaction.satisfaction;
-                    model.transactionID = transaction.transactionID;
+                    model.isPendingUser = (transaction.dateClosed == null &&
+                                         transaction.createdBy != WebSecurity.CurrentUserId &&
+                                         (transaction.providerID == WebSecurity.CurrentUserId ||
+                                          transaction.receiverID == WebSecurity.CurrentUserId)
+                                        ) ? true : false;
 
-                    model.newSinceLogin = false;
-                    if (lastLogin != null)
-                    {
-                        if (transaction.dateAdded > lastLogin)
-                        {
-                            model.newSinceLogin = true;
-                        }
-                    }
-
-                    model.productName = product.name;
-                    //model.productGateway = product.gateway;
-                    //model.productItemClass = product.itemClass;
-                    //model.productCreatedDate = product.createdDate;
-                    //model.productDeletedDate = product.deletedDate;
-                    model.productGuid = product.guid;
-
-                    //model.receiverEmail = receiver.email;
-                    model.receiverFirstName = receiver.firstName;
-                    model.receiverLastName = receiver.lastName;
-                    model.receiverUsername = receiver.username;
-
-                    //model.providerEmail = provider.email;
-                    model.providerFirstName = provider.firstName;
-                    model.providerLastName = provider.lastName;
-                    model.providerUsername = provider.username;
                 }
                 else
                 {

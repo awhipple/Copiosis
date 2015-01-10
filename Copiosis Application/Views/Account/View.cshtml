@@ -9,6 +9,14 @@
         {
             @Html.AntiForgeryToken()
             @Html.Partial("ValidationSummary", ViewData.ModelState)
+            
+            @* JOSIAH'S NOTE:
+            To determine if a pending transaction is waiting for input from the user currently viewing the page do:*@
+            if (Model.isPendingUser)
+            { 
+                <div>THIS TRANSACTION IS WAITING FOR INPUT FROM THIS USER!</div>
+            }
+
 
             @*If user is using producer form*@
             if (Model.providerID == WebSecurity.CurrentUserId || Model.receiverID == WebSecurity.CurrentUserId)
