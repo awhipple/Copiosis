@@ -248,14 +248,12 @@ namespace Copiosis_Application.Controllers
                     (System.Web.Security.Roles.IsUserInRole(ADMINROLE))
                    )
                 {
-                    var lastLogin = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.prevLastLogin).FirstOrDefault();
-
                     // Various transaction data expected to be displayed
                     model.transactionID = transaction.transactionID;
-                    model.date          = transaction.date.ToString();  // Date the transaction took place on.
+                    model.date          = transaction.date.HasValue ? transaction.date.Value.ToString() : string.Empty;  // Date the transaction took place on.
                     model.dateAdded     = transaction.dateAdded;        // Date transaction added to system. How long pending??                   
                     model.dateClosed    = transaction.dateClosed ??     // Date transaction was Confirmed or Rejected.
-                                          DateTime.MinValue;            //    Replaces dateAdded when not null.       
+                                          DateTime.MinValue;            // Replaces dateAdded when not null.       
                     model.nbr           = transaction.nbr ?? 0.0;       // NBR earned from this transaction
                     model.status        = transaction.status;           // Pending, Confirmed, or Rejected
                     model.satisfaction  = transaction.satisfaction;
