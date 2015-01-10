@@ -860,17 +860,7 @@ namespace Copiosis_Application.Controllers
                 return nbr;
             }
         }
-        /// <summary>
-        /// A temporary ActionResult used to test different functions
-        /*
-        [AllowAnonymous]
-        public ActionResult Dummy()
-        {
-            float nbr = CalculateNBR(2, 9, 2);
-            return View();
-        }
-        */
-
+        
         //Used to generate the initial list of producer items so that Razor doesn't complain about the lack of objects in NewTransaction.Products.
         private List<ItemsModel> FetchInitialProducerItems(int currentID)
         {
