@@ -73,7 +73,6 @@ namespace Copiosis_Application.Controllers
 
         //
         // GET: /Account/Register
-
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -383,6 +382,7 @@ namespace Copiosis_Application.Controllers
         // POST: /Account/Create
         // Create a new transaction. Needs to take a model that matchs the form.
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(string type, NewTransactionModel model)
         {
             if (type == null)
@@ -477,17 +477,7 @@ namespace Copiosis_Application.Controllers
         public ActionResult Items()
         {
             List<ItemsModel> model = new List<ItemsModel>();
-            /* 
-             * Down below is essentially your connection to the database. By saying new CopiosisEntities() you are essentially
-             * creating a new connection in the database. 
-             */
             model = CurrenUserItems();
-            /* 
-             * Now you need to return your results to the client through some model that you are going to create in the Models folder.
-             * What you are going to want in the model is everything that the frontend guys will need to show in the page. So you
-             * are probably going to want the name, description, gateway,and item class. When you create this model, make sure you put it 
-             * in the Models folder in the solution 
-             */
             return View(model);
         }
 
@@ -607,6 +597,7 @@ namespace Copiosis_Application.Controllers
         // POST: /Account/EditItem
         // Update an existing item in the database. Takes a model of the new item.
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditItem(AddItemModel model, Guid itemId)
         {
             ValidateItemModel(model);
@@ -737,6 +728,8 @@ namespace Copiosis_Application.Controllers
             return View(model);
         }
 
+        //
+        // GET: /Account/UsersNBR
         [HttpGet]
         public ActionResult UsersNBR()
         {
@@ -788,6 +781,10 @@ namespace Copiosis_Application.Controllers
             }
         }
 
+        /// <summary>
+        /// Get the items for the currently logged in user
+        /// </summary>
+        /// <returns>List of Items</returns>
         private List<ItemsModel> CurrenUserItems()
         {
             List<ItemsModel> model = new List<ItemsModel>();
@@ -861,7 +858,11 @@ namespace Copiosis_Application.Controllers
             }
         }
         
-        //Used to generate the initial list of producer items so that Razor doesn't complain about the lack of objects in NewTransaction.Products.
+        /// <summary>
+        /// Generate the initial list of producer items for NewTransaction
+        /// </summary>
+        /// <param name="currentID">ID of the first producer</param>
+        /// <returns>List of Items</returns>
         private List<ItemsModel> FetchInitialProducerItems(int currentID)
         {
             List<ItemsModel> model = new List<ItemsModel>();
