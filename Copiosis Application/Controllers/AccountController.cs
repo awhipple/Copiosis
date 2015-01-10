@@ -238,6 +238,7 @@ namespace Copiosis_Application.Controllers
                     throw new ArgumentNullException(string.Format("Transaction with ID does not exist", tranId));
                 }
                 if ((WebSecurity.CurrentUserId == transaction.providerID) || (WebSecurity.CurrentUserId == transaction.receiverID))
+                // Also need to add access for Admins.
                 {
 
                     var product = db.products.Where(p => p.productID == transaction.productID).FirstOrDefault();
@@ -264,8 +265,8 @@ namespace Copiosis_Application.Controllers
                     model.dateAdded = transaction.dateAdded;
                     model.dateClosed = transaction.dateClosed;
                     model.nbr = transaction.nbr;
-                    //model.providerID = transaction.providerID;
-                    //model.receiverID = transaction.receiverID;
+                    model.providerID = transaction.providerID;
+                    model.receiverID = transaction.receiverID;
                     //model.productID = transaction.productID;
                     model.productDesc = transaction.productDesc;
                     model.providerNotes = transaction.providerNotes;
