@@ -158,3 +158,11 @@ textarea {
         margin-left: 0;
     }
 }
+
+textarea[readonly]{
+    cursor:default;
+}
+
+.hidden-notes{
+    display:none;
+}
