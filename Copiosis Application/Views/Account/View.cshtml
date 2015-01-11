@@ -5,12 +5,6 @@
 <div class="row">
     <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-2">
         <h2 id="add-item-title">View Transaction</h2>
-        @* JOSIAH'S NOTE:
-        To determine if a pending transaction is waiting for input from the user currently viewing the page do:*@
-        @if (Model.isPendingUser)
-        {
-        <div>EXAMPLE (delete this!): THIS TRANSACTION IS WAITING FOR INPUT FROM THIS USER!</div>
-        }
 
         @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "ConfirmForm" }))
         {
@@ -148,12 +142,14 @@
                                 <p>Satisfaction Rating: <span>Pending Consumer Input</span></p>
                             }
                             
-                            @if (Model.dateClosed == null) 
+                            @if (Model.isPendingUser == true && Model.dateClosed == DateTime.MinValue) 
                             {                            
+                                <div>
                                 @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
                                 @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
                                 <input id="confirm" type="button" value="Confirm Transaction Details" />
                                 <input id="reject" type="button" value="Reject Transaction" />
+                                </div>
                             }
                             </div>
                         </div>
