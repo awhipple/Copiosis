@@ -166,16 +166,11 @@ namespace Copiosis_Application.Models
         public string receiverLastName { get; set; }
         public string receiverUsername { get; set; }
         public bool isPendingUser { get; set; }
+        public string result { get; set; }
 
         // Things used in our backend logic
         public int providerID { get; set; }
         public int receiverID { get; set; }
-
-        // Something MAYBE expected to be used in View javascript
-        // Can be used when viewing PENDING transactions to determine if active user already confirmed their end.
-        // May or may not be necessary depending on how we do the Views... 
-        // (1 view + javascript logic vs. multiple views and C# backend logic)
-        // public bool confirmedByUser { get; set; }
        
     }
 

@@ -5,18 +5,17 @@
 <div class="row">
     <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-2">
         <h2 id="add-item-title">View Transaction</h2>
-        @using (Html.BeginForm())
+        @* JOSIAH'S NOTE:
+        To determine if a pending transaction is waiting for input from the user currently viewing the page do:*@
+        @if (Model.isPendingUser)
+        {
+        <div>EXAMPLE (delete this!): THIS TRANSACTION IS WAITING FOR INPUT FROM THIS USER!</div>
+        }
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "ConfirmForm" }))
         {
             @Html.AntiForgeryToken()
             @Html.Partial("ValidationSummary", ViewData.ModelState)
-
-            @* JOSIAH'S NOTE:
-                To determine if a pending transaction is waiting for input from the user currently viewing the page do:*@
-            if (Model.isPendingUser)
-            {
-                <div>THIS TRANSACTION IS WAITING FOR INPUT FROM THIS USER!</div>
-            }
-
 
             @*If user is using producer form*@
             if (Model.providerID == WebSecurity.CurrentUserId || Model.receiverID == WebSecurity.CurrentUserId)
@@ -148,6 +147,14 @@
                             {
                                 <p>Satisfaction Rating: <span>Pending Consumer Input</span></p>
                             }
+                            
+                            @if (Model.dateClosed == null) 
+                            {                            
+                                @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
+                                @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
+                                <input id="confirm" type="button" value="Confirm Transaction Details" />
+                                <input id="reject" type="button" value="Reject Transaction" />
+                            }
                             </div>
                         </div>
                     </div>
@@ -163,6 +170,17 @@
         $('#satisfaction-rating-radios label').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
         });
+
+        $("#reject").click(function (e) {
+            $("#result").val("Rejected");
+            $("#very-unsatisfied").attr('checked', true);
+            $("#ConfirmForm").submit();
+        })
+
+        $("#confirm").click(function (e) {
+            $("#result").val("Confirmed");
+            $("#ConfirmForm").submit();
+        })
     </script>
 
     @Scripts.Render("~/bundles/jqueryval")

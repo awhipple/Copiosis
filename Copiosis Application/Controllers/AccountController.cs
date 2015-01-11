@@ -293,6 +293,71 @@ namespace Copiosis_Application.Controllers
             return View(model);
         }
 
+        
+        // POST: /Account/View
+        // Confirm or reject a transaction.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult View(string act, TransactionModel model)
+        {
+            
+            if (model.transactionID == null)
+            {
+                throw new ArgumentNullException("Transaction GUID must be specified");
+            }
+
+            using (var db = new CopiosisEntities())
+            {
+                // Get transaction data
+                var transaction = db.transactions.Where(t => t.transactionID == model.transactionID).FirstOrDefault();
+
+                // Make sure a transaction was found.
+                if(transaction == null)
+                {
+                    throw new ArgumentNullException(string.Format("Transaction with ID does not exist", model.transactionID));
+                }
+
+                // Check permissions to update this transaction.
+                if (
+                    // User is the provider and the transaction is waiting on their confirmation.
+                    WebSecurity.CurrentUserId == transaction.providerID && transaction.providerID != transaction.createdBy     
+                   )
+                {
+
+                    // These are the only things being updated. Anything else sent along in the POST (even if it's in the model)
+                    // will be ignored.
+                    transaction.providerNotes   = model.providerNotes;
+                    transaction.dateClosed      = DateTime.Now;
+                    transaction.status          = model.result;
+                    db.SaveChanges();
+                    // NEED TO CALCULATE NBR!!!
+                }
+
+                else if (
+                        // User is the receiver and the transaction is waiting on their confirmation.
+                        WebSecurity.CurrentUserId == transaction.receiverID && transaction.receiverID != transaction.createdBy
+                        )
+                {
+                    // Satisfaction must be specified!
+                    if (model.satisfaction == null)
+                    {
+                        this.ModelState.AddModelError("Satisfaction", "Your satisfaction with this transaction must be specified.");
+                        return View(model.transactionID);
+                    }
+                    
+                    transaction.receiverNotes   = model.receiverNotes;
+                    transaction.satisfaction    = (short)model.satisfaction;
+                    transaction.dateClosed      = DateTime.Now;
+                    transaction.status          = model.result;
+                    db.SaveChanges();
+                    // NEED TO CALCULATE NBR!!!
+                }
+            }
+
+            return RedirectToAction("View", new { tranId = model.transactionID });
+        }
+        
+
         // GET: /Account/Create
         // Create a new transaction whether producer or consumer. Just returns the view.
         public ActionResult Create(string type)
