@@ -521,6 +521,14 @@ namespace Copiosis_Application.Controllers
             return View();
         }
 
+        // POST: /Account/AddNotes
+        // Add notes to a transaction based on the participant adding the notes
+        [HttpPost]
+        public ActionResult AddNotes(string participant, string notes, Guid tranId)
+        {
+            return View(tranId);
+        }
+
         // GET: /Account/Items
         // This will serve as the Item Library to show all the items a user has. Probably takes some kind of GUID.
         [HttpGet]
