@@ -150,7 +150,21 @@
                             }
                             </div>
                         </div>
+                    @*Cofirm/Reject Transaction buttons*@
+                    @{/*
+                    @if (Model.isPendingUser)
+                    {
+                        <div class="col-lg-12 col-md-12 col-xs-12">
+                            @*TO DO: Need to implement Confirm Transaction action*@
+                            <button type="button" class="btn-sm" onclick="location.href='@Url.Action("Confirm", "Account", new { @tranId = Model.transactionID, @satisfactionRating = Model.satisfaction})'">Confirm Transaction</button>
+                            @*TO DO: Need to create an Action called "RejectTrans"?*@
+                            <button type="button" class="btn-sm" onclick="location.href='@Url.Action("Confirm", "Account", new { @tranId = Model.transactionID, @satisfactionRating = Model.satisfaction})'">Reject Transaction</button>
+                        </div>
+                    }
+                    @*/}
                     </div>
+
+            
             }
         }
     </div>
