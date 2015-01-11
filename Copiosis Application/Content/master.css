@@ -166,3 +166,9 @@ textarea[readonly]{
 .hidden-notes{
     display:none;
 }
+
+#add-provider-notes, #add-consumer-notes {
+    cursor: pointer;
+    color: #0066FF;
+    font-weight: bold;
+}

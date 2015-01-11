@@ -33,7 +33,7 @@
                         <div class="col-lg-12 col-md-12 col-xs-12">
                             @if (Model.providerID == WebSecurity.CurrentUserId)
                             {
-                                <p>Producer Notes -- <span id="add-provider-notes">Add Notes</span></p>
+                                <p>Producer Notes -- <span id="add-provider-notes" class="clickable">Add Notes</span></p>
                             }
                             else
                             {
@@ -64,7 +64,7 @@
 
                             @if (Model.receiverID == WebSecurity.CurrentUserId)
                             {
-                                <p>Consumer Notes -- <span id="add-consumer-notes">Add Notes</span></p>
+                                <p>Consumer Notes -- <span id="add-consumer-notes" class="clickable">Add Notes</span></p>
                             }
                             else
                             {
@@ -192,6 +192,14 @@
         $("#confirm").click(function (e) {
             $("#result").val("Confirmed");
             $("#ConfirmForm").submit();
+        })
+
+        $('#add-consumer-notes').click(function(){
+            $('#receiver-notes').removeClass('hidden-notes');
+        })
+
+        $('#add-producer-notes').click(function(){
+            $('#producer-notes').removeClass('hidden-notes');
         })
     </script>
 
