@@ -31,7 +31,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-xs-12">
-                            @if (Model.providerID == WebSecurity.CurrentUserId)
+                            @if (Model.providerID == WebSecurity.CurrentUserId && Model.status.CompareTo("PENDING") == 0)
                             {
                                 <p>Producer Notes -- <span id="add-provider-notes" class="clickable">Add Notes</span></p>
                             }
@@ -39,30 +39,37 @@
                             {
                                 <p>Producer Notes</p>
                             }
-                            @if (Model.providerNotes != null)
-                            {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if(Model.providerID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
-                                    }
-                                    else
-                                    {
-                                        @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly=true})
-                                    }
-                                </div>
-                            }
+                            @if(Model.status.CompareTo("PENDING") == 0)
+                            { 
+                                if (Model.providerNotes != null)
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.providerID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly=true})
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.providerID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
+                                        }
+                                    </div>
+                                }
+                            } 
                             else
                             {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if (Model.providerID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
-                                    }
-                                </div>
+                                @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly = true })
                             }
 
-                            @if (Model.receiverID == WebSecurity.CurrentUserId)
+                            @if (Model.receiverID == WebSecurity.CurrentUserId && Model.status.CompareTo("PENDING")==0)
                             {
                                 <p>Consumer Notes -- <span id="add-consumer-notes" class="clickable">Add Notes</span></p>
                             }
@@ -70,29 +77,36 @@
                             {
                                 <p>Consumer Notes</p>
                             }
-                            @if (Model.receiverNotes != null)
+                            @if (Model.status.CompareTo("PENDING") == 0)
                             {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if (Model.receiverID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
-                                    }
-                                    else
-                                    {
-                                        @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
-                                    }
-                                </div>
+                                if (Model.receiverNotes != null)
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.receiverID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.receiverID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
+                                        }
+                                    </div>
+                                }
                             }
                             else
                             {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if (Model.receiverID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
-                                    }
-                                </div>
+                                @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
                             }
-       
+                            
                             @if (Model.satisfaction != null)
                             {
                                 <p>
@@ -139,11 +153,11 @@
                             }
                             else if(Model.satisfaction == null && WebSecurity.CurrentUserId == Model.providerID)
                             {
-                                <p>Satisfaction Rating: <span>Pending Consumer Input</span></p>
+                                <p>Satisfaction Rating: <span style="font-weight:bold">Pending Consumer Input</span></p>
                             }
-                            
-                            @if (Model.isPendingUser == true && Model.dateClosed == DateTime.MinValue) 
-                            {                            
+
+                            @if (Model.isPendingUser == true && Model.dateClosed == DateTime.MinValue)
+                            {
                                 <div>
                                 @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
                                 @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
@@ -195,11 +209,11 @@
         })
 
         $('#add-consumer-notes').click(function(){
-            $('#receiver-notes').toggle('hidden-notes');
+            $('#receiver-notes').toggleClass('hidden-notes');
         })
 
-        $('#add-producer-notes').click(function(){
-            $('#provider-notes').toggle('hidden-notes');
+        $('#add-provider-notes').click(function(){
+            $('#provider-notes').toggleClass('hidden-notes');
         })
     </script>
 
