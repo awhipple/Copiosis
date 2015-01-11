@@ -107,7 +107,7 @@
                                 @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
                             }
                             
-                            @if (Model.satisfaction != null)
+                            @if (Model.status.CompareTo("PENDING") != 0)
                             {
                                 <p>
                                     Satisfaction Rating =
@@ -133,25 +133,80 @@
                                     }
                                 </p>
                             }
-                            else if(Model.satisfaction == null && WebSecurity.CurrentUserId == Model.receiverID)
+                            else if(WebSecurity.CurrentUserId == Model.receiverID)
                             {
                                 <div class="col-lg-3 col-md-3 col-xs-12" style="margin-top:24px; padding-left:0">
                                     <p>Satisfaction Rating:</p>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-xs-12" id="satisfaction-rating-radios">
-                                    @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-                                    <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-                                    <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-                                    <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-                                    <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-                                    <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    @if (Model.satisfaction == -2)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied" class="selected"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == -1)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied" class="selected"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == 0)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral" class="selected"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == 1)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied" class="selected"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == 2)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied" class="selected"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
                                 </div>
                             }
-                            else if(Model.satisfaction == null && WebSecurity.CurrentUserId == Model.providerID)
+                            else if(WebSecurity.CurrentUserId == Model.providerID)
                             {
                                 <p>Satisfaction Rating: <span style="font-weight:bold">Pending Consumer Input</span></p>
                             }
@@ -163,6 +218,14 @@
                                 @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
                                 <input id="confirm" type="button" value="Confirm Transaction Details" />
                                 <input id="reject" type="button" value="Reject Transaction" />
+                                </div>
+                            }
+                            else if(Model.isPendingUser == false && Model.dateClosed == DateTime.MinValue)
+                            {
+                                <div>
+                                    @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
+                                    @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
+                                    <input id="update" type="button" value="Update Transaction Details" />
                                 </div>
                             }
                             </div>
@@ -205,6 +268,11 @@
 
         $("#confirm").click(function (e) {
             $("#result").val("Confirmed");
+            $("#ConfirmForm").submit();
+        })
+
+        $("#update").click(function (e) {
+            $("#result").val("PENDING");
             $("#ConfirmForm").submit();
         })
 
