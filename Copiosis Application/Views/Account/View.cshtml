@@ -204,6 +204,20 @@
                                         @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
                                         <label for="very-satisfied" class="selected"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
                                     }
+                                    
+                                    @if (Model.satisfaction == null)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
                                 </div>
                             }
                             else if(WebSecurity.CurrentUserId == Model.providerID)
