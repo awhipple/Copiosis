@@ -524,8 +524,28 @@ namespace Copiosis_Application.Controllers
         // POST: /Account/AddNotes
         // Add notes to a transaction based on the participant adding the notes
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult AddNotes(string participant, string notes, Guid tranId)
         {
+            using (var db = new CopiosisEntities())
+            {
+                int userId = WebSecurity.CurrentUserId;
+                var trans = db.transactions.Where(a => a.transactionID == tranId).FirstOrDefault();
+                if(participant.Equals("producer"))
+                {
+                    if(trans.providerID == userId)
+                    {
+                        trans.providerNotes = notes;
+                    }
+                }
+                else if(participant.Equals("consumer"))
+                {
+                    if (trans.receiverID == userId)
+                    {
+                        trans.receiverNotes = notes;
+                    }
+                }
+            }
             return View(tranId);
         }
 
