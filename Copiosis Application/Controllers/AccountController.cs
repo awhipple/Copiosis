@@ -298,7 +298,7 @@ namespace Copiosis_Application.Controllers
         // Confirm or reject a transaction.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ViewConfirm(TransactionModel model)
+        public ActionResult View(string act, TransactionModel model)
         {
             
             if (model.transactionID == null)

@@ -6,7 +6,7 @@
     <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-2">
         <h2 id="add-item-title">View Transaction</h2>
 
-        @using (Html.BeginForm("ViewConfirm", "Account", FormMethod.Post, new { id = "ConfirmForm" }))
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "ConfirmForm" }))
         {
             @Html.AntiForgeryToken()
             @Html.Partial("ValidationSummary", ViewData.ModelState)
