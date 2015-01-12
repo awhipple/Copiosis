@@ -320,22 +320,25 @@ namespace Copiosis_Application.Controllers
                 // Check permissions to update this transaction.
                 if (
                     // User is the provider and the transaction is waiting on their confirmation.
-                    WebSecurity.CurrentUserId == transaction.providerID && transaction.providerID != transaction.createdBy     
+                    WebSecurity.CurrentUserId == transaction.providerID     
                    )
                 {
 
                     // These are the only things being updated. Anything else sent along in the POST (even if it's in the model)
                     // will be ignored.
                     transaction.providerNotes   = model.providerNotes;
-                    transaction.dateClosed      = DateTime.Now;
-                    transaction.status          = model.result;
+                    if(model.result.CompareTo("PENDING") != 0)
+                    {
+                        transaction.dateClosed = DateTime.Now;
+                        transaction.status = model.result;
+                    }
                     db.SaveChanges();
                     // NEED TO CALCULATE NBR!!!
                 }
 
                 else if (
                         // User is the receiver and the transaction is waiting on their confirmation.
-                        WebSecurity.CurrentUserId == transaction.receiverID && transaction.receiverID != transaction.createdBy
+                        WebSecurity.CurrentUserId == transaction.receiverID
                         )
                 {
                     // Satisfaction must be specified!
@@ -347,8 +350,11 @@ namespace Copiosis_Application.Controllers
                     
                     transaction.receiverNotes   = model.receiverNotes;
                     transaction.satisfaction    = (short)model.satisfaction;
-                    transaction.dateClosed      = DateTime.Now;
-                    transaction.status          = model.result;
+                    if(model.result.CompareTo("PENDING") !=0)
+                    {
+                        transaction.dateClosed = DateTime.Now;
+                        transaction.status = model.result;
+                    }
                     db.SaveChanges();
                     // NEED TO CALCULATE NBR!!!
                 }

@@ -3,7 +3,7 @@
 @model Copiosis_Application.Models.TransactionModel
 
 <div class="row">
-    <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-2">
+    <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
         <h2 id="add-item-title">View Transaction</h2>
 
         @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "ConfirmForm" }))
@@ -14,7 +14,7 @@
             @*If user is using producer form*@
             if (Model.providerID == WebSecurity.CurrentUserId || Model.receiverID == WebSecurity.CurrentUserId)
             {
-                <div style="padding-left:15px">
+                <div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-xs-12">
                             <p>Producer: @Model.providerFirstName @Model.providerLastName</p>
@@ -31,69 +31,83 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-xs-12">
-                            @if (Model.providerID == WebSecurity.CurrentUserId)
+                            @if (Model.providerID == WebSecurity.CurrentUserId && Model.status.CompareTo("PENDING") == 0)
                             {
                                 <p>Producer Notes -- <span id="add-provider-notes" class="clickable">Add Notes</span></p>
                             }
-                            else
+                            else if (Model.providerNotes != null)
                             {
                                 <p>Producer Notes</p>
                             }
-                            @if (Model.providerNotes != null)
+                            @if (Model.status.CompareTo("PENDING") == 0)
                             {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if(Model.providerID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
-                                    }
-                                    else
-                                    {
-                                        @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly=true})
-                                    }
-                                </div>
-                            }
-                            else
+                                if (Model.providerNotes != null)
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.providerID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly=true})
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.providerID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
+                                        }
+                                    </div>
+                                }
+                            } 
+                            else if(Model.providerNotes != null)
                             {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if (Model.providerID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
-                                    }
-                                </div>
+                                @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly = true })
                             }
 
-                            @if (Model.receiverID == WebSecurity.CurrentUserId)
+                            @if (Model.receiverID == WebSecurity.CurrentUserId && Model.status.CompareTo("PENDING")==0)
                             {
                                 <p>Consumer Notes -- <span id="add-consumer-notes" class="clickable">Add Notes</span></p>
                             }
-                            else
+                            else if(Model.receiverNotes != null)
                             {
                                 <p>Consumer Notes</p>
                             }
-                            @if (Model.receiverNotes != null)
+                            @if (Model.status.CompareTo("PENDING") == 0)
                             {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if (Model.receiverID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
-                                    }
-                                    else
-                                    {
-                                        @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
-                                    }
-                                </div>
+                                if (Model.receiverNotes != null)
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.receiverID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+                                        @if (Model.receiverID == WebSecurity.CurrentUserId)
+                                        {
+                                            @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
+                                        }
+                                    </div>
+                                }
                             }
-                            else
+                            else if(Model.receiverNotes != null)
                             {
-                                <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
-                                    @if (Model.receiverID == WebSecurity.CurrentUserId)
-                                    {
-                                        @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes })
-                                    }
-                                </div>
+                                @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
                             }
-       
-                            @if (Model.satisfaction != null)
+                            
+                            @if (Model.status.CompareTo("PENDING") != 0)
                             {
                                 <p>
                                     Satisfaction Rating =
@@ -119,36 +133,113 @@
                                     }
                                 </p>
                             }
-                            else if(Model.satisfaction == null && WebSecurity.CurrentUserId == Model.receiverID)
+                            else if(WebSecurity.CurrentUserId == Model.receiverID)
                             {
                                 <div class="col-lg-3 col-md-3 col-xs-12" style="margin-top:24px; padding-left:0">
                                     <p>Satisfaction Rating:</p>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-xs-12" id="satisfaction-rating-radios">
-                                    @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-                                    <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-                                    <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-                                    <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-                                    <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-                                    @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-                                    <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    @if (Model.satisfaction == -2)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied" class="selected"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == -1)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied" class="selected"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == 0)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral" class="selected"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == 1)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied" class="selected"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    @if (Model.satisfaction == 2)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied" class="selected"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
+                                    
+                                    @if (Model.satisfaction == null)
+                                    {
+                                        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+                                        <label for="very-unsatisfied"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+                                        <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+                                        <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+                                        <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                                        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+                                        <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+                                    }
                                 </div>
                             }
-                            else if(Model.satisfaction == null && WebSecurity.CurrentUserId == Model.providerID)
+                            else if(WebSecurity.CurrentUserId == Model.providerID)
                             {
-                                <p>Satisfaction Rating: <span>Pending Consumer Input</span></p>
+                                <p>Satisfaction Rating: <span style="font-weight:bold">Pending Consumer Input</span></p>
                             }
-                            
-                            @if (Model.isPendingUser == true && Model.dateClosed == DateTime.MinValue) 
-                            {                            
+
+                            @if (Model.isPendingUser == true && Model.dateClosed == DateTime.MinValue)
+                            {
                                 <div>
                                 @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
                                 @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
                                 <input id="confirm" type="button" value="Confirm Transaction Details" />
                                 <input id="reject" type="button" value="Reject Transaction" />
+                                </div>
+                            }
+                            else if(Model.isPendingUser == false && Model.dateClosed == DateTime.MinValue)
+                            {
+                                <div>
+                                    @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
+                                    @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
+                                    <input id="update" type="button" value="Update Transaction Details" />
                                 </div>
                             }
                             </div>
@@ -194,12 +285,17 @@
             $("#ConfirmForm").submit();
         })
 
-        $('#add-consumer-notes').click(function(){
-            $('#receiver-notes').toggle('hidden-notes');
+        $("#update").click(function (e) {
+            $("#result").val("PENDING");
+            $("#ConfirmForm").submit();
         })
 
-        $('#add-producer-notes').click(function(){
-            $('#provider-notes').toggle('hidden-notes');
+        $('#add-consumer-notes').click(function(){
+            $('#receiver-notes').toggleClass('hidden-notes');
+        })
+
+        $('#add-provider-notes').click(function(){
+            $('#provider-notes').toggleClass('hidden-notes');
         })
     </script>
 
