@@ -528,7 +528,6 @@ namespace Copiosis_Application.Controllers
         //I made some changes to this in order to accomodate changes to satisfaction. Additionally, I added a line that saved our changes to the DB when we finish. Finally I just return a
         //Json object
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult AddNotes(string participant, string notes, Guid tranId, short? newSatisfaction)
         {
             using (var db = new CopiosisEntities())
