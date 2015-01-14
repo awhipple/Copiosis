@@ -306,6 +306,11 @@ namespace Copiosis_Application.Controllers
                 throw new ArgumentNullException("Transaction GUID must be specified");
             }
 
+            if (!(model.result == "Confirmed" || model.result == "Rejected" || model.result == "PENDING"))
+            {
+                throw new ArgumentNullException("A transaction must be specified as Confirmed or Rejected");
+            }
+
             using (var db = new CopiosisEntities())
             {
                 // Get transaction data
