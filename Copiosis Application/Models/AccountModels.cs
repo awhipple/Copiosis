@@ -154,6 +154,7 @@ namespace Copiosis_Application.Models
         public Guid productGuid { get; set; }
         public string productName { get; set; }
         public int productGateway { get; set; }
+        public bool isProducer { get; set; }
 
         // Additional things expected to be used on the Transaction View page.
         public string productDesc { get; set; }

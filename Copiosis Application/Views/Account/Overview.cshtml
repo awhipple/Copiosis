@@ -111,21 +111,46 @@
                                 <!-- <th>Date Created</th> -->
                                 <th>Date Completed</th>
                                 <th>Other Party</th>
-                                <th>NBR Reward</th>
+                                <th>NBR Change</th>
                                 <th>Result</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.completed)
                             {
-                                <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'" style="cursor:pointer">
-                                    <td>@item.productName</td>
-                                    <!-- <td>@item.dateAdded</td> -->
-                                    <td>@item.dateClosed</td>
-                                    <td>@item.otherParty</td>
-                                    <td>@item.nbr</td>
-                                    <td>@item.status</td>
-                                </tr>
+                                if (item.isProducer == true && item.status == "Confirmed")
+                                {
+                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'" style="cursor:pointer">
+                                        <td>@item.productName</td>
+                                        <!-- <td>@item.dateAdded</td> -->
+                                        <td>@item.dateClosed</td>
+                                        <td>@item.otherParty</td>
+                                        <td class="greenText bold">+@item.nbr</td>
+                                        <td class="greenText">@item.status</td>
+                                    </tr>
+                                }
+                                else if (item.isProducer == false && item.status == "Confirmed")
+                                {
+                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'" style="cursor:pointer">
+                                        <td>@item.productName</td>
+                                        <!-- <td>@item.dateAdded</td> -->
+                                        <td>@item.dateClosed</td>
+                                        <td>@item.otherParty</td>
+                                        <td class="redText">-@item.productGateway</td>
+                                        <td class="greenText">@item.status</td>
+                                    </tr>
+                                }
+                                else 
+                                {
+                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'" style="cursor:pointer">
+                                        <td>@item.productName</td>
+                                        <!-- <td>@item.dateAdded</td> -->
+                                        <td>@item.dateClosed</td>
+                                        <td>@item.otherParty</td>
+                                        <td>N/A</td>
+                                        <td class="redText">@item.status</td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>

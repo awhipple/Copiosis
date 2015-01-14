@@ -13,6 +13,18 @@ body {
     padding: 0;
 }
 
+.greenText {
+    color: green;
+}
+
+.redText {
+    color: red;
+}
+
+.bold {
+    font-weight: 800;
+}
+
 a {
     color: #333;
     outline: none;

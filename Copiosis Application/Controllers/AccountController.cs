@@ -214,7 +214,8 @@ namespace Copiosis_Application.Controllers
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
                     productDesc         = t.productDesc,
-                    productGateway      = t.product.gateway
+                    productGateway      = t.product.gateway,
+                    isProducer          = t.providerID == userId ? true : false,
                 }).OrderByDescending(t => t.dateClosed).ToList();
 
             }
