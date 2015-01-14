@@ -322,27 +322,26 @@ namespace Copiosis_Application.Controllers
                     throw new ArgumentNullException(string.Format("Transaction with ID does not exist", model.transactionID));
                 }
 
+                /////////////////////////////////////////////////
                 // Check permissions to update this transaction.
-                if (
-                    // User is the provider and the transaction is waiting on their confirmation.
-                    WebSecurity.CurrentUserId == transaction.providerID     
-                   )
-                {
+                /////////////////////////////////////////////////
+                bool update = false;
 
+                // User is the provider and the transaction is waiting on their confirmation.
+                if (WebSecurity.CurrentUserId == transaction.providerID)
+                {
                     // These are the only things being updated. Anything else sent along in the POST (even if it's in the model)
                     // will be ignored.
                     transaction.providerNotes   = model.providerNotes;
-                    transaction.dateClosed = DateTime.Now;
-                    transaction.status = model.result;
-
-                    db.SaveChanges();
-                    // NEED TO CALCULATE NBR!!!
+                    transaction.dateClosed      = DateTime.Now;
+                    transaction.status          = model.result;   
+                 
+                    // Make sure the DB gets updated below
+                    update = true;
                 }
 
-                else if (
-                        // User is the receiver and the transaction is waiting on their confirmation.
-                        WebSecurity.CurrentUserId == transaction.receiverID
-                        )
+                // User is the receiver and the transaction is waiting on their confirmation.
+                else if (WebSecurity.CurrentUserId == transaction.receiverID)
                 {
                     // Satisfaction must be specified!
                     if (model.satisfaction == null)
@@ -353,11 +352,24 @@ namespace Copiosis_Application.Controllers
                     
                     transaction.receiverNotes   = model.receiverNotes;
                     transaction.satisfaction    = (short)model.satisfaction;
-                    transaction.dateClosed = DateTime.Now;
-                    transaction.status = model.result;
+                    transaction.dateClosed      = DateTime.Now;
+                    transaction.status          = model.result;
 
+                    // Make sure DB gets updated below.
+                    update = true;
+                }
+
+                if (update)
+                {
+                    if (model.result == "Confirmed")
+                    {
+                        // Deduct product cost (NBR) from receiver.
+                        transaction.receiver.nbr -= transaction.product.gateway;
+
+                        // Credit provider with NBR.
+                        transaction.provider.nbr += CalculateNBR((int)transaction.satisfaction, transaction.productID, transaction.providerID);
+                    }
                     db.SaveChanges();
-                    // NEED TO CALCULATE NBR!!!
                 }
             }
 
