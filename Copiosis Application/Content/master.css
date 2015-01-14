@@ -159,10 +159,6 @@ textarea {
     }
 }
 
-textarea[readonly]{
-    cursor:default;
-}
-
 .hidden-notes{
     display:none;
 }
