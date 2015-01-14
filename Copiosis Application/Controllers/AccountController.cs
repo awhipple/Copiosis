@@ -174,7 +174,8 @@ namespace Copiosis_Application.Controllers
                     nbr             = t.nbr??0.0,
                     otherParty      = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName     = t.product.name,
-                    productDesc     = t.productDesc
+                    productDesc     = t.productDesc,
+                    productGateway  = t.product.gateway
                 }).ToList();
 
                 model.pendingOther = db.transactions.Where(
@@ -193,7 +194,8 @@ namespace Copiosis_Application.Controllers
                     nbr                 = t.nbr ?? 0.0,
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
-                    productDesc = t.productDesc
+                    productDesc         = t.productDesc,
+                    productGateway      = t.product.gateway
                 }).ToList();
 
 
@@ -211,8 +213,9 @@ namespace Copiosis_Application.Controllers
                     nbr                 = t.nbr ?? 0.0,
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
-                    productDesc         = t.productDesc
-                }).ToList();
+                    productDesc         = t.productDesc,
+                    productGateway      = t.product.gateway
+                }).OrderByDescending(t => t.dateClosed).ToList();
 
             }
 
