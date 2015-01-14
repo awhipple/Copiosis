@@ -171,6 +171,10 @@ footer {
 
 /* menu
 ----------------------------------------------------------*/
+.nav li.last-item a {
+    padding-right: 0;
+}
+
 ul#menu {
     font-size: 1.3em;
     font-weight: 600;

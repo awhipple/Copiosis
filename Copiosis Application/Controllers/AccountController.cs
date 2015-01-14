@@ -361,6 +361,7 @@ namespace Copiosis_Application.Controllers
 
                 if (update)
                 {
+                    // Only modify NBRs if the transaction was actually confirmed, and not rejected.
                     if (model.result == "Confirmed")
                     {
                         // Deduct product cost (NBR) from receiver.

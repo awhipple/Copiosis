@@ -2,7 +2,7 @@
 {
     <li>@Html.ActionLink("Transaction Overview", "Overview", "Account")</li>
     <li>@Html.ActionLink("Item Management", "Items", "Account")</li>
-    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    <li class="last-item"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
         @Html.AntiForgeryToken()
@@ -11,5 +11,5 @@
 else
 {
     <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    <li class="last-item">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 }
