@@ -331,7 +331,7 @@ namespace Copiosis_Application.Controllers
                 bool update = false;
 
                 // User is the provider and the transaction is waiting on their confirmation.
-                if (WebSecurity.CurrentUserId == transaction.providerID)
+                if (WebSecurity.CurrentUserId == transaction.providerID && transaction.dateClosed == null)
                 {
                     // These are the only things being updated. Anything else sent along in the POST (even if it's in the model)
                     // will be ignored.
@@ -344,7 +344,7 @@ namespace Copiosis_Application.Controllers
                 }
 
                 // User is the receiver and the transaction is waiting on their confirmation.
-                else if (WebSecurity.CurrentUserId == transaction.receiverID)
+                else if (WebSecurity.CurrentUserId == transaction.receiverID && transaction.dateClosed == null)
                 {
                     // Satisfaction must be specified!
                     if (model.satisfaction == null)
@@ -370,8 +370,10 @@ namespace Copiosis_Application.Controllers
                         // Deduct product cost (NBR) from receiver.
                         transaction.receiver.nbr -= transaction.product.gateway;
 
-                        // Credit provider with NBR.
-                        transaction.provider.nbr += CalculateNBR((int)transaction.satisfaction, transaction.productID, transaction.providerID);
+                        // Credit provider with NBR. Bind the NBR to the transaction for records purposes.
+                        float providerReward  = CalculateNBR((int)transaction.satisfaction, transaction.productID, transaction.providerID);
+                        transaction.provider.nbr += providerReward;
+                        transaction.nbr = providerReward;
                     }
                     db.SaveChanges();
                 }
