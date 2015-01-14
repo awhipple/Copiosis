@@ -31,7 +31,16 @@
                             }
                     @if(Model.status.CompareTo("PENDING") !=0)
                             {
-                        <p>Transaction Status: <span style="font-weight:bold">@Model.status</span></p>
+                        <p>Transaction Status:
+                            @if(Model.status.CompareTo("Rejected") == 0)
+                            {
+                                <span style="font-weight:bold; color:red">@Model.status</span>
+                            }
+                            else if (Model.status.CompareTo("Confirmed") == 0)
+                            {
+                                <span style="font-weight:bold; color:#33CC33">@Model.status</span>
+                            }
+                            </p>
                             }
                 </div>
             </div>
@@ -113,7 +122,7 @@
                                 @Html.TextAreaFor(t => t.receiverNotes, new { @class = "form-control", @rows = "4", @cols = "80", @id = "receiver-notes", @val = Model.receiverNotes, @readonly=true })
                             }
 
-                    @if (Model.status.CompareTo("PENDING") != 0)
+                    @if (Model.status.CompareTo("PENDING") != 0 && Model.status.CompareTo("Rejected") != 0)
                             {
                         <p>
                             Satisfaction Rating =
@@ -139,7 +148,7 @@
                                     }
                         </p>
                             }
-                            else if(WebSecurity.CurrentUserId == Model.receiverID)
+                            else if(WebSecurity.CurrentUserId == Model.receiverID && Model.status.CompareTo("Rejected") != 0)
                             {
                                 <div class="col-lg-3 col-md-3 col-xs-12" style="margin-top:24px; padding-left:0">
                                     <p>Satisfaction Rating:</p>
@@ -226,7 +235,7 @@
                                     }
                                 </div>
                             }
-                            else if(WebSecurity.CurrentUserId == Model.providerID)
+                            else if(WebSecurity.CurrentUserId == Model.providerID && Model.status.CompareTo("Rejected") != 0)
                             {
                                 <p>Satisfaction Rating: <span style="font-weight:bold">Pending Transaction Confirmation or Rejection</span></p>
                             }
@@ -251,20 +260,6 @@
                             }
                 </div>
             </div>
-            @*Cofirm/Reject Transaction buttons*@
-            @{/*
-                    TYLER, I added some buttons and some simple javascript that you can use as a template
-                    if you want. The buttons are live and working, the backend is wired up. - Josiah
-                    @if (Model.isPendingUser)
-                    {
-                        <div class="col-lg-12 col-md-12 col-xs-12">
-                            @*TO DO: Need to implement Confirm Transaction action*@
-                            <button type="button" class="btn-sm" onclick="location.href='@Url.Action("Confirm", "Account", new { @tranId = Model.transactionID, @satisfactionRating = Model.satisfaction})'">Confirm Transaction</button>
-                            @*TO DO: Need to create an Action called "RejectTrans"?*@
-                            <button type="button" class="btn-sm" onclick="location.href='@Url.Action("Confirm", "Account", new { @tranId = Model.transactionID, @satisfactionRating = Model.satisfaction})'">Reject Transaction</button>
-                        </div>
-                    }
-                    @*/}
         </div>
         }
         }
