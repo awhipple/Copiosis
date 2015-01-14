@@ -27,9 +27,9 @@
                         <thead>
                             <tr>
                                 <th>Service/Item Name</th>
+                                <th>Gateway</th>
                                 <th>Date Created</th>
                                 <th>Other Party</th>
-                                <th>Gateway</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,17 +39,17 @@
                                 {
                                     <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })' " style="background-color: #F4FA58;cursor:pointer">
                                         <td> <span class="glyphicon glyphicon-flag"></span> @item.productName </td>
-                                        <td>@item.dateAdded</td>
-                                        <td>@item.otherParty</td>
                                         <td>@item.productGateway</td>
+                                        <td>@item.dateAdded</td>
+                                        <td>@item.otherParty</td>                                        
                                     </tr>
                                 }
                                 else { 
                                     <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })' " style="cursor:pointer">
                                         <td>@item.productName</td>
-                                        <td>@item.dateAdded</td>
-                                        <td>@item.otherParty</td>
                                         <td>@item.productGateway</td>
+                                        <td>@item.dateAdded</td>
+                                        <td>@item.otherParty</td>                                        
                                     </tr>
                                 }
                             }
@@ -73,9 +73,9 @@
                             <thead>
                                 <tr>
                                     <th>Service/Item Name</th>
-                                    <th>Date Created</th>
-                                    <th>Other Party</th>
                                     <th>Gateway</th>
+                                    <th>Date Created</th>
+                                    <th>Other Party</th>                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -83,9 +83,9 @@
                                 {                                
                                     <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })' " style="cursor:pointer">
                                         <td>@item.productName</td>
-                                        <td>@item.dateAdded</td>
-                                        <td>@item.otherParty</td>
                                         <td>@item.productGateway</td>
+                                        <td>@item.dateAdded</td>
+                                        <td>@item.otherParty</td>                                        
                                     </tr>                        
                                 }
                             </tbody>
