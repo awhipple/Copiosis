@@ -332,11 +332,9 @@ namespace Copiosis_Application.Controllers
                     // These are the only things being updated. Anything else sent along in the POST (even if it's in the model)
                     // will be ignored.
                     transaction.providerNotes   = model.providerNotes;
-                    if(model.result.CompareTo("PENDING") != 0)
-                    {
-                        transaction.dateClosed = DateTime.Now;
-                        transaction.status = model.result;
-                    }
+                    transaction.dateClosed = DateTime.Now;
+                    transaction.status = model.result;
+
                     db.SaveChanges();
                     // NEED TO CALCULATE NBR!!!
                 }
@@ -355,11 +353,9 @@ namespace Copiosis_Application.Controllers
                     
                     transaction.receiverNotes   = model.receiverNotes;
                     transaction.satisfaction    = (short)model.satisfaction;
-                    if(model.result.CompareTo("PENDING") !=0)
-                    {
-                        transaction.dateClosed = DateTime.Now;
-                        transaction.status = model.result;
-                    }
+                    transaction.dateClosed = DateTime.Now;
+                    transaction.status = model.result;
+
                     db.SaveChanges();
                     // NEED TO CALCULATE NBR!!!
                 }
@@ -534,10 +530,36 @@ namespace Copiosis_Application.Controllers
 
         // POST: /Account/AddNotes
         // Add notes to a transaction based on the participant adding the notes
+        //I made some changes to this in order to accomodate changes to satisfaction. Additionally, I added a line that saved our changes to the DB when we finish. Finally I just return a
+        //Json object
         [HttpPost]
-        public ActionResult AddNotes(string participant, string notes, Guid tranId)
+        public ActionResult AddNotes(string participant, string notes, Guid tranId, short? newSatisfaction)
         {
-            return View(tranId);
+            using (var db = new CopiosisEntities())
+            {
+                int userId = WebSecurity.CurrentUserId;
+                var trans = db.transactions.Where(a => a.transactionID == tranId).FirstOrDefault();
+                if(participant.Equals("producer"))
+                {
+                    if(trans.providerID == userId)
+                    {
+                        trans.providerNotes = notes;
+                    }
+                }
+                else if(participant.Equals("consumer"))
+                {
+                    if (trans.receiverID == userId)
+                    {
+                        if (newSatisfaction != null)
+                        {
+                            trans.satisfaction = newSatisfaction;
+                        }
+                        trans.receiverNotes = notes;
+                    }
+                }
+                db.SaveChanges();
+            }
+            return Json(new { success = true });
         }
 
         // GET: /Account/Items
