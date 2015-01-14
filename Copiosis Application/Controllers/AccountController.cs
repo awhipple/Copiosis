@@ -174,6 +174,7 @@ namespace Copiosis_Application.Controllers
                     nbr             = t.nbr??0.0,
                     otherParty      = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName     = t.product.name,
+                    productGateway  = t.product.gateway,
                     productDesc     = t.productDesc
                 }).ToList();
 
@@ -193,6 +194,7 @@ namespace Copiosis_Application.Controllers
                     nbr                 = t.nbr ?? 0.0,
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
+                    productGateway = t.product.gateway,
                     productDesc = t.productDesc
                 }).ToList();
 
@@ -211,6 +213,7 @@ namespace Copiosis_Application.Controllers
                     nbr                 = t.nbr ?? 0.0,
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
+                    productGateway = t.product.gateway,
                     productDesc         = t.productDesc
                 }).ToList();
 
