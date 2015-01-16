@@ -32,6 +32,7 @@ namespace Copiosis_Application.DB_Data
         public Nullable<System.DateTime> lastLogin { get; set; }
         public int locationID { get; set; }
         public Nullable<System.DateTime> prevLastLogin { get; set; }
+        public int vendorCode { get; set; }
     
         public virtual location location { get; set; }
         public virtual ICollection<transaction> transactions { get; set; }

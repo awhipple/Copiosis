@@ -87,6 +87,7 @@
           <Property Name="lastLogin" Type="datetime" />
           <Property Name="locationID" Type="int" Nullable="false" />
           <Property Name="prevLastLogin" Type="datetime" />
+          <Property Name="vendorCode" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__product__itemCla__173876EA">
           <End Role="itemClass" Type="Self.itemClass" Multiplicity="1" />
@@ -307,6 +308,7 @@
           <NavigationProperty Name="consumerTransactions" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="user" ToRole="transaction" />
           <NavigationProperty Name="products" Relationship="CopiosisDBModel.FK__product__ownerID__5AEE82B9" FromRole="user" ToRole="product" />
           <Property Name="prevLastLogin" Type="DateTime" Precision="3" />
+          <Property Name="vendorCode" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK__product__itemCla__173876EA">
           <End Role="itemClass" Type="Self.itemClass" Multiplicity="1" />
@@ -508,6 +510,7 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="CopiosisDBModel.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="vendorCode" ColumnName="vendorCode" />
                 <ScalarProperty Name="prevLastLogin" ColumnName="prevLastLogin" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="username" ColumnName="username" />
