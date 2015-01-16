@@ -18,6 +18,7 @@ INSERT INTO location VALUES(
 
 CREATE TABLE [user] (
 userID int IDENTITY(1,1) NOT NULL PRIMARY KEY, 
+vendorCode int NOT NULL,
 username varchar(55) NOT NULL, 
 email varchar(200), 
 firstName varchar(55), 
@@ -81,7 +82,7 @@ gateway int NOT NULL,
 itemClass int NOT NULL FOREIGN KEY REFERENCES itemClass(classID),
 createdDate datetime NOT NULL, 
 deletedDate datetime,
-ownerID int NOT NULL FOREIGN KEY REFERENCES [user](userID)
+ownerID int NOT NULL FOREIGN KEY REFERENCES [user](userID),
 guid uniqueidentifier NOT NULL DEFAULT newid() 
 );
 
