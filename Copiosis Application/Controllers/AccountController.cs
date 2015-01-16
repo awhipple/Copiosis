@@ -396,63 +396,7 @@ namespace Copiosis_Application.Controllers
 
             string typelower = type.ToLower();
             NewTransactionModel model = new NewTransactionModel();
-            if(typelower == "consumer")
-            {
-                model.IsProducer = false;
-                List<string> producers = new List<string>();
-                List<string> products = new List<string>();
-
-                using(var db = new CopiosisEntities())
-                {
-                    var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1 && p.deletedDate == null).Select(u => u.user).Distinct().ToList();
-
-                    if (usersWithProducts.Count > 0)
-                    {
-                        foreach (var pro in usersWithProducts)
-                        {
-                            producers.Add(string.Format("{0} {1}", pro.firstName, pro.lastName));
-                        }
-
-                        var initialProducer = usersWithProducts.First();
-                        var initialItemList = FetchInitialProducerItems(initialProducer.userID);
-                        foreach (var item in initialItemList)
-                        {
-                            products.Add(item.ProductName);
-                        }
-                    }
-                }
-                model.Products = products;
-                model.Producers = producers;
-                
-            }
-            else if(typelower == "producer")
-            {
-                model.IsProducer = true;
-                
-                var producerItems = CurrenUserItems();
-                List<string> products = new List<string>();
-                foreach (var item in producerItems)
-                {
-                    products.Add(item.ProductName);
-                }
-                model.Products = products;
-                
-                List<string> consumers = new List<string>();
-                using(var db = new CopiosisEntities())
-                {
-                    var c = db.users.Where(u => u.status == 1 && u.userID != WebSecurity.CurrentUserId)
-                        .Select(s => new { FirstName = s.firstName, LastName = s.lastName, Username = s.username, Email = s.email}).ToList();
-                    foreach(var con in c)
-                    {
-                        consumers.Add(string.Format("{0} {1}", con.FirstName, con.LastName));
-                    }
-                }
-                model.Consumers = consumers;
-            }
-            else
-            {
-                throw new ArgumentException("Transaction type not recognized");
-            }
+            PopulateNewTransactionModel(typelower, model);
             return View(model);
         }
 
@@ -485,6 +429,13 @@ namespace Copiosis_Application.Controllers
                     if(product == null)
                     {
                         throw new ArgumentException("Product not found");
+                    }
+                    double? currentUserNBR = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.nbr).FirstOrDefault();
+                    if(!currentUserNBR.HasValue || currentUserNBR.Value < product.gateway)
+                    {
+                        ModelState.AddModelError("InsufficientNBR", "You do not have enough NBR for this good or service");
+                        PopulateNewTransactionModel(type, model);
+                        return View(model);
                     }
 
                     transaction consumerTran = new transaction();
@@ -520,6 +471,14 @@ namespace Copiosis_Application.Controllers
                     if(product == null)
                     {
                         throw new ArgumentException("Product not found");
+                    }
+
+                    double? consumerNBR = db.users.Where(u => u.userID == consumer.userID).Select(u => u.nbr).FirstOrDefault();
+                    if (!consumerNBR.HasValue || consumerNBR.Value < product.gateway)
+                    {
+                        ModelState.AddModelError("InsufficientNBR", "This consumer does not have enough NBR for this good or service");
+                        PopulateNewTransactionModel(type, model);
+                        return View(model);
                     }
 
                     transaction producerTran = new transaction();
@@ -1006,11 +965,69 @@ namespace Copiosis_Application.Controllers
         }
 
         #region Helpers
-        private string ParseOutUsername(string name)
+        private void PopulateNewTransactionModel(string type, NewTransactionModel model)
         {
-            var x = name.Split('|');
-            return x[1].Trim();
+            if (type == "consumer")
+            {
+                model.IsProducer = false;
+                List<string> producers = new List<string>();
+                List<string> products = new List<string>();
+
+                using (var db = new CopiosisEntities())
+                {
+                    var usersWithProducts = db.products.Where(p => p.ownerID != WebSecurity.CurrentUserId && p.user.status == 1 && p.deletedDate == null).Select(u => u.user).Distinct().ToList();
+
+                    if (usersWithProducts.Count > 0)
+                    {
+                        foreach (var pro in usersWithProducts)
+                        {
+                            producers.Add(string.Format("{0} {1}", pro.firstName, pro.lastName));
+                        }
+
+                        var initialProducer = usersWithProducts.First();
+                        var initialItemList = FetchInitialProducerItems(initialProducer.userID);
+                        foreach (var item in initialItemList)
+                        {
+                            products.Add(item.ProductName);
+                        }
+                    }
+                }
+                model.Products = products;
+                model.Producers = producers;
+
+            }
+            else if (type == "producer")
+            {
+                model.IsProducer = true;
+
+                var producerItems = CurrenUserItems();
+                List<string> products = new List<string>();
+                foreach (var item in producerItems)
+                {
+                    products.Add(item.ProductName);
+                }
+                model.Products = products;
+
+                List<string> consumers = new List<string>();
+                using (var db = new CopiosisEntities())
+                {
+                    var c = db.users.Where(u => u.status == 1 && u.userID != WebSecurity.CurrentUserId)
+                        .Select(s => new { FirstName = s.firstName, LastName = s.lastName, Username = s.username, Email = s.email }).ToList();
+                    foreach (var con in c)
+                    {
+                        consumers.Add(string.Format("{0} {1}", con.FirstName, con.LastName));
+                    }
+                }
+                model.Consumers = consumers;
+            }
+            else
+            {
+                throw new ArgumentException("Transaction type not recognized");
+            }
+
+            return;
         }
+
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
