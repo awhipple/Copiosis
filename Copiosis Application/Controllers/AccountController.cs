@@ -410,7 +410,7 @@ namespace Copiosis_Application.Controllers
                     {
                         foreach (var pro in usersWithProducts)
                         {
-                            producers.Add(string.Format("{0} {1} | {2} | {3}", pro.firstName, pro.lastName, pro.username, pro.email));
+                            producers.Add(string.Format("{0} {1}", pro.firstName, pro.lastName));
                         }
 
                         var initialProducer = usersWithProducts.First();
@@ -444,7 +444,7 @@ namespace Copiosis_Application.Controllers
                         .Select(s => new { FirstName = s.firstName, LastName = s.lastName, Username = s.username, Email = s.email}).ToList();
                     foreach(var con in c)
                     {
-                        consumers.Add(string.Format("{0} {1} | {2} | {3}", con.FirstName, con.LastName, con.Username, con.Email));
+                        consumers.Add(string.Format("{0} {1}", con.FirstName, con.LastName));
                     }
                 }
                 model.Consumers = consumers;
@@ -470,13 +470,15 @@ namespace Copiosis_Application.Controllers
             string typeLower = type.ToLower();
             if(type == "consumer")
             {
-                string producerUN = ParseOutUsername(model.Producer);
+                string[] producerName = model.Producer.Split(' ');
+                string producerFirstName = producerName[0];
+                string producerLastName = producerName[1];
                 using(var db = new CopiosisEntities())
                 {
-                    var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
+                    var producer = db.users.Where(u => u.firstName == producerFirstName && u.lastName == producerLastName && u.status == 1).FirstOrDefault();
                     if (producer == null)
                     {
-                        throw new ArgumentException(string.Format("Producer {0} not found", producerUN));
+                        throw new ArgumentException(string.Format("Producer {0} {1} not found", producerFirstName, producerLastName));
                     }
 
                     var product = db.products.Where(p => p.ownerID == producer.userID && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
@@ -503,13 +505,15 @@ namespace Copiosis_Application.Controllers
             }
             else if(type == "producer")
             {
-                string consumerUN = ParseOutUsername(model.Consumer);
+                string[] consumerName = model.Consumer.Split(' ');
+                string consumerFirstName = consumerName[0];
+                string consumerLastName = consumerName[1];
                 using(var db = new CopiosisEntities())
                 {
-                    var consumer = db.users.Where(u => u.username == consumerUN && u.status == 1).FirstOrDefault();
+                    var consumer = db.users.Where(u => u.firstName == consumerFirstName && u.lastName == consumerLastName && u.status == 1).FirstOrDefault();
                     if(consumer == null)
                     {
-                        throw new ArgumentException("Consumer not found");
+                        throw new ArgumentException(string.Format("Consumer {0} {1} not found", consumerFirstName, consumerLastName));
                     }
 
                     var product = db.products.Where(p => p.ownerID == WebSecurity.CurrentUserId && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
@@ -660,9 +664,15 @@ namespace Copiosis_Application.Controllers
         {
             List<string> products = new List<string>();
             bool result = true;
+
+            /* Note: this is not a great way to be doing this, relying soley on the first name last name as these may not be unique. But the only solution
+             * seems to be to include the username which has been stated that they do not want */
+            string[] producerName = name.Split(' ');
+            string producerFirstName = producerName[0];
+            string producerLastName = producerName[1];
             using (var db = new CopiosisEntities())
             {
-                int? producerID = db.users.Where(u => u.username == name).Select(uID => uID.userID).FirstOrDefault();
+                int? producerID = db.users.Where(u => u.firstName == producerFirstName && u.lastName == producerLastName).Select(uID => uID.userID).FirstOrDefault();
                 if(producerID == null)
                 {
                     throw new ArgumentNullException(string.Format("No user found with name {0}", name));
