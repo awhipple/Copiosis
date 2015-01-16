@@ -503,14 +503,6 @@ namespace Copiosis_Application.Controllers
             return RedirectToAction("Overview");
         }
 
-        // POST: /Account/Confirm 
-        // Confirm a transaction. Takes a GUID and the satisfaction rating provided by the consumer.
-        [HttpPost]
-        public ActionResult Confirm(Guid tranId, int satisfactionRating)
-        {
-            return View();
-        }
-
         // POST: /Account/AddNotes
         // Add notes to a transaction based on the participant adding the notes
         //I made some changes to this in order to accomodate changes to satisfaction. Additionally, I added a line that saved our changes to the DB when we finish. Finally I just return a
