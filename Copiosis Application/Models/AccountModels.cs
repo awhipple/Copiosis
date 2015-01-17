@@ -183,6 +183,7 @@ namespace Copiosis_Application.Models
         public List<string> Consumers { get; set; }
         public List<string> Producers { get; set; }
         public List<string> Products { get; set; }
+        public List<string> Usernames { get; set; }
         /*POST*/
 
         [Display(Name = "Consumer:")]

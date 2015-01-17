@@ -611,7 +611,7 @@ namespace Copiosis_Application.Controllers
         }
 
         [HttpGet]
-        public ActionResult FetchProducerItems(string name)
+        public ActionResult FetchProducerItems(string name, int idx, string username)
         {
             List<string> products = new List<string>();
             bool result = true;
@@ -621,9 +621,10 @@ namespace Copiosis_Application.Controllers
             string[] producerName = name.Split(' ');
             string producerFirstName = producerName[0];
             string producerLastName = producerName[1];
+            string currentUserName = username;
             using (var db = new CopiosisEntities())
             {
-                int? producerID = db.users.Where(u => u.firstName == producerFirstName && u.lastName == producerLastName).Select(uID => uID.userID).FirstOrDefault();
+                int? producerID = db.users.Where(u => u.username == currentUserName).Select(uID => uID.userID).FirstOrDefault();
                 if(producerID == null)
                 {
                     throw new ArgumentNullException(string.Format("No user found with name {0}", name));
@@ -632,7 +633,7 @@ namespace Copiosis_Application.Controllers
                 products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name).Distinct().ToList();
                 if (products == null)
                 {
-                    result = false;
+                    result = true;
                 }
             }
 
@@ -964,6 +965,7 @@ namespace Copiosis_Application.Controllers
                 model.IsProducer = false;
                 List<string> producers = new List<string>();
                 List<string> products = new List<string>();
+                List<string> usernames = new List<string>();
 
                 using (var db = new CopiosisEntities())
                 {
@@ -974,6 +976,7 @@ namespace Copiosis_Application.Controllers
                         foreach (var pro in usersWithProducts)
                         {
                             producers.Add(string.Format("{0} {1}", pro.firstName, pro.lastName));
+                            usernames.Add(string.Format("{0}", pro.username));
                         }
 
                         var initialProducer = usersWithProducts.First();
@@ -984,6 +987,7 @@ namespace Copiosis_Application.Controllers
                         }
                     }
                 }
+                model.Usernames = usernames;
                 model.Products = products;
                 model.Producers = producers;
 
