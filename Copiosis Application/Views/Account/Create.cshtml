@@ -131,7 +131,6 @@
             var currentChoice = $(this).val();
             var index = $("#producer-dropdown option:selected").index()
             var userNameList = [];
-
             @foreach(string username in Model.Usernames)
             {
                 <text>userNameList.push("@(username)");

@@ -1003,7 +1003,7 @@ namespace Copiosis_Application.Controllers
                     products.Add(item.ProductName);
                 }
                 model.Products = products;
-
+                List<string> usernames = new List<string>();
                 List<string> consumers = new List<string>();
                 using (var db = new CopiosisEntities())
                 {
@@ -1012,8 +1012,10 @@ namespace Copiosis_Application.Controllers
                     foreach (var con in c)
                     {
                         consumers.Add(string.Format("{0} {1}", con.FirstName, con.LastName));
+                        usernames.Add(string.Format("{0}", con.Username));
                     }
                 }
+                model.Usernames = usernames;
                 model.Consumers = consumers;
             }
             else
