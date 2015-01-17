@@ -24,7 +24,7 @@ namespace Copiosis_Application.Controllers
         private static string ADMINROLE = "ADMIN";
         private static string USERROLE = "USER";
         private static string ERROR_SUBJECT_TEMPDATA_KEY = "errorSubject";
-        private static string ERROR_MESSAGE_TEMPDATA_VAL = "errorMessage";
+        private static string ERROR_MESSAGE_TEMPDATA_KEY = "errorMessage";
         
         protected ControllerExceptionHandler ACCOUNTERROR = new ControllerExceptionHandler(); // used handle the TempData key-values pairs 
                                                                                               // which is used to pass error messages. Note
@@ -988,7 +988,7 @@ namespace Copiosis_Application.Controllers
 
             public string setAndGetErrorMessage(Controller controllerContext, string tempDataValue)
             {
-                setValues(controllerContext, ERROR_MESSAGE_TEMPDATA_VAL, tempDataValue);
+                setValues(controllerContext, ERROR_MESSAGE_TEMPDATA_KEY, tempDataValue);
                 return this.ErrorMessage;
             }
 
