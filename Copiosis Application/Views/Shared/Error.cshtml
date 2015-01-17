@@ -1,6 +1,5 @@
-﻿@using System.Diagnostics;
-@model System.Web.Mvc.HandleErrorInfo
-
+﻿@*model System.Web.Mvc.HandleErrorInfo*@
+@model Copiosis_Application.Filters.CustomErrorHandlingAttribute
 @{
     ViewBag.Title = "Error";
 }
@@ -30,20 +29,18 @@
         <div class="col-md-12">
             <div class="error-template">
                 <h1>
-                    Oops!
+                    <strong> Sorry, something went wrong!</strong>
                 </h1>
+                <hr />
+                <hr />
                 <h2>
                     @*TO DO: Make this dynamic*@
-                    404 Not Found
+                    @TempData["errorSubject"].ToString():
                 </h2>
                 <div class="error-details">
-                    @*TO DO: Make this dynamic and more descriptive*@
-                    Sorry, an error has occured, Requested page not found!
-                    @*{
-                            if (Server.LastError != null) {
-                                //Display detailed error
-                            }
-                        }*@
+                    <h3>
+                    @TempData["errorMessage"].ToString()
+                    </h3>
                 </div>
                 <div class="error-actions">
                     <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">

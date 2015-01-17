@@ -16,7 +16,7 @@ using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Controllers
 {
-
+    [CustomErrorHandling]
     [Authorize]
     [InitializeSimpleMembership]
     public class AccountController : Controller
@@ -564,18 +564,21 @@ namespace Copiosis_Application.Controllers
 
         // POST: /Account/AddItem
         // Save a new item to the database. Takes a model of the new item.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddItem(AddItemModel model)
         {
             ValidateItemModel(model);
+            TempData["errorSubject"] = "Error while trying to add an item";
             product p = new product();
             using (var db = new CopiosisEntities())
             {
                 int? itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).FirstOrDefault();
                 if (itemClassId == null)
                 {
-                    throw new ArgumentException("Product item class not found");
+                    TempData["errorMessage"] = "Product item class not found";
+                    throw new ArgumentException(TempData["errorMessage"].ToString());
                 }
 
                 p.name = model.Name;
@@ -614,6 +617,7 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult FetchProducerItems(string name, int idx, string username)
         {
+            TempData["errorSubject"] = "Error while trying to retrieve item(s)";
             List<string> products = new List<string>();
             bool result = true;
 
@@ -628,7 +632,8 @@ namespace Copiosis_Application.Controllers
                 int? producerID = db.users.Where(u => u.username == currentUserName).Select(uID => uID.userID).FirstOrDefault();
                 if(producerID == null)
                 {
-                    throw new ArgumentNullException(string.Format("No user found with name {0}", name));
+                    TempData["errorMessage"] = string.Format("No user found with name {0}", name);
+                    throw new ArgumentNullException(TempData["errorMessage"].ToString());
                 }
                 
                 products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name).Distinct().ToList();
@@ -646,6 +651,7 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult EditItem(Guid itemId)
         {
+            TempData["errorSubject"] = "Error while trying to edit an item";
             AddItemModel model = new AddItemModel();
 
             using (var db = new CopiosisEntities())
@@ -653,7 +659,8 @@ namespace Copiosis_Application.Controllers
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
                 if (item == null)
                 {
-                    throw new ArgumentException(string.Format("Product with ID {0} not found", itemId));
+                    TempData["errorMessage"] = string.Format("Product with ID {0} not found", itemId);
+                    throw new ArgumentException(TempData["errorMessage"].ToString());
                 }
                 else
                 {
@@ -675,13 +682,15 @@ namespace Copiosis_Application.Controllers
         public ActionResult EditItem(AddItemModel model, Guid itemId)
         {
             ValidateItemModel(model);
+            TempData["errorSubject"] = "Error while trying to edit an item";
             using (var db = new CopiosisEntities())
             {
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
                 int itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).First();
                 if (item == null)
                 {
-                    throw new ArgumentException(string.Format("Product with ID {0} not found", itemId));
+                    TempData["errorMessage"] = string.Format("Product with ID {0} not found", itemId);
+                    throw new ArgumentException(TempData["errorMessage"].ToString());
                 }
                 else
                 {
@@ -839,19 +848,23 @@ namespace Copiosis_Application.Controllers
 
         private void ValidateItemModel(AddItemModel model)
         {
+            TempData["errorSubject"] = "Error while validating an item";
             if (model.Name == null || model.Name == string.Empty)
             {
-                throw new ArgumentException("Product name is required");
+                TempData["errorMessage"] = "Product name is required";
+                throw new ArgumentException(TempData["errorMessage"].ToString());
             }
 
             if (model.Gateway < 0)
             {
-                throw new ArgumentException("Product cannot have a negative gateway");
+                TempData["errorMessage"] = "Product cannot have a negative gateway";
+                throw new ArgumentException(TempData["errorMessage"].ToString());
             }
 
             if (model.Description == null || model.Description == string.Empty)
             {
-                throw new ArgumentException("Product description is required");
+                TempData["errorMessage"] = "Product description is required";
+                throw new ArgumentException(TempData["errorMessage"].ToString());
             }
         }
 
@@ -894,16 +907,19 @@ namespace Copiosis_Application.Controllers
             using (var db = new CopiosisEntities())
             {
                 //
+                TempData["errorSubject"] = "Error while calculating the NBR";
                 var product = db.products.Where(a => a.productID == productId && a.ownerID == providerId).FirstOrDefault();
                 if(product == null)
                 {
-                    throw new ArgumentException("Product not found for this provider");
+                    TempData["errorMessage"] = "Product not found for this provider";
+                    throw new ArgumentException(TempData["errorMessage"].ToString());
                 }
 
                 var item = db.itemClasses.Where(a => a.classID == product.itemClass).FirstOrDefault();
                 if(item == null)
                 {
-                    throw new ArgumentException("Item class not found for this product");
+                    TempData["errorMessage"] = "Item class not found for this product";
+                    throw new ArgumentException(TempData["errorMessage"].ToString());
                 }
 
                 float Cpdb = (float)item.cPdb;
