@@ -23,7 +23,14 @@ namespace Copiosis_Application.Controllers
     {
         private static string ADMINROLE = "ADMIN";
         private static string USERROLE = "USER";
-
+        private static string ERROR_SUBJECT_TEMPDATA_KEY = "errorSubject";
+        private static string ERROR_MESSAGE_TEMPDATA_VAL = "errorMessage";
+        
+        protected ControllerExceptionHandler ACCOUNTERROR = new ControllerExceptionHandler(); // used handle the TempData key-values pairs 
+                                                                                              // which is used to pass error messages. Note
+                                                                                              // that an exception is considered "handled" 
+                                                                                              // when it is made known in the Error page
+ 
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -228,9 +235,10 @@ namespace Copiosis_Application.Controllers
         // View a specific transaction. Probably takes some kind of GUID.
         public ActionResult View(Guid tranId)
         {
+            ACCOUNTERROR.setErrorSubject(this, "Error while trying to retrieve a transaction");
             if(tranId == null)
             {
-                throw new ArgumentNullException("Transaction ID must be specified");
+                throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, "Transaction ID must be specified"));
             }
 
             TransactionModel model = new TransactionModel();
@@ -244,7 +252,7 @@ namespace Copiosis_Application.Controllers
                 // Make sure a transaction was found.
                 if(transaction == null)
                 {
-                    throw new ArgumentNullException(string.Format("Transaction with ID does not exist", tranId));
+                    throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, string.Format("Transaction with ID does not exist", tranId)));
                 }
 
                 // Check permissions to view this transaction.
@@ -292,7 +300,7 @@ namespace Copiosis_Application.Controllers
                 }
                 else
                 {
-                    throw new ArgumentException("Current user not authorized to view this transaction");
+                    throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Current user not authorized to view this transaction"));
                 }
             }
             return View(model);
@@ -305,15 +313,15 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult View(string act, TransactionModel model)
         {
-            
+            ACCOUNTERROR.setErrorSubject(this, "Error while trying to add a transaction");
             if (model.transactionID == null)
             {
-                throw new ArgumentNullException("Transaction GUID must be specified");
+                throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, "Transaction GUID must be specified"));
             }
 
             if (!(model.result == "Confirmed" || model.result == "Rejected"))
             {
-                throw new ArgumentNullException("A transaction must be specified as Confirmed or Rejected");
+                throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, "A transaction must be specified as Confirmed or Rejected"));
             }
 
             using (var db = new CopiosisEntities())
@@ -324,7 +332,7 @@ namespace Copiosis_Application.Controllers
                 // Make sure a transaction was found.
                 if(transaction == null)
                 {
-                    throw new ArgumentNullException(string.Format("Transaction with ID does not exist", model.transactionID));
+                    throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, string.Format("Transaction with ID does not exist", model.transactionID)));
                 }
 
                 /////////////////////////////////////////////////
@@ -392,7 +400,8 @@ namespace Copiosis_Application.Controllers
         {
             if(type == null)
             {
-                throw new ArgumentNullException("Type of transaction must be specified");
+                ACCOUNTERROR.setErrorSubject(this, "Error while trying retrieve a transaction");
+                throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, "Type of transaction must be specified"));
             }
 
             string typelower = type.ToLower();
@@ -407,9 +416,10 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(string type, NewTransactionModel model)
         {
+            ACCOUNTERROR.setErrorSubject(this, "Error while trying create a transaction");
             if (type == null)
             {
-                throw new ArgumentNullException("Type of transaction must be specified");
+                throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, "Type of transaction must be specified"));
             }
 
             string typeLower = type.ToLower();
@@ -423,13 +433,13 @@ namespace Copiosis_Application.Controllers
                     var producer = db.users.Where(u => u.firstName == producerFirstName && u.lastName == producerLastName && u.status == 1).FirstOrDefault();
                     if (producer == null)
                     {
-                        throw new ArgumentException(string.Format("Producer {0} {1} not found", producerFirstName, producerLastName));
+                        throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, string.Format("Producer {0} {1} not found", producerFirstName, producerLastName)));
                     }
 
                     var product = db.products.Where(p => p.ownerID == producer.userID && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
                     if(product == null)
                     {
-                        throw new ArgumentException("Product not found");
+                        throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Product not found"));
                     }
                     double? currentUserNBR = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.nbr).FirstOrDefault();
                     if(!currentUserNBR.HasValue || currentUserNBR.Value < product.gateway)
@@ -570,15 +580,14 @@ namespace Copiosis_Application.Controllers
         public ActionResult AddItem(AddItemModel model)
         {
             ValidateItemModel(model);
-            TempData["errorSubject"] = "Error while trying to add an item";
             product p = new product();
             using (var db = new CopiosisEntities())
             {
                 int? itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).FirstOrDefault();
                 if (itemClassId == null)
                 {
-                    TempData["errorMessage"] = "Product item class not found";
-                    throw new ArgumentException(TempData["errorMessage"].ToString());
+                    ACCOUNTERROR.setErrorSubject(this, "Error while trying to add an item");
+                    throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Product item class not found"));
                 }
 
                 p.name = model.Name;
@@ -617,7 +626,6 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult FetchProducerItems(string name, int idx, string username)
         {
-            TempData["errorSubject"] = "Error while trying to retrieve item(s)";
             List<string> products = new List<string>();
             bool result = true;
 
@@ -632,8 +640,8 @@ namespace Copiosis_Application.Controllers
                 int? producerID = db.users.Where(u => u.username == currentUserName).Select(uID => uID.userID).FirstOrDefault();
                 if(producerID == null)
                 {
-                    TempData["errorMessage"] = string.Format("No user found with name {0}", name);
-                    throw new ArgumentNullException(TempData["errorMessage"].ToString());
+                    ACCOUNTERROR.setErrorSubject(this, "Error while trying to retrieve item(s)");
+                    throw new ArgumentNullException(ACCOUNTERROR.setAndGetErrorMessage(this, string.Format("No user found with name {0}", name)));
                 }
                 
                 products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name).Distinct().ToList();
@@ -651,7 +659,6 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult EditItem(Guid itemId)
         {
-            TempData["errorSubject"] = "Error while trying to edit an item";
             AddItemModel model = new AddItemModel();
 
             using (var db = new CopiosisEntities())
@@ -659,8 +666,8 @@ namespace Copiosis_Application.Controllers
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
                 if (item == null)
                 {
-                    TempData["errorMessage"] = string.Format("Product with ID {0} not found", itemId);
-                    throw new ArgumentException(TempData["errorMessage"].ToString());
+                    ACCOUNTERROR.setErrorSubject(this, "Error while trying to edit an item");
+                    throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, string.Format("Product with ID {0} not found", itemId)));
                 }
                 else
                 {
@@ -682,15 +689,14 @@ namespace Copiosis_Application.Controllers
         public ActionResult EditItem(AddItemModel model, Guid itemId)
         {
             ValidateItemModel(model);
-            TempData["errorSubject"] = "Error while trying to edit an item";
             using (var db = new CopiosisEntities())
             {
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
                 int itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).First();
                 if (item == null)
                 {
-                    TempData["errorMessage"] = string.Format("Product with ID {0} not found", itemId);
-                    throw new ArgumentException(TempData["errorMessage"].ToString());
+                    ACCOUNTERROR.setErrorSubject(this, "Error while trying to edit an item");
+                    throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, string.Format("Product with ID {0} not found", itemId)));
                 }
                 else
                 {
@@ -848,23 +854,20 @@ namespace Copiosis_Application.Controllers
 
         private void ValidateItemModel(AddItemModel model)
         {
-            TempData["errorSubject"] = "Error while validating an item";
+            ACCOUNTERROR.setErrorSubject(this, "Error while validating an item");
             if (model.Name == null || model.Name == string.Empty)
             {
-                TempData["errorMessage"] = "Product name is required";
-                throw new ArgumentException(TempData["errorMessage"].ToString());
+                throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Product name is required"));
             }
 
             if (model.Gateway < 0)
             {
-                TempData["errorMessage"] = "Product cannot have a negative gateway";
-                throw new ArgumentException(TempData["errorMessage"].ToString());
+                throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Product cannot have a negative gateway"));
             }
 
             if (model.Description == null || model.Description == string.Empty)
             {
-                TempData["errorMessage"] = "Product description is required";
-                throw new ArgumentException(TempData["errorMessage"].ToString());
+                throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Product description is required"));
             }
         }
 
@@ -906,20 +909,18 @@ namespace Copiosis_Application.Controllers
         {
             using (var db = new CopiosisEntities())
             {
-                //
-                TempData["errorSubject"] = "Error while calculating the NBR";
                 var product = db.products.Where(a => a.productID == productId && a.ownerID == providerId).FirstOrDefault();
+                ACCOUNTERROR.setErrorSubject(this, "Error while calculating the NBR");
                 if(product == null)
                 {
-                    TempData["errorMessage"] = "Product not found for this provider";
-                    throw new ArgumentException(TempData["errorMessage"].ToString());
+                    throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Product not found for this provider"));
                 }
 
                 var item = db.itemClasses.Where(a => a.classID == product.itemClass).FirstOrDefault();
                 if(item == null)
                 {
-                    TempData["errorMessage"] = "Item class not found for this product";
-                    throw new ArgumentException(TempData["errorMessage"].ToString());
+                   
+                    throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Item class not found for this product"));
                 }
 
                 float Cpdb = (float)item.cPdb;
@@ -975,6 +976,30 @@ namespace Copiosis_Application.Controllers
         }
 
         #region Helpers
+        /**
+         * Helper class to handle the TempData key-values pairs which will serve as a way to pass error messages
+         */
+        public class ControllerExceptionHandler : ErrorModel
+        {
+            public void setErrorSubject(Controller controllerContext, string tempDataValue)
+            {
+                setValues(controllerContext, ERROR_SUBJECT_TEMPDATA_KEY, tempDataValue);
+            }
+
+            public string setAndGetErrorMessage(Controller controllerContext, string tempDataValue)
+            {
+                setValues(controllerContext, ERROR_MESSAGE_TEMPDATA_VAL, tempDataValue);
+                return this.ErrorMessage;
+            }
+
+            private void setValues(Controller controllerContext, string tempDataKey, string tempDataValue)
+            {
+                this.ErrorSubject = tempDataKey;
+                this.ErrorMessage = tempDataValue;
+                controllerContext.TempData[tempDataKey] = tempDataValue;
+            }
+        }
+
         private void PopulateNewTransactionModel(string type, NewTransactionModel model)
         {
             if (type == "consumer")
@@ -1037,7 +1062,8 @@ namespace Copiosis_Application.Controllers
             }
             else
             {
-                throw new ArgumentException("Transaction type not recognized");
+                ACCOUNTERROR.setErrorSubject(this, "Error while trying to retrieve a transaction");
+                throw new ArgumentException(ACCOUNTERROR.setAndGetErrorMessage(this, "Transaction type not recognized"));
             }
 
             return;
