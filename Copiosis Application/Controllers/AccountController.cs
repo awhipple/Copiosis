@@ -129,7 +129,8 @@ namespace Copiosis_Application.Controllers
                             status = 1,
                             nbr = 100,
                             lastLogin = DateTime.Now,
-                            locationID = location.locationID
+                            locationID = location.locationID,
+                            vendorCode = -1
                         }
                         );
 
