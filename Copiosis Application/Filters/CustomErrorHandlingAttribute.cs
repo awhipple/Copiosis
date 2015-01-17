@@ -16,15 +16,11 @@ namespace Copiosis_Application.Filters
             }
             else
             {
-                string actionName = filterContext.RouteData.Values["action"].ToString();
-                if (actionName.Equals("AddItem")) 
+                filterContext.Result = new ViewResult
                 {
-                    filterContext.Result = new ViewResult
-                    {
-                        ViewName = "Error",
-                        TempData = filterContext.Controller.TempData
-                    };
-                }
+                    ViewName = "Error",
+                    TempData = filterContext.Controller.TempData
+                };
             }
             filterContext.ExceptionHandled = true;
         }
