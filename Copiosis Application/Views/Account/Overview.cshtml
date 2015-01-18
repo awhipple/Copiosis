@@ -136,7 +136,22 @@
                                         <!-- <td>@item.dateAdded</td> -->
                                         <td>@item.dateClosed</td>
                                         <td>@item.otherParty</td>
-                                        <td class="redText">-@(item.productGateway - 2)</td>
+                                        @if (item.productGateway > 2)
+                                        {
+                                            <td class="redText">-@(item.productGateway - 2)</td>
+                                        }
+                                        else if (item.productGateway == 2)
+                                        {
+                                            <td>0</td>
+                                        }
+                                        else if (item.productGateway == 1)
+                                        {
+                                            <td class="greenText bold">+@(item.productGateway)</td>
+                                        }
+                                        else if (item.productGateway == 0)
+                                        {
+                                            <td class="greenText bold">+2</td>
+                                        }
                                         <td class="greenText">@item.status</td>
                                     </tr>
                                 }
