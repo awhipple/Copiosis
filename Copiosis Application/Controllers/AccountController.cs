@@ -185,7 +185,7 @@ namespace Copiosis_Application.Controllers
                     productName     = t.product.name,
                     productDesc     = t.productDesc,
                     productGateway  = t.product.gateway
-                }).ToList();
+                }).OrderByDescending(t => t.dateAdded).ToList();
 
                 model.pendingOther = db.transactions.Where(
                     a =>
@@ -205,7 +205,7 @@ namespace Copiosis_Application.Controllers
                     productName         = t.product.name,
                     productDesc         = t.productDesc,
                     productGateway      = t.product.gateway
-                }).ToList();
+                }).OrderByDescending(t => t.dateAdded).ToList();
 
 
                 model.completed = db.transactions.Where(
