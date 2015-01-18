@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Copiosis_Application.Controllers;
 
 namespace Copiosis_Application.Filters
 {
@@ -16,10 +17,20 @@ namespace Copiosis_Application.Filters
             }
             else
             {
+                AccountController controllerContext = (AccountController)filterContext.Controller;
+                TempDataDictionary contextControllerTempData = filterContext.Controller.TempData;
+                string subject = controllerContext.ACCOUNTERROR.ErrorSubject;
+                if (subject == null || subject.Equals("")) //if no error subject was provided
+                {
+                    //set to default errsubject:
+                    subject = "An internal error occured";
+                }
+                contextControllerTempData.Add(controllerContext.errorDictionaryKeys.ElementAt(0), subject);
+                contextControllerTempData.Add(controllerContext.errorDictionaryKeys.ElementAt(1), filterContext.Exception.Message);
                 filterContext.Result = new ViewResult
                 {
                     ViewName = "Error",
-                    TempData = filterContext.Controller.TempData
+                    TempData = contextControllerTempData
                 };
             }
             filterContext.ExceptionHandled = true;

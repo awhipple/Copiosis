@@ -29,19 +29,22 @@
         <div class="col-md-12">
             <div class="error-template">
                 <h1>
-                    <strong> Sorry, something went wrong!</strong>
+                    Sorry, something went wrong.
                 </h1>
                 <hr />
-                <hr />
-                <h2>
+                <h3>
                     @*TO DO: Make this dynamic*@
                     @TempData["errorSubject"].ToString():
-                </h2>
+                </h3>
                 <div class="error-details">
-                    <h3>
-                    @TempData["errorMessage"].ToString()
-                    </h3>
+                    <h4>
+                    @TempData["errorMessage"].ToString().
+                    </h4>
                 </div>
+                <hr />
+                <hr />
+                <hr />
+                <hr />
                 <div class="error-actions">
                     <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">
                         <span class="glyphicon glyphicon-home"></span>
