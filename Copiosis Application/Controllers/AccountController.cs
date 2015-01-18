@@ -526,14 +526,23 @@ namespace Copiosis_Application.Controllers
             {
                 int userId = WebSecurity.CurrentUserId;
                 var trans = db.transactions.Where(a => a.transactionID == tranId).FirstOrDefault();
-                if(participant.Equals("producer"))
+                if(participant == null)
+                {
+                    return Json(new { success = false });
+                }
+                
+                if(participant.Equals("producer", StringComparison.OrdinalIgnoreCase))
                 {
                     if(trans.providerID == userId)
                     {
                         trans.providerNotes = notes;
                     }
+                    else
+                    {
+                        return Json(new { success = false });
+                    }
                 }
-                else if(participant.Equals("consumer"))
+                else if (participant.Equals("consumer", StringComparison.OrdinalIgnoreCase))
                 {
                     if (trans.receiverID == userId)
                     {
@@ -543,6 +552,14 @@ namespace Copiosis_Application.Controllers
                         }
                         trans.receiverNotes = notes;
                     }
+                    else
+                    {
+                        return Json(new { success = false });
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false });
                 }
                 db.SaveChanges();
             }
