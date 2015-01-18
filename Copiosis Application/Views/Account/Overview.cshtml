@@ -125,7 +125,7 @@
                                         <!-- <td>@item.dateAdded</td> -->
                                         <td>@item.dateClosed</td>
                                         <td>@item.otherParty</td>
-                                        <td class="greenText bold">+@item.nbr</td>
+                                        <td class="greenText bold">+@(item.nbr +2)</td>
                                         <td class="greenText">@item.status</td>
                                     </tr>
                                 }
@@ -136,7 +136,7 @@
                                         <!-- <td>@item.dateAdded</td> -->
                                         <td>@item.dateClosed</td>
                                         <td>@item.otherParty</td>
-                                        <td class="redText">-@item.productGateway</td>
+                                        <td class="redText">-@(item.productGateway - 2)</td>
                                         <td class="greenText">@item.status</td>
                                     </tr>
                                 }
