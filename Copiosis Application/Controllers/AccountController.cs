@@ -25,11 +25,12 @@ namespace Copiosis_Application.Controllers
         private static string USERROLE = "USER";
         private static string ERROR_SUBJECT_TEMPDATA_KEY = "errorSubject";
         private static string ERROR_MESSAGE_TEMPDATA_KEY = "errorMessage";
-        
-        protected ControllerExceptionHandler ACCOUNTERROR = new ControllerExceptionHandler(); // used handle the TempData key-values pairs 
-                                                                                              // which is used to pass error messages. Note
-                                                                                              // that an exception is considered "handled" 
-                                                                                              // when it is made known in the Error page
+
+        // used handle the TempData key-values pairs 
+        // which is used to pass error messages. Note
+        // that an exception is considered "handled" 
+        // when it is made known in the Error page
+        protected ControllerExceptionHandler ACCOUNTERROR = new ControllerExceptionHandler(); 
  
         //
         // GET: /Account/Login
