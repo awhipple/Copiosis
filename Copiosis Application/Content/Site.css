@@ -25,6 +25,10 @@ body {
     font-weight: 800;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 a {
     color: #333;
     outline: none;

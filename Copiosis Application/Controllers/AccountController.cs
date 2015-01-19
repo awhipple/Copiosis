@@ -166,7 +166,7 @@ namespace Copiosis_Application.Controllers
 
         // GET: /Account/Overview
         // Overview of transactions for the current user
-        public ActionResult Overview()
+        public ActionResult Overview(string qSort = null, string qOrder = null)
         {
             TransactionOverviewModel model = new TransactionOverviewModel();
 
@@ -215,7 +215,7 @@ namespace Copiosis_Application.Controllers
                 }).OrderByDescending(t => t.dateAdded).ToList();
 
 
-                model.completed = db.transactions.Where(
+                var comp = db.transactions.Where(
                     a =>
                     (a.providerID == userId || a.receiverID == userId) &&
                     a.dateClosed != null
@@ -226,13 +226,52 @@ namespace Copiosis_Application.Controllers
                     status              = t.status,
                     dateAdded           = t.dateAdded,
                     dateClosed          = t.dateClosed ?? DateTime.MinValue,
-                    nbr                 = t.nbr ?? 0.0,
-                    otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
+                    nbr                 = (t.providerID == userId) ? ((t.nbr == null) ? 0.0 : t.nbr) : t.product.gateway,
+                    otherParty          = t.providerID == userId ? (t.receiver.lastName + ", " + t.receiver.firstName) : (t.provider.lastName + ", " + t.provider.firstName),
                     productName         = t.product.name,
                     productDesc         = t.productDesc,
                     productGateway      = t.product.gateway,
-                    isProducer          = t.providerID == userId ? true : false,
-                }).OrderByDescending(t => t.dateClosed).ToList();
+                    isProducer          = t.providerID == userId ? true : false
+                });
+                
+                if (qSort == "product")
+                {
+                    if (qOrder == "Asc")
+                        model.completed = comp.OrderByDescending(t => t.productName).ThenBy(t => t.dateClosed).ToList();
+                    else
+                        model.completed = comp.OrderBy(t => t.productName).ThenBy(t => t.dateClosed).ToList();
+                }
+                else if (qSort == "otherParty")
+                {
+                    if (qOrder == "Asc")
+                        model.completed = comp.OrderByDescending(t => t.otherParty).ThenBy(t => t.dateClosed).ToList();
+                    else
+                        model.completed = comp.OrderBy(t => t.otherParty).ThenBy(t => t.dateClosed).ToList();
+                }
+                else if (qSort == "nbr")
+                {
+                    if (qOrder == "Desc")
+                        model.completed = comp.OrderByDescending(t => t.nbr).ThenBy(t => t.dateClosed).ToList();
+                    else
+                        model.completed = comp.OrderBy(t => t.nbr).ThenBy(t => t.dateClosed).ToList();
+                }
+                else if (qSort == "status")
+                {
+                    if (qOrder == "Asc")
+                        model.completed = comp.OrderByDescending(t => t.status).ThenBy(t => t.dateClosed).ToList();
+                    else
+                        model.completed = comp.OrderBy(t => t.status).ThenBy(t => t.dateClosed).ToList();
+                }
+                else
+                {
+                    if (qOrder == "Asc")
+                        model.completed = comp.OrderBy(t => t.dateClosed).ToList();
+                    else
+                        model.completed = comp.OrderByDescending(t => t.dateClosed).ToList();    
+                    
+                }
+                    
+                
 
             }
 
@@ -393,6 +432,11 @@ namespace Copiosis_Application.Controllers
                         float providerReward  = CalculateNBR((int)transaction.satisfaction, transaction.productID, transaction.providerID) + 2;
                         transaction.provider.nbr += providerReward;
                         transaction.nbr = providerReward;
+                    }
+                    else
+                    {
+                        // Set recorded NBR change to 0 for rejected transactions.
+                        transaction.nbr = 0;
                     }
                     db.SaveChanges();
                 }
