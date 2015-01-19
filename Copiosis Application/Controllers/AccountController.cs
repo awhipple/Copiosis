@@ -95,9 +95,11 @@ namespace Copiosis_Application.Controllers
             {
 
                 location location;
+                List<int> existingVendorCodes = new List<int>();
                 // Check if signup code is valid.
                 using (var db = new CopiosisEntities())
                 {
+                    existingVendorCodes = db.users.Where(u => u.vendorCode != -1).Select(u => u.vendorCode).ToList();
                     var keyCheck = db.locations.Where(s => s.signupKey.Equals(model.Token));
                     location = keyCheck.FirstOrDefault();
                     if (keyCheck.Any() == false)
@@ -122,6 +124,14 @@ namespace Copiosis_Application.Controllers
                         Roles.CreateRole(USERROLE);
                     }
 
+                    //Generate a random vendor code that is not already assigned to a user
+                    Random rand = new Random();
+                    int vc = rand.Next(1000, 9999);
+                    while(existingVendorCodes.Contains(vc))
+                    {
+                        vc = rand.Next(1000, 9999);
+                    }
+
                     // Make calls for .NET to handle authentication.
                     WebSecurity.CreateUserAndAccount(
                         model.UserName,
@@ -132,10 +142,10 @@ namespace Copiosis_Application.Controllers
                             lastName = model.LastName,
                             email = model.Email,
                             status = 1,
-                            nbr = 100,
+                            nbr = 0,
                             lastLogin = DateTime.Now,
                             locationID = location.locationID,
-                            vendorCode = -1
+                            vendorCode = vc
                         }
                         );
 
