@@ -1,0 +1,38 @@
+﻿@model Copiosis_Application.Models.TransactionModel
+@if (Model.providerID == WebSecurity.CurrentUserId && Model.status.CompareTo("PENDING") == 0)
+{
+    <p>Producer Notes -- <span id="add-provider-notes" class="clickable">Add Notes</span></p>
+}
+else if (Model.providerNotes != null)
+{
+    <p>Producer Notes</p>
+}
+@if (Model.status.CompareTo("PENDING") == 0)
+{
+    if (Model.providerNotes != null)
+    {
+        <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+            @if (Model.providerID == WebSecurity.CurrentUserId)
+            {
+                @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
+            }
+            else
+            {
+                @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly = true })
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-12 col-md-12 col-xs-12" style="padding-left:0px">
+            @if (Model.providerID == WebSecurity.CurrentUserId)
+            {
+                @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control hidden-notes", @placeholder = "Notes", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes })
+            }
+        </div>
+    }
+}
+else if (Model.providerNotes != null)
+{
+    @Html.TextAreaFor(t => t.providerNotes, new { @class = "form-control", @rows = "4", @cols = "40", @id = "provider-notes", @val = Model.providerNotes, @readonly = true })
+}
