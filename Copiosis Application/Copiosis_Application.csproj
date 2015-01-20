@@ -187,6 +187,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DB_Data\CopiosisDBModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -224,6 +225,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AdminModels.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -364,6 +366,9 @@
     <Content Include="Views\Account\Overview.cshtml" />
     <Content Include="Views\Shared\ValidationSummary.cshtml" />
     <Content Include="Views\Shared\_UserNBR.cshtml" />
+    <Content Include="Views\Admin\Overview.cshtml" />
+    <Content Include="Views\Admin\AddClass.cshtml" />
+    <Content Include="Views\Admin\Rejected.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

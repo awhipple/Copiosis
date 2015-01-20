@@ -27,8 +27,16 @@ namespace Copiosis_Application.Controllers
         private static string ERROR_MESSAGE_TEMPDATA_KEY = "errorMessage";
         //Used by CustomErrorHandling attribute to set the error messages -- which does most of the error handling logic:
         public List<string> errorDictionaryKeys = new List<string>{ERROR_SUBJECT_TEMPDATA_KEY, ERROR_MESSAGE_TEMPDATA_KEY};
-        public Models.ErrorModel ACCOUNTERROR = new Models.ErrorModel(); 
- 
+        public Models.ErrorModel ACCOUNTERROR = new Models.ErrorModel();
+
+        //
+        // GET: /Account/
+
+        public ActionResult Index()
+        {
+            return RedirectToAction("Overview");
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
