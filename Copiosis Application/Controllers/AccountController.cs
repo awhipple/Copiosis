@@ -283,7 +283,8 @@ namespace Copiosis_Application.Controllers
                     model.productGuid = transaction.product.guid;
                     model.productName = transaction.product.name; 
                     model.productDesc = transaction.productDesc;
-                    
+                    model.productGateway = transaction.product.gateway;
+
                     // Provider info expected to be displayed.
                     model.providerFirstName = transaction.provider.firstName;
                     model.providerLastName  = transaction.provider.lastName;
