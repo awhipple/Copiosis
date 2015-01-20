@@ -76,6 +76,7 @@ INSERT INTO itemClass VALUES (
 
 CREATE TABLE product (
 productID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+type varchar(25) NOT NULL DEFAULT 'Product',
 name varchar(155) NOT NULL,
 description varchar(255) NOT NULL,
 gateway int NOT NULL,
