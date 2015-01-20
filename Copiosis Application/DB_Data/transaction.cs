@@ -33,5 +33,7 @@ namespace Copiosis_Application.DB_Data
         public virtual user user { get; set; }
         public virtual user provider { get; set; }
         public virtual user receiver { get; set; }
+
+        public int prouctGateway { get; set; }
     }
 }
