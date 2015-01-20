@@ -72,6 +72,7 @@
           <Property Name="dateClosed" Type="datetime" />
           <Property Name="nbr" Type="float" />
           <Property Name="satisfaction" Type="smallint" />
+          <Property Name="productGateway" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -288,6 +289,7 @@
           <NavigationProperty Name="user" Relationship="Self.FK__transacti__creat__1DE57479" FromRole="transaction" ToRole="user" />
           <NavigationProperty Name="provider" Relationship="Self.FK__transacti__provi__1B0907CE" FromRole="transaction" ToRole="user" />
           <NavigationProperty Name="receiver" Relationship="Self.FK__transacti__recei__1BFD2C07" FromRole="transaction" ToRole="user" />
+          <Property Name="productGateway" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -490,6 +492,7 @@
           <EntitySetMapping Name="transactions">
             <EntityTypeMapping TypeName="CopiosisDBModel.transaction">
               <MappingFragment StoreEntitySet="transaction">
+                <ScalarProperty Name="productGateway" ColumnName="productGateway" />
                 <ScalarProperty Name="transactionID" ColumnName="transactionID" />
                 <ScalarProperty Name="providerID" ColumnName="providerID" />
                 <ScalarProperty Name="providerNotes" ColumnName="providerNotes" />

@@ -28,6 +28,7 @@ namespace Copiosis_Application.DB_Data
         public Nullable<System.DateTime> dateClosed { get; set; }
         public Nullable<double> nbr { get; set; }
         public Nullable<short> satisfaction { get; set; }
+        public int productGateway { get; set; }
     
         public virtual product product { get; set; }
         public virtual user user { get; set; }
