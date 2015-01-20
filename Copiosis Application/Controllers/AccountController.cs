@@ -261,10 +261,11 @@ namespace Copiosis_Application.Controllers
 
             using(var db = new CopiosisEntities())
             {
-                
                 // Get transaction data
+                
+                
                 var transaction = db.transactions.Where(t => t.transactionID == tranId).FirstOrDefault();
-
+                
                 // Make sure a transaction was found.
                 if(transaction == null)
                 {

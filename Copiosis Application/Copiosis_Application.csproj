@@ -306,7 +306,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\chosen.css" />
     <Content Include="Scripts\chosen.jquery.js" />
-    <Content Include="Scripts\viewtransaction.js" />
     <Content Include="Scripts\jquery-1.11.2.min.js" />
     <Content Include="Views\Account\View.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
