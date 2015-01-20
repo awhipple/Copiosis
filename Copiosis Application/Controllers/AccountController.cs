@@ -472,7 +472,6 @@ namespace Copiosis_Application.Controllers
                     consumerTran.dateAdded = DateTime.Now;
                     consumerTran.providerID = producer.userID;
                     consumerTran.productID = product.productID;
-                    consumerTran.prouctGateway = product.gateway;
                     consumerTran.productDesc = product.description;
                     consumerTran.receiverID = WebSecurity.CurrentUserId;
                     consumerTran.status = "PENDING";
