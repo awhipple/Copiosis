@@ -207,8 +207,8 @@ namespace Copiosis_Application.Controllers
                     status              = t.status,
                     dateAdded           = t.dateAdded,
                     dateClosed          = t.dateClosed ?? DateTime.MinValue,
-                    nbr                 = t.nbr ?? 0.0,
-                    otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
+                    nbr                 = (t.providerID == userId) ? ((t.nbr == null) ? 0.0 : t.nbr) : t.product.gateway,
+                    otherParty          = t.providerID == userId ? (t.receiver.lastName + ", " + t.receiver.firstName) : (t.provider.lastName + ", " + t.provider.firstName),
                     productName         = t.product.name,
                     productDesc         = t.productDesc,
                     productGateway      = t.product.gateway
