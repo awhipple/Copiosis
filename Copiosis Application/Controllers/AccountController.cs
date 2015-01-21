@@ -632,6 +632,7 @@ namespace Copiosis_Application.Controllers
                 p.description = model.Description;
                 p.createdDate = DateTime.Now;
                 p.itemClass = (int)itemClassId;
+                p.type = model.ItemType;
 
                 db.products.Add(p);
                 db.SaveChanges();
@@ -711,6 +712,7 @@ namespace Copiosis_Application.Controllers
                     model.Description = item.description;
                     model.Gateway = item.gateway;
                     model.ItemClassTemplates = FetchItemClassTemplates(db);
+                    model.ItemType = item.type;
                 }
             }
 
@@ -739,6 +741,7 @@ namespace Copiosis_Application.Controllers
                     item.description = model.Description;
                     item.gateway = model.Gateway;
                     item.itemClass = itemClassId;
+                    item.type = model.ItemType;
                     db.SaveChanges();
                 }
             }
@@ -904,6 +907,11 @@ namespace Copiosis_Application.Controllers
             {
                 throw new ArgumentException("Product description is required");
             }
+
+            if(!model.ItemType.Equals("Product", StringComparison.OrdinalIgnoreCase) && !model.ItemType.Equals("Service", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("Items can only be of type Product or Service");
+            }
         }
 
         /// <summary>
@@ -926,6 +934,7 @@ namespace Copiosis_Application.Controllers
                     item.Gateway = value.gateway;
                     item.ItemClass = value.itemClass1.name;
                     item.ItemGuid = value.guid;
+                    item.ItemType = value.type;
                     model.Add(item);
                 }
             }

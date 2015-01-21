@@ -112,6 +112,8 @@ namespace Copiosis_Application.Models
         public string ItemClass { get; set; }
 
         public Guid ItemGuid { get; set; }
+
+        public string ItemType { get; set; }
     }
     
     public class AddItemModel
@@ -128,6 +130,10 @@ namespace Copiosis_Application.Models
 
         [Required(ErrorMessage = "Gateway is required")]
         public int Gateway { get; set; }
+
+        [Display(Name = "Type")]
+        [Required(ErrorMessage = "Item must be a Product or Service")]
+        public string ItemType { get; set; }
 
         //This is needed for the get portion of AddItem
         public Dictionary<string, int> ItemClassTemplates { get; set; }

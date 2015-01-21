@@ -23,6 +23,18 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12">
+                    @Html.LabelFor(m => m.ItemType, new { @class = "control-label add-item-label" })
+                </div>
+                <div class="col-lg-9 col-md-9 col-xs-12">
+                    <label class="radio-inline">@Html.RadioButtonFor(m => m.ItemType, "Product")Product</label>
+                    <label class="radio-inline">@Html.RadioButtonFor(m => m.ItemType, "Service")Service</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-lg-3 col-md-3 col-xs-12">
                     @Html.LabelFor(m => m.Name, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-9 col-md-9 col-xs-12">

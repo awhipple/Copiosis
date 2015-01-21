@@ -11,14 +11,6 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()
 
-        @* Use the placeholder for now, so that the application still compiles
-            @Html.LabelFor(m => m.ItemClass, new { @class = "control-label" })
-            @foreach(var ItemClass in Model.ItemClass)
-            {
-                <li><a href='#'>@ItemClass.name</a></li>
-            }
-            @Html.ValidationMessageFor(m => m.ItemClass)
-        *@
         <div class="col-md-6 col-md-offset-3">
             <div class="form-group">
                 @Html.LabelFor(m => m.ItemClass)
@@ -32,6 +24,14 @@
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Item Name" })
                 @Html.ValidationMessageFor(m => m.Name)
 
+            </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ItemType)
+                <label class="radio-inline">@Html.RadioButtonFor(m => m.ItemType, "Product")Product</label>
+                <label class="radio-inline">@Html.RadioButtonFor(m => m.ItemType, "Service")Service</label>
+                @Html.ValidationMessageFor(m => m.ItemType)
             </div>
         </div>
         <div class="col-md-6 col-md-offset-3">
