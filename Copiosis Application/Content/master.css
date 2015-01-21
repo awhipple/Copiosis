@@ -118,6 +118,18 @@ ul, ol
     border-radius: 4px;
 }
 
+.radio-inline, .radio-inline + .radio-inline {
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.custom-q-mark {
+    float: left;
+    margin-right: 13px;
+    margin-top: 13px;
+    cursor: pointer;
+}
+
 select { 
     margin-top:8px;
 }

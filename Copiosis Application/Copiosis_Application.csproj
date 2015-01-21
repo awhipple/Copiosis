@@ -374,6 +374,7 @@
     <Content Include="Views\Account\_ConsumerNotes.cshtml" />
     <Content Include="Views\Account\_SatisfactionRating.cshtml" />
     <Content Include="Views\Account\_ConfirmRejectTransaction.cshtml" />
+    <Content Include="Views\Shared\ItemCRUDPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
