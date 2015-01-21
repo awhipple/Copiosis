@@ -444,7 +444,7 @@ namespace Copiosis_Application.Controllers
             if(type == "consumer")
             {
                 string[] producerName = model.Producer.Split('|');
-                string producerUN = producerName[1].Trim();
+                string producerUN = producerName != null ? producerName[1].Trim() : "";
                 using(var db = new CopiosisEntities())
                 {
                     var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
@@ -485,7 +485,7 @@ namespace Copiosis_Application.Controllers
             else if(type == "producer")
             {
                 string[] consumerName = model.Consumer.Split('|');
-                string consumerUN = consumerName[1].Trim();
+                string consumerUN = consumerName[1] != null ? consumerName[1].Trim(): "";
                 using(var db = new CopiosisEntities())
                 {
                     var consumer = db.users.Where(u => u.username == consumerUN && u.status == 1).FirstOrDefault();
