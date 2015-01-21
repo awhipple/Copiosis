@@ -53,6 +53,7 @@
           <Property Name="deletedDate" Type="datetime" />
           <Property Name="ownerID" Type="int" Nullable="false" />
           <Property Name="guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="transaction">
           <Key>
@@ -266,6 +267,7 @@
           <Property Name="ownerID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="user" Relationship="CopiosisDBModel.FK__product__ownerID__5AEE82B9" FromRole="product" ToRole="user" />
           <Property Name="guid" Type="Guid" Nullable="false" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="transaction">
           <Key>
@@ -477,6 +479,7 @@
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CopiosisDBModel.product">
               <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="guid" ColumnName="guid" />
                 <ScalarProperty Name="ownerID" ColumnName="ownerID" />
                 <ScalarProperty Name="productID" ColumnName="productID" />

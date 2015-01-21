@@ -28,6 +28,7 @@ namespace Copiosis_Application.DB_Data
         public Nullable<System.DateTime> deletedDate { get; set; }
         public int ownerID { get; set; }
         public System.Guid guid { get; set; }
+        public string type { get; set; }
     
         public virtual itemClass itemClass1 { get; set; }
         public virtual ICollection<transaction> transactions { get; set; }
