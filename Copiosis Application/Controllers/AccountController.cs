@@ -443,15 +443,14 @@ namespace Copiosis_Application.Controllers
             string typeLower = type.ToLower();
             if(type == "consumer")
             {
-                string[] producerName = model.Producer.Split(' ');
-                string producerFirstName = producerName[0];
-                string producerLastName = producerName[1];
+                string[] producerName = model.Producer.Split('|');
+                string producerUN = producerName[1].Trim();
                 using(var db = new CopiosisEntities())
                 {
-                    var producer = db.users.Where(u => u.firstName == producerFirstName && u.lastName == producerLastName && u.status == 1).FirstOrDefault();
+                    var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
                     if (producer == null)
                     {
-                        throw new ArgumentException(string.Format("Producer {0} {1} not found", producerFirstName, producerLastName));
+                        throw new ArgumentException(string.Format("Producer {0} not found", producerUN));
                     }
 
                     var product = db.products.Where(p => p.ownerID == producer.userID && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
@@ -485,15 +484,14 @@ namespace Copiosis_Application.Controllers
             }
             else if(type == "producer")
             {
-                string[] consumerName = model.Consumer.Split(' ');
-                string consumerFirstName = consumerName[0];
-                string consumerLastName = consumerName[1];
+                string[] consumerName = model.Consumer.Split('|');
+                string consumerUN = consumerName[1].Trim();
                 using(var db = new CopiosisEntities())
                 {
-                    var consumer = db.users.Where(u => u.firstName == consumerFirstName && u.lastName == consumerLastName && u.status == 1).FirstOrDefault();
+                    var consumer = db.users.Where(u => u.username == consumerUN && u.status == 1).FirstOrDefault();
                     if(consumer == null)
                     {
-                        throw new ArgumentException(string.Format("Consumer {0} {1} not found", consumerFirstName, consumerLastName));
+                        throw new ArgumentException(string.Format("Consumer {0} not found", consumerUN));
                     }
 
                     var product = db.products.Where(p => p.ownerID == WebSecurity.CurrentUserId && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
@@ -1037,8 +1035,8 @@ namespace Copiosis_Application.Controllers
                     {
                         foreach (var pro in usersWithProducts)
                         {
-                            producers.Add(string.Format("{0} {1}", pro.firstName, pro.lastName));
-                            usernames.Add(string.Format("{0}", pro.username));
+                            producers.Add(string.Format("{0} {1} | {2}", pro.firstName, pro.lastName, pro.username));
+                            usernames.Add(pro.username);
                         }
 
                         var initialProducer = usersWithProducts.First();
@@ -1070,10 +1068,10 @@ namespace Copiosis_Application.Controllers
                 using (var db = new CopiosisEntities())
                 {
                     var c = db.users.Where(u => u.status == 1 && u.userID != WebSecurity.CurrentUserId)
-                        .Select(s => new { FirstName = s.firstName, LastName = s.lastName, Username = s.username, Email = s.email }).ToList();
+                        .Select(s => new { FirstName = s.firstName, LastName = s.lastName, Username = s.username, Email = s.email, NBR = s.nbr}).ToList();
                     foreach (var con in c)
                     {
-                        consumers.Add(string.Format("{0} {1}", con.FirstName, con.LastName));
+                        consumers.Add(string.Format("{0} {1} (NBR: {2}) | {3}", con.FirstName, con.LastName, con.NBR, con.Username));
                         usernames.Add(string.Format("{0}", con.Username));
                     }
                 }
