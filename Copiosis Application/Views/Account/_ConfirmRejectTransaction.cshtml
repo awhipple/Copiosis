@@ -6,6 +6,7 @@
         @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
         <input id="confirm" type="button" value="Confirm Transaction Details" />
         <input id="reject" type="button" value="Reject Transaction" />
+        <button type="button" onclick="confirmBack()">Cancel</button>
     </div>
 }
 else if (Model.isPendingUser == false && Model.dateClosed == DateTime.MinValue)
@@ -15,5 +16,6 @@ else if (Model.isPendingUser == false && Model.dateClosed == DateTime.MinValue)
         @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
         @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
         <input id="update" type="button" value="Update Transaction Details" />
+        <button type="button" onclick="confirmBack()">Cancel</button>
     </div>
 }

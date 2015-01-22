@@ -7,6 +7,11 @@
 
 @section Scripts {
 <script type="text/javascript">
+    function confirmBack() {
+        if (confirm("Cancel changes and return to previous page?") == true) {
+            history.back();
+        }
+    }
     $("#class-dropdown").change(function () {
         var currentChoice = $(this).val();
         $.ajax({

@@ -36,6 +36,11 @@
 
 @section Scripts {
 <script type="text/javascript">
+    function confirmBack() {
+        if (confirm("Cancel changes and return to previous page?") == true) {
+            history.back();
+        }
+    }
     //Function for updating
     $("#update").click(function (e) {
         var userType;
