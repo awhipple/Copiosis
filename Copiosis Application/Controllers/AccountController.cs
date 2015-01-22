@@ -37,11 +37,20 @@ namespace Copiosis_Application.Controllers
             return RedirectToAction("Overview");
         }
 
+        public ActionResult Unauthorized()
+        {
+            return View();
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if(Request.IsAuthenticated)
+            {
+                return RedirectToAction("Unauthorized");
+            }
             //var db = new CopiosisEntities();
             //var x = db.locations.FirstOrDefault(l => l.neighborhood == "Kenton");
             ViewBag.ReturnUrl = returnUrl;
