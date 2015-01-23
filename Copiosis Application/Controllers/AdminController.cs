@@ -58,8 +58,24 @@ namespace Copiosis_Application.Controllers
         // POST: /Admin/ChangeClass
         // Change the class of an item already in Copiosis.
         [HttpPost]
-        public ActionResult ChangeClass()
+        public ActionResult ChangeClass(string newClass, Guid itemGuid)
         {
+            using (var db = new CopiosisEntities())
+            {
+                var item = db.products.Where(p => p.guid == itemGuid).FirstOrDefault();
+                var classID = db.itemClasses.Where(ic => ic.name == newClass).Select(ic => ic.classID).FirstOrDefault();
+                if (item == null)
+                {
+                    throw new ArgumentException(string.Format("No product found with GUID: {0}", itemGuid));
+                }
+                if (classID == null)
+                {
+                    throw new ArgumentException(string.Format("No matching item class with name: {0}", itemGuid));
+                }
+
+                item.itemClass = classID;
+                db.SaveChanges();
+            }
             return Json(new { success = true });
         }
 
