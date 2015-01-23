@@ -678,7 +678,6 @@ namespace Copiosis_Application.Controllers
             string producerFirstName = producerName[0];
             string producerLastName = producerName[1];
             string currentUserName = username;
-            Dictionary<string, int> productDict = new Dictionary<string, int>();
             using (var db = new CopiosisEntities())
             {
                 int? producerID = db.users.Where(u => u.username == currentUserName).Select(uID => uID.userID).FirstOrDefault();
