@@ -37,7 +37,7 @@
                             {
                                 if(item.newSinceLogin)
                                 {
-                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })' " style="background-color: #F4FA58;cursor:pointer">
+                                    <tr id="@item.productGuid">
                                         <td> <span class="glyphicon glyphicon-flag"></span> @item.productName </td>
                                         <td>@item.productGateway</td>
                                         <td>@item.dateAdded</td>
@@ -45,7 +45,7 @@
                                     </tr>
                                 }
                                 else { 
-                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })' " style="cursor:pointer">
+                                    <tr id="@item.productGuid">
                                         <td>@item.productName</td>
                                         <td>@item.productGateway</td>
                                         <td>@item.dateAdded</td>
@@ -69,24 +69,25 @@
                 else
                 {
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped">
+                                             
+                        <table data-link="row" class="clickable table table-bordered table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th>Service/Item Name</th>
                                     <th>Gateway</th>
                                     <th>Date Created</th>
-                                    <th>Other Party</th>                                    
+                                    <th>Other Party</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model.pendingOther)
-                                {                                
-                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })' " style="cursor:pointer">
+                                {
+                                    <tr id="@item.transactionID">
                                         <td>@item.productName</td>
                                         <td>@item.productGateway</td>
                                         <td>@item.dateAdded</td>
-                                        <td>@item.otherParty</td>                                        
-                                    </tr>                        
+                                        <td>@item.otherParty</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -103,8 +104,12 @@
                 <h4>No Recently Completed Transactions</h4>
             }
             else { 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped">
+                <div>
+                    <div id="result">
+                        
+                    </div>
+                          
+                    <table id="events-table" data-toggle="table" data-pagination="true" class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Service/Item Name</th>
@@ -115,23 +120,23 @@
                                 <th>Result</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="tbody">
                             @foreach (var item in Model.completed)
                             {
                                 if (item.isProducer == true && item.status == "Confirmed")
                                 {
-                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'" style="cursor:pointer">
+                                    <tr id="@item.transactionID">
                                         <td>@item.productName</td>
                                         <!-- <td>@item.dateAdded</td> -->
                                         <td>@item.dateClosed</td>
                                         <td>@item.otherParty</td>
-                                        <td class="greenText bold">+@(item.nbr +2)</td>
+                                        <td class="greenText bold">+@(item.nbr + 2)</td>
                                         <td class="greenText">@item.status</td>
                                     </tr>
                                 }
                                 else if (item.isProducer == false && item.status == "Confirmed")
                                 {
-                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'" style="cursor:pointer">
+                                    <tr id="@item.transactionID">
                                         <td>@item.productName</td>
                                         <!-- <td>@item.dateAdded</td> -->
                                         <td>@item.dateClosed</td>
@@ -155,9 +160,9 @@
                                         <td class="greenText">@item.status</td>
                                     </tr>
                                 }
-                                else 
+                                else
                                 {
-                                    <tr id="@item.productGuid" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = item.transactionID })'" style="cursor:pointer">
+                                    <tr id="@item.transactionID">
                                         <td>@item.productName</td>
                                         <!-- <td>@item.dateAdded</td> -->
                                         <td>@item.dateClosed</td>
@@ -169,8 +174,22 @@
                             }
                         </tbody>
                     </table>
+                   
+                    
                 </div>
             }
         </div>
+        <script>
+            $(function () {
+                $('tbody tr').hover(function () {
+                    $('tbody tr').css('cursor', 'pointer');
+                });
+                $('tbody').delegate('tr', 'click', function () {
+                    $(location).attr('href', '/Account/View/?tranId=' + $(this).attr('id'));
+                });
+
+            });
+        </script>
+
     </div>
 </div>
