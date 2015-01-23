@@ -85,7 +85,23 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult Rejected()
         {
-            return View();
+            RejectedModel model = new RejectedModel();
+
+            using (var db = new CopiosisEntities())
+            {
+
+                model.rejected = db.transactions.Where(a => (a.status == "Rejected")).Select(t => new RejectedTransactionModel
+                {
+                    transactionID = t.transactionID,
+                    dateRejected = t.dateClosed ?? DateTime.MinValue,
+                    producer = db.users.Where(u => u.userID == t.providerID).Select(u => u.username).FirstOrDefault(),
+                    consumer = db.users.Where(u => u.userID == t.receiverID).Select(u => u.username).FirstOrDefault(),
+                    name = t.product.name,
+                    gateway = t.product.gateway
+                }).OrderByDescending(t => t.dateRejected).ToList();
+
+            }
+            return View(model);
         }
 
     }
