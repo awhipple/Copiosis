@@ -13,4 +13,19 @@ namespace Copiosis_Application.Models
     {
         
     }
+
+    public class RejectedModel
+    {
+        public List<RejectedTransactionModel> rejected { get; set; }
+    }
+
+    public class RejectedTransactionModel
+    {
+        public Guid transactionID { get; set; }
+        public string name { get; set; }
+        public int gateway { get; set; }
+        public DateTime? dateRejected { get; set; }
+        public string producer { get; set; }
+        public string consumer { get; set; }
+    }
 }

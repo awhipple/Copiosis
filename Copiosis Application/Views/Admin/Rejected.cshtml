@@ -1,5 +1,51 @@
-﻿@{
+﻿@model Copiosis_Application.Models.RejectedModel
+@{
     ViewBag.Title = "Rejected";
 }
 
-<h2>Rejected</h2>
+<div class="row">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-8 col-md-7 col-sm-5 col-xs-12" style="padding-left:0px">
+                <h1>Rejected Transactions</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col2-sm-12 col-md-12 col-lg-12">
+
+            @if (Model.rejected.Count() < 1)
+            {
+                <h4>No Rejected Transactions</h4>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table data-link="row" class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Service/Item Name</th>
+                                <th>Item Gateway</th>
+                                <th>Producer</th>
+                                <th>Consumer</th>
+                                <th>Date Rejected</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rejected in Model.rejected)
+                            {
+                                    <tr id="@rejected.transactionID" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = rejected.transactionID })' " style="cursor:pointer;">
+                                        <td>@rejected.name</td>
+                                        <td>@rejected.gateway</td>
+                                        <td>@rejected.producer</td>
+                                        <td>@rejected.consumer</td>
+                                        <td>@rejected.dateRejected</td>
+                                    </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

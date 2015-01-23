@@ -692,6 +692,7 @@ namespace Copiosis_Application.Controllers
                 {
                     result = true;
                 }
+
             }
 
             return Json(new { success = result, products = result ? products : null }, JsonRequestBehavior.AllowGet);

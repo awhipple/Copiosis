@@ -129,11 +129,6 @@
 @section Scripts {
     @*This handles the update to producer items*@
     <script type="text/javascript">
-        function confirmBack() {
-            if (confirm("Cancel changes and return to previous page?") == true) {
-                history.back();
-            }
-        }
         $("#producer-dropdown").change(function (e) {
             var currentChoice = $(this).val();
             var index = $("#producer-dropdown option:selected").index()
