@@ -56,7 +56,7 @@ namespace Copiosis_Application.Controllers
             itemClass itemClass = new itemClass();
             using (var db = new CopiosisEntities())
             {
-                var isEmpty = db.itemClasses.Where(ic => ic.name == m.name);
+                var isEmpty = db.itemClasses.Where(ic => ic.name == m.name).FirstOrDefault();
                 if (isEmpty == null)
                 {
                     itemClass.name = m.name;
@@ -86,7 +86,7 @@ namespace Copiosis_Application.Controllers
                     m.message = "Name exists";
                 }
             }
-            return RedirectToAction("Classes");
+            return RedirectToAction("Overview");
         }
 
         //
