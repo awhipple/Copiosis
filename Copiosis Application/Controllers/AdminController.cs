@@ -42,8 +42,7 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult AddClass()
         {
-            AddClassModel model = new AddClassModel();
-            return View(model);
+            return View();
         }
 
         //
