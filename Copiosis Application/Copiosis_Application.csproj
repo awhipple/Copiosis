@@ -376,7 +376,6 @@
     <Content Include="Views\Account\_ConfirmRejectTransaction.cshtml" />
     <Content Include="Views\Account\_ItemCRUDPartial.cshtml" />
     <Content Include="Views\Account\Unauthorized.cshtml" />
-    <Content Include="Views\Admin\_ClassCRUDPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
