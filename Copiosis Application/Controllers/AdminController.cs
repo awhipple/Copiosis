@@ -40,6 +40,7 @@ namespace Copiosis_Application.Controllers
         // GET: /Admin/AddClass
         // Add a new item class to Copiosis. Just returns the view.
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult AddClass()
         {
             return View();
@@ -49,6 +50,7 @@ namespace Copiosis_Application.Controllers
         // POST: /Admin/AddClass
         // Add a new item class to Copiosis.
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult AddClass(AddClassModel m)
         {
 
