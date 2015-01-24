@@ -181,9 +181,6 @@
         </div>
         <script>
             $(function () {
-                $('tbody tr').hover(function () {
-                    $('tbody tr').css('cursor', 'pointer');
-                });
                 $('tbody').delegate('tr', 'click', function () {
                     $(location).attr('href', '/Account/View/?tranId=' + $(this).attr('id'));
                 });
