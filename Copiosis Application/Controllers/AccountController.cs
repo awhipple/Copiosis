@@ -883,7 +883,6 @@ namespace Copiosis_Application.Controllers
             return Json(new { success = result, nbr = result ? nbr : null }, JsonRequestBehavior.AllowGet);
         }
 
-
         private Dictionary<string, int> FetchItemClassTemplates(CopiosisEntities db)
         {
             Dictionary<string, int> itemClasses = new Dictionary<string, int>();

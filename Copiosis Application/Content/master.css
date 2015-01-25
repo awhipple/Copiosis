@@ -180,3 +180,7 @@ textarea {
     color: #0066FF;
     font-weight: bold;
 }
+
+tbody tr {
+    cursor:pointer;
+}

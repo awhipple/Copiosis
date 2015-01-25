@@ -181,6 +181,7 @@
         </div>
         <script>
             $(function () {
+
                 $(window).bind('load', function(){
                     $('.new-item').css('background-color', 'yellow');
                 });
@@ -188,6 +189,7 @@
                 $('table tbody tr').hover(function () {
                     $('table tbody tr').css('cursor', 'pointer');
                 });
+
                 $('tbody').delegate('tr', 'click', function () {
                     $(location).attr('href', '/Account/View/?tranId=' + $(this).attr('id'));
                 });

@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "AddClass";
-}
+﻿@model Copiosis_Application.Models.AddClassModel
 
-<h2>AddClass</h2>
+@* Page for adding new items*@
+<div class="row">
+    @Html.Partial("_ClassCRUDPartial", Model)
+</div>
