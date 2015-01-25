@@ -23,13 +23,13 @@
             }
             else { 
                 <div class="table-responsive">
-                    <table data-link="row" class="table table-bordered table-hover table-striped">
+                    <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Service/Item Name</th>
-                                <th>Gateway</th>
-                                <th>Date Created</th>
-                                <th>Other Party</th>
+                                <th data-sortable="true">Service/Item Name</th>
+                                <th data-sortable="true">Gateway</th>
+                                <th data-sortable="true">Date Created</th>
+                                <th data-sortable="true">Other Party</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,7 +37,7 @@
                             {
                                 if(item.newSinceLogin)
                                 {
-                                    <tr id="@item.productGuid">
+                                    <tr id="@item.transactionID" class="new-item" style="background-color:#ffd800">
                                         <td> <span class="glyphicon glyphicon-flag"></span> @item.productName </td>
                                         <td>@item.productGateway</td>
                                         <td>@item.dateAdded</td>
@@ -45,7 +45,7 @@
                                     </tr>
                                 }
                                 else { 
-                                    <tr id="@item.productGuid">
+                                    <tr id="@item.transactionID">
                                         <td>@item.productName</td>
                                         <td>@item.productGateway</td>
                                         <td>@item.dateAdded</td>
@@ -70,13 +70,13 @@
                 {
                     <div class="table-responsive">
                                              
-                        <table data-link="row" class="clickable table table-bordered table-hover table-striped">
+                        <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="clickable table table-bordered table-hover table-striped">
                             <thead>
                                 <tr>
-                                    <th>Service/Item Name</th>
-                                    <th>Gateway</th>
-                                    <th>Date Created</th>
-                                    <th>Other Party</th>
+                                    <th data-sortable="true">Service/Item Name</th>
+                                    <th data-sortable="true">Gateway</th>
+                                    <th data-sortable="true">Date Created</th>
+                                    <th data-sortable="true">Other Party</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -112,12 +112,12 @@
                     <table id="events-table" data-toggle="table" data-pagination="true" class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Service/Item Name</th>
+                                <th data-sortable="true">Service/Item Name</th>
                                 <!-- <th>Date Created</th> -->
-                                <th>Date Completed</th>
-                                <th>Other Party</th>
-                                <th>NBR Change</th>
-                                <th>Result</th>
+                                <th data-sortable="true">Date Completed</th>
+                                <th data-sortable="true">Other Party</th>
+                                <th data-sortable="true">NBR Change</th>
+                                <th data-sortable="true">Result</th>
                             </tr>
                         </thead>
                         <tbody class="tbody">
@@ -181,13 +181,16 @@
         </div>
         <script>
             $(function () {
-                $('tbody tr').hover(function () {
-                    $('tbody tr').css('cursor', 'pointer');
+                $(window).bind('load', function(){
+                    $('.new-item').css('background-color', 'yellow');
+                });
+       
+                $('table tbody tr').hover(function () {
+                    $('table tbody tr').css('cursor', 'pointer');
                 });
                 $('tbody').delegate('tr', 'click', function () {
                     $(location).attr('href', '/Account/View/?tranId=' + $(this).attr('id'));
                 });
-
             });
         </script>
 
