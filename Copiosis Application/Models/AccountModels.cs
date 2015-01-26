@@ -69,18 +69,6 @@ namespace Copiosis_Application.Models
 
         public string currentLastName { get; set; }
 
-        public bool userNameIsInvalid { get; set; }
-
-        public bool firstNameIsInvalid { get; set; }
-
-        public bool lastNameIsInvalid { get; set; }
-
-        public bool confirmPwIsInvalid { get; set; }
-
-        public bool newPwIsInvalid { get; set; }
-
-        public bool currentPwIsInvalid { get; set; }
-
         public Dictionary<string, string> errorList { get; set; }
 
         //Constructor

@@ -5,7 +5,6 @@
     <li>@Html.ActionLink("Create Item", "AddItem", "Account")</li>
     <li>@Html.ActionLink("I Benefited Someone", "Create", "Account", new { type="producer" }, null)</li>
     <li>@Html.ActionLink("I Received Benefit", "Create", "Account", new { type = "consumer" }, null)</li>
-    <li>@Html.ActionLink("Make Changes to My Account", "Manage", "Account")</li>
     <li class="last-item"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
