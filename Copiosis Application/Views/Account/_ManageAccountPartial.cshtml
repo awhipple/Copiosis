@@ -47,7 +47,8 @@
                         @Html.LabelFor(m => m.emailAddress, new { @class = "control-label manage-account-label" })
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
-                        @Html.TextBoxFor(m => m.emailAddress, new { @class = "form-control", @type = "email", @placeholder = Model.currentEmail })
+                        @Html.TextBoxFor(m => m.emailAddress, new { @class = "form-control", @id = "e-mail", @type = "email", @placeholder = Model.currentEmail })
+                        @Html.ValidationMessageFor(m => m.emailAddress)
                     </div>
                 </div>
             </div>
@@ -84,6 +85,7 @@
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                         @Html.PasswordFor(m => m.newPassword, new { @class = "form-control", @id = "new-pw" })
+                        @Html.ValidationMessageFor(m => m.newPassword)
                     </div>
                 </div>
             </div>
@@ -96,6 +98,7 @@
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                         @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @id = "confirm-pw" })
+                        @Html.ValidationMessageFor(m => m.confirmPassword)
                     </div>
                 </div>
             </div>
@@ -108,6 +111,7 @@
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                         @Html.PasswordFor(m => m.currentPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.currentPassword)
                     </div>
                 </div>
             </div>
