@@ -31,10 +31,7 @@ namespace Copiosis_Application.Models
     /* This model may need to change once we have the db schema and seed script */
     public class AccountManagerModel
     {
-        
-        public bool isValidatedUser { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "Your current password is required")]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
         public string currentPassword { get; set; }
@@ -47,11 +44,6 @@ namespace Copiosis_Application.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
         public string confirmPassword { get; set; }
-
-        [Display(Name = "User name")]
-        public string userName { get; set; }
-
-        public string currentUserName { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "E-mail")]
@@ -70,13 +62,6 @@ namespace Copiosis_Application.Models
         public string currentLastName { get; set; }
 
         public Dictionary<string, string> errorList { get; set; }
-
-        //Constructor
-        //For certainty
-        public AccountManagerModel()
-        {
-            this.isValidatedUser = false;
-        }
 
     }
 

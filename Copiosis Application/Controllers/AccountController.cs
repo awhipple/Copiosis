@@ -793,9 +793,8 @@ namespace Copiosis_Application.Controllers
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
+                message == ManageMessageId.AccountChangesSaved ? "Your account changes were saved"
+                : message == ManageMessageId.PasswordRequired ? "Your password is required"
                 : "";
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
@@ -807,13 +806,13 @@ namespace Copiosis_Application.Controllers
             {
                 ViewBag.changesSaved = false;
             }
-            try 
+            try
             {
                 bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(WebSecurity.CurrentUserName));
                 if (hasLocalAccount == false)
                 {
                     return RedirectToAction("Register");
-                }            
+                }
                 using (var db = new CopiosisEntities())
                 {
                     var dbCurrentUser = db.users.Where(p => p.userID == WebSecurity.CurrentUserId).FirstOrDefault();
@@ -825,16 +824,14 @@ namespace Copiosis_Application.Controllers
                     AccountManagerModel model = new AccountManagerModel();
                     model.errorList = new Dictionary<string, string>();
                     user CurrentUser = db.users.Where(p => p.userID == WebSecurity.CurrentUserId).FirstOrDefault();
-                    model.currentUserName = CurrentUser.username;
                     model.currentEmail = CurrentUser.email;
                     model.currentFirstName = CurrentUser.firstName;
                     model.currentLastName = CurrentUser.lastName;
-                    model.isValidatedUser = true;
-                    ViewBag.isValidatedUser = model.isValidatedUser;
+                    ViewBag.isValidatedUser = true;
                     return View(model);
                 }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 ACCOUNTERROR.ErrorSubject = "Error when trying to access your account";
                 if (e.InnerException is InvalidOperationException)
@@ -854,10 +851,9 @@ namespace Copiosis_Application.Controllers
         public ActionResult Manage(AccountManagerModel model)
         {
             bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            model.isValidatedUser = hasLocalAccount;
             ViewBag.ReturnUrl = Url.Action("Manage");
             //Dictionary<string, ModelState> errors = dict.ToDictionary<string, ModelState>(p => p.Value);
-            if (ModelState.IsValid && model.isValidatedUser)
+            if (ModelState.IsValid && hasLocalAccount)
             {
                 using (var db = new CopiosisEntities())
                 {
@@ -867,13 +863,12 @@ namespace Copiosis_Application.Controllers
                         ACCOUNTERROR.ErrorSubject = "Error while trying to retrieve your user account";
                         throw new Exception(string.Format("No match for the current user with user name {0}", WebSecurity.CurrentUserId));
                     }
-                    model.isValidatedUser = true;
                     ViewBag.isValidatedUser = true;
-                    string userNameTemp;
                     string passwordTemp;
-                    bool changeUserName;
                     bool changePassword;
-                    validateManageAccountForm(model, db, dbCurrentUser, out userNameTemp, out passwordTemp, out changeUserName, out changePassword);
+                    bool noPwProvided;
+                    validateManageAccountForm(model, db, dbCurrentUser, out passwordTemp, out changePassword, out noPwProvided);
+
                     if (ModelState.IsValid == true)
                     {
                         if (changePassword == true)
@@ -908,17 +903,9 @@ namespace Copiosis_Application.Controllers
                                 }
                             }
                         }
-                        if (changeUserName == true)
-                        {
-                            dbCurrentUser.username = userNameTemp;
-                        }
                         db.SaveChanges();
-                        if (changeUserName == true || changePassword == true)
-                        {
-                            WebSecurity.Login(dbCurrentUser.username, passwordTemp);
-                        }
                         ViewBag.changesSaved = true;
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.AccountChangesSaved });
                     }
                     else
                     {
@@ -927,10 +914,10 @@ namespace Copiosis_Application.Controllers
                         return View(model);
                     }
                 }
-                
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.changesSaved = false;
             return View(model);
         }
 
@@ -1100,38 +1087,21 @@ namespace Copiosis_Application.Controllers
 
         #region Helpers
         //Helper method to validate the Manage Account form for the Account/Manage view
-        private void validateManageAccountForm(AccountManagerModel model, CopiosisEntities db, user dbCurrentUser, out string userNameTemp, out string passwordTemp, out bool changeUserName, out bool changePassword)
+        private void validateManageAccountForm(AccountManagerModel model, CopiosisEntities db, user dbCurrentUser, out string passwordTemp, out bool changePassword, out bool noPwProvided)
         {
-            string userName = model.userName;
             string email = model.emailAddress;
             string firstName = model.firstName;
             string lastName = model.lastName;
             string newPassword = model.newPassword;
             string confirmPassword = model.confirmPassword;
             string currentPassword = model.currentPassword ?? "";
-            userNameTemp = "";
             passwordTemp = new string(currentPassword.ToCharArray());
-            changeUserName = false;
             changePassword = false;
-            model.currentUserName = dbCurrentUser.username;
+            noPwProvided = false;
             model.currentEmail = dbCurrentUser.email;
             model.currentFirstName = dbCurrentUser.firstName;
             model.currentLastName = dbCurrentUser.lastName;
-            //Set the "current" AccountManagerModel fields
             user conflictUser = null;
-            if (userName != null)
-            {
-                conflictUser = db.users.Where(m => m.username == userName).FirstOrDefault();
-                if (conflictUser != null && conflictUser.username.Equals(userName))
-                {
-                    ModelState.AddModelError("userName", "That user name is already taken. Use a different one");
-                }
-                else
-                {
-                    userNameTemp = model.userName;
-                    changeUserName = true;
-                }
-            }
             if (email != null)
             {
                 conflictUser = db.users.Where(m => m.email == email).FirstOrDefault();
@@ -1148,7 +1118,7 @@ namespace Copiosis_Application.Controllers
             {
                 if (firstName.Equals(dbCurrentUser.firstName))
                 {
-                    ModelState.AddModelError("firstName", "Enter a different First name");
+                    ModelState.AddModelError("firstName", "Enter a different first name");
                 }
                 else
                 {
@@ -1159,7 +1129,7 @@ namespace Copiosis_Application.Controllers
             {
                 if (lastName.Equals(dbCurrentUser.lastName))
                 {
-                    ModelState.AddModelError("lastName", "Enter a different Last name");
+                    ModelState.AddModelError("lastName", "Enter a different last name");
                 }
                 else
                 {
@@ -1188,6 +1158,7 @@ namespace Copiosis_Application.Controllers
             if (model.currentPassword == null)
             {
                 ModelState.AddModelError("currentPassword", "Please enter your current password to commit to the change(s)");
+                noPwProvided = false;
             }
             else if ((Membership.Provider.ValidateUser(db.users.Where(m => m.userID == WebSecurity.CurrentUserId).FirstOrDefault().username, model.currentPassword) == false))
             {
@@ -1295,6 +1266,8 @@ namespace Copiosis_Application.Controllers
 
         public enum ManageMessageId
         {
+            AccountChangesSaved,
+            PasswordRequired,
             ChangePasswordSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
