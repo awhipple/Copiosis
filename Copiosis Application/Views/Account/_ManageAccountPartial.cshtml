@@ -15,18 +15,7 @@
                 <div class="validation-summary-errors panel panel-danger"
                      data-valmsg-summary="true">
                     <div class="panel-heading">
-                        Please correct the following errors:
-                    </div>
-                    <div class="panel-body">
-                        <ul>
-                            @if (Model.errorList.Count > 0)
-                            {
-                                foreach (KeyValuePair<string, string> error in Model.errorList)
-                                {
-                                    <li>@error.Value</li>
-                                }
-                            }
-                        </ul>
+                        <center><strong>Please correct the following fields:</strong></center>
                     </div>
                 </div><br />
             }
@@ -61,6 +50,7 @@
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                         @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", @placeholder = Model.currentFirstName })
+                        @Html.ValidationMessageFor(m => m.firstName)
                     </div>
                 </div>
             </div>
@@ -73,6 +63,7 @@
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                         @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = Model.currentLastName })
+                        @Html.ValidationMessageFor(m => m.lastName)
                     </div>
                 </div>
             </div>
