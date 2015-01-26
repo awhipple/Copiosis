@@ -1,0 +1,136 @@
+﻿@model Copiosis_Application.Models.AccountManagerModel
+@using System.Collections
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-xs-8 col-xs-offset-2">
+        <center><h2>Make Changes To Your Account</h2></center>
+        <center><h3>*You must enter your <strong>current password</strong> to make those changes</h3></center>
+        <br />
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @*Show Validation Errors if there are any*@
+            bool validState = Html.ViewData.ModelState.IsValid;
+            if (validState == false) { 
+                <div class="@(validState? "validation-summary-valid" : "validation-summary-errors") panel panel-danger"
+                     data-valmsg-summary="true">
+                    <div class="panel-heading">
+                        <p>Please correct the following errors:</p>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            @if (Model.errorList.Count >= 1) {
+                                foreach (KeyValuePair<string, string> error in Model.errorList)
+                                {
+                                    <li>@error.Value</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+            else if (ViewBag.StatusMessage != "")
+            {
+                <div class="panel panel-success"
+                     data-valmsg-summary="true">
+                    <div class="panel-heading">
+                        <p><strong><center>The changes to your account were successfully saved.</center></strong></p>
+                    </div>
+                </div>
+            }
+
+            @*user name*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.userName).ToString()) ? "has-error has-feedback" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This your user name. Type a new user name to change it"></span>
+                        @Html.LabelFor(m => m.userName, new { @class = "control-label manage-account-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.TextBoxFor(m => m.userName, new { @class = "form-control", @placeholder = Model.currentUserName })
+                    </div>
+                </div>
+            </div>
+            @*email*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.emailAddress).ToString()) ? "has-error" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This is your e-mail address. Type a new e-mail address to change it"></span>
+                        @Html.LabelFor(m => m.emailAddress, new { @class = "control-label manage-account-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.TextBoxFor(m => m.emailAddress, new { @class = "form-control", @placeholder = Model.currentEmail })
+                    </div>
+                </div>
+            </div>
+            @*first name*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.firstName).ToString()) ? "has-error" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This is your first name. Type a new a first name to change it"></span>
+                        @Html.LabelFor(m => m.firstName, new { @class = "control-label manage-account-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", @placeholder = Model.currentFirstName })
+                    </div>
+                </div>
+            </div>
+            @*last name*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.lastName).ToString()) ? "has-error" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This is your last name. Type a new last name to change it"></span>
+                        @Html.LabelFor(m => m.lastName, new { @class = "control-label manage-account-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = Model.currentLastName })
+                    </div>
+                </div>
+            </div>
+            @*new password*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.newPassword).ToString()) ? "has-error" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Type a new password to change your current one"></span>
+                        @Html.LabelFor(m => m.newPassword, new { @class = "control-label manage-account-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.PasswordFor(m => m.newPassword, new { @class = "form-control", @id = "new-pw" })
+                    </div>
+                </div>
+            </div>         
+            @*confirm password*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.confirmPassword).ToString()) ? "has-error" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" id="confirm-info" title="Re-type your new password to confirm it is correct"></span>
+                        @Html.LabelFor(m => m.confirmPassword, new { @class = "control-label manage-account-label", @id = "confirm-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @id = "confirm-pw" })
+                    </div>
+                </div>
+            </div>
+            @*USER PASSWORD*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.currentPassword).ToString()) ? "has-error" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter your current password to make the changes you have made"></span>
+                        @Html.LabelFor(m => m.currentPassword, new { @class = "control-label manage-account-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.PasswordFor(m => m.currentPassword, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>    
+
+             @*Submit button*@
+            <div class="form-group">
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                    <button type="submit" class="btn btn-default center-block">Make Changes</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

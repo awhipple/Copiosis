@@ -66,7 +66,7 @@ h2#copiosis_login,h2#register-title,h2#add-item-title {
     margin-bottom:20px;
 }
 
-.login-label,.add-item-label, .transaction-label {
+.login-label,.add-item-label, .transaction-label, .manage-acct-label {
     margin-top: 8px;
 }
 

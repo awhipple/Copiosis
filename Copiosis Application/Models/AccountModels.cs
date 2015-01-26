@@ -29,23 +29,67 @@ namespace Copiosis_Application.Models
     }
     */
     /* This model may need to change once we have the db schema and seed script */
-    public class LocalPasswordModel
+    public class AccountManagerModel
     {
+        
+        public bool isValidatedUser { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
+        public string currentPassword { get; set; }
 
-        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
-        public string NewPassword { get; set; }
+        public string newPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        public string confirmPassword { get; set; }
+
+        [Display(Name = "User name")]
+        public string userName { get; set; }
+
+        public string currentUserName { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "E-mail")]
+        public string emailAddress { get; set; }
+
+        public string currentEmail { get; set; }
+
+        [Display(Name = "First name")]
+        public string firstName { get; set; }
+
+        public string currentFirstName { get; set; }
+
+        [Display(Name = "Last name")]
+        public string lastName { get; set; }
+
+        public string currentLastName { get; set; }
+
+        public bool userNameIsInvalid { get; set; }
+
+        public bool firstNameIsInvalid { get; set; }
+
+        public bool lastNameIsInvalid { get; set; }
+
+        public bool confirmPwIsInvalid { get; set; }
+
+        public bool newPwIsInvalid { get; set; }
+
+        public bool currentPwIsInvalid { get; set; }
+
+        public Dictionary<string, string> errorList { get; set; }
+
+        //Constructor
+        //For certainty
+        public AccountManagerModel()
+        {
+            this.isValidatedUser = false;
+        }
+
     }
 
     public class LoginModel

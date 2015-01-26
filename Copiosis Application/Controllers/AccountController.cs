@@ -13,6 +13,7 @@ using WebMatrix.WebData;
 using Copiosis_Application.Filters;
 using Copiosis_Application.Models;
 using Copiosis_Application.DB_Data;
+using System.Collections;
 
 namespace Copiosis_Application.Controllers
 {
@@ -798,70 +799,141 @@ namespace Copiosis_Application.Controllers
                 : "";
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
-            return View();
+            if (message == ManageMessageId.ChangePasswordSuccess)
+            {
+                ViewBag.changesSaved = true;
+            }
+            else
+            {
+                ViewBag.changesSaved = false;
+            }
+            try 
+            {
+                bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(WebSecurity.CurrentUserName));
+                if (hasLocalAccount == false)
+                {
+                    return RedirectToAction("Register");
+                }            
+                using (var db = new CopiosisEntities())
+                {
+                    var dbCurrentUser = db.users.Where(p => p.userID == WebSecurity.CurrentUserId).FirstOrDefault();
+                    if (dbCurrentUser == null)
+                    {
+                        ACCOUNTERROR.ErrorSubject = "Error while trying to retrieve your user account";
+                        throw new Exception(string.Format("No match for the current user with user name {0}", WebSecurity.CurrentUserId));
+                    }
+                    AccountManagerModel model = new AccountManagerModel();
+                    model.errorList = new Dictionary<string, string>();
+                    user CurrentUser = db.users.Where(p => p.userID == WebSecurity.CurrentUserId).FirstOrDefault();
+                    model.currentUserName = CurrentUser.username;
+                    model.currentEmail = CurrentUser.email;
+                    model.currentFirstName = CurrentUser.firstName;
+                    model.currentLastName = CurrentUser.lastName;
+                    model.isValidatedUser = true;
+                    ViewBag.isValidatedUser = model.isValidatedUser;
+                    return View(model);
+                }
+            }
+            catch (Exception e) 
+            {
+                ACCOUNTERROR.ErrorSubject = "Error when trying to access your account";
+                if (e.InnerException is InvalidOperationException)
+                {
+                    throw new Exception("You do not have an account. Please register with Copiosis.");
+                }
+                throw new Exception(e.Message);
+            }
+            //Not authorized to view to this page. Redirect to register a new account
+            return RedirectToAction("Register");
         }
 
         //
         // POST: /Account/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage(LocalPasswordModel model)
+        public ActionResult Manage(AccountManagerModel model)
         {
             bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.HasLocalPassword = hasLocalAccount;
+            model.isValidatedUser = hasLocalAccount;
             ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasLocalAccount)
+            //Dictionary<string, ModelState> errors = dict.ToDictionary<string, ModelState>(p => p.Value);
+            if (ModelState.IsValid && model.isValidatedUser)
             {
-                if (ModelState.IsValid)
+                using (var db = new CopiosisEntities())
                 {
-                    // ChangePassword will throw an exception rather than return false in certain failure scenarios.
-                    bool changePasswordSucceeded;
-                    try
+                    var dbCurrentUser = db.users.Where(p => p.userID == WebSecurity.CurrentUserId).FirstOrDefault();
+                    if (dbCurrentUser == null)
                     {
-                        changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                        ACCOUNTERROR.ErrorSubject = "Error while trying to retrieve your user account";
+                        throw new Exception(string.Format("No match for the current user with user name {0}", WebSecurity.CurrentUserId));
                     }
-                    catch (Exception)
+                    model.isValidatedUser = true;
+                    ViewBag.isValidatedUser = true;
+                    string userNameTemp;
+                    string passwordTemp;
+                    bool changeUserName;
+                    bool changePassword;
+                    validateManageAccountForm(model, db, dbCurrentUser, out userNameTemp, out passwordTemp, out changeUserName, out changePassword);
+                    if (ModelState.IsValid == true)
                     {
-                        changePasswordSucceeded = false;
-                    }
+                        if (changePassword == true)
+                        {
+                            // ChangePassword will throw an exception rather than return false in certain failure scenarios.
+                            bool changePasswordSucceeded = true;
+                            try
+                            {
+                                changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, passwordTemp, model.newPassword);
+                            }
+                            catch (Exception)
+                            {
+                                changePasswordSucceeded = false;
+                            }
 
-                    if (changePasswordSucceeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                            if (changePasswordSucceeded == false)
+                            {
+                                ACCOUNTERROR.ErrorSubject = "Error while trying to update your account";
+                                throw new Exception("Could not change your password");
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    WebSecurity.Login(dbCurrentUser.username, passwordTemp);
+                                    passwordTemp = model.newPassword;
+                                }
+                                catch (Exception e)
+                                {
+                                    ACCOUNTERROR.ErrorSubject = "Error when logging you in";
+                                    throw new Exception(e.Message);
+                                }
+                            }
+                        }
+                        if (changeUserName == true)
+                        {
+                            dbCurrentUser.username = userNameTemp;
+                        }
+                        db.SaveChanges();
+                        if (changeUserName == true || changePassword == true)
+                        {
+                            WebSecurity.Login(dbCurrentUser.username, passwordTemp);
+                        }
+                        ViewBag.changesSaved = true;
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
                     else
                     {
-                        ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                        //there was at least one error:
+                        ViewBag.changesSaved = false;
+                        return View(model);
                     }
                 }
-            }
-            else
-            {
-                // User does not have a local password so remove any validation errors caused by a missing
-                // OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    catch (Exception)
-                    {
-                        ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
-                    }
-                }
+                
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
 
         //
         // GET: /Account/UsersNBR
@@ -1027,6 +1099,119 @@ namespace Copiosis_Application.Controllers
         }
 
         #region Helpers
+        //Helper method to validate the Manage Account form for the Account/Manage view
+        private void validateManageAccountForm(AccountManagerModel model, CopiosisEntities db, user dbCurrentUser, out string userNameTemp, out string passwordTemp, out bool changeUserName, out bool changePassword)
+        {
+            string userName = model.userName;
+            string email = model.emailAddress;
+            string firstName = model.firstName;
+            string lastName = model.lastName;
+            string newPassword = model.newPassword;
+            string confirmPassword = model.confirmPassword;
+            string currentPassword = model.currentPassword ?? "";
+            userNameTemp = "";
+            passwordTemp = new string(currentPassword.ToCharArray());
+            changeUserName = false;
+            changePassword = false;
+            model.currentUserName = dbCurrentUser.username;
+            model.currentEmail = dbCurrentUser.email;
+            model.currentFirstName = dbCurrentUser.firstName;
+            model.currentLastName = dbCurrentUser.lastName;
+            //Set the "current" AccountManagerModel fields
+            user conflictUser = null;
+            if (userName != null)
+            {
+                conflictUser = db.users.Where(m => m.username == userName).FirstOrDefault();
+                if (conflictUser != null && conflictUser.username.Equals(userName))
+                {
+                    ModelState.AddModelError("userName", "That user name is already taken. Use a different one");
+                }
+                else
+                {
+                    userNameTemp = model.userName;
+                    changeUserName = true;
+                }
+            }
+            if (email != null)
+            {
+                conflictUser = db.users.Where(m => m.email == email).FirstOrDefault();
+                if (conflictUser != null && conflictUser.email.Equals(email))
+                {
+                    ModelState.AddModelError("emailAddress", "That e-mail address is already being used. Please use a different one");
+                }
+                else
+                {
+                    dbCurrentUser.email = email;
+                }
+            }
+            if (firstName != null)
+            {
+                if (firstName.Equals(dbCurrentUser.firstName))
+                {
+                    ModelState.AddModelError("firstName", "Enter a different First name");
+                }
+                else
+                {
+                    dbCurrentUser.firstName = firstName;
+                }
+            }
+            if (lastName != null)
+            {
+                if (lastName.Equals(dbCurrentUser.lastName))
+                {
+                    ModelState.AddModelError("lastName", "Enter a different Last name");
+                }
+                else
+                {
+                    dbCurrentUser.lastName = lastName;
+                }
+            }
+            if (newPassword != null)
+            {
+                if (confirmPassword == null)
+                {
+                    ModelState.AddModelError("confirmPassword", "Confirmation password cannot be empty");
+                }
+                else if (!newPassword.Equals(confirmPassword))
+                {
+                    ModelState.AddModelError("confirmPassword", "Confirmation password and new password do not match");
+                }
+                else if (newPassword.Equals(model.currentPassword))
+                {
+                    ModelState.AddModelError("newPassword", "Your new password cannot be the same as your current password");
+                }
+                else
+                {
+                    changePassword = true;
+                }
+            }
+            if (model.currentPassword == null)
+            {
+                ModelState.AddModelError("currentPassword", "Please enter your current password to commit to the change(s)");
+            }
+            else if ((Membership.Provider.ValidateUser(db.users.Where(m => m.userID == WebSecurity.CurrentUserId).FirstOrDefault().username, model.currentPassword) == false))
+            {
+                ModelState.AddModelError("currentPassword", "You entered the wrong current password");
+            }
+            //build the error list
+            if (model.errorList == null)
+            {
+                model.errorList = new Dictionary<string, string>();
+            }
+            if (ModelState.IsValid == false)
+            {
+                int i = 0;
+                foreach (ModelState state in ModelState.Values)
+                {
+                    if (state.Errors.Count >= 1)
+                    {
+                        model.errorList.Add(ModelState.Keys.ElementAt(i), state.Errors[0].ErrorMessage);
+                    }
+                    ++i;
+                }
+            }
+        }
+
         private void PopulateNewTransactionModel(string type, NewTransactionModel model)
         {
             if (type == "consumer")
