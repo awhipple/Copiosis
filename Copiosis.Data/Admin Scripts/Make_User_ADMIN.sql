@@ -3,4 +3,4 @@
    values(UserID, 1), note: 1 is the admin role if you were to look at the
    dbo.webpages_Roles table */
 insert into dbo.webpages_UsersInRoles
-values (1, 1)
+values((select userID from [dbo].[user] where username = 'kylevc'), 1)
