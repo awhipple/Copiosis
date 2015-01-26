@@ -1,7 +1,7 @@
 ﻿﻿@if (Request.IsAuthenticated)
 {
     <div class="pull-right text-right">
-        <p id="userNBR" class="">Hello, @User.Identity.Name, your Current NBR is:<span id="nbr-number"></span></p>
+        <p id="userNBR" class="">Hello <strong>@Html.ActionLink(User.Identity.Name, "Manage", "Account")</strong>. Your Current NBR is:<span id="nbr-number"></span></p>
     </div>
     <script>
         $(function () {
