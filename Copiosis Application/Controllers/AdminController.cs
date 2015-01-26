@@ -33,7 +33,43 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult Overview()
         {
-            return View();
+            ClassOverviewModel model = new ClassOverviewModel();
+
+            using (var db = new CopiosisEntities())
+            {
+                int userId = WebSecurity.CurrentUserId;
+                model.ItemClassTemplates = FetchItemClassTemplates(db);
+
+                model.products = db.products.Where(
+                    a =>
+                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass != 1
+                ).Select(t => new ClassModel
+                {
+                    classID = t.itemClass,
+                    className = t.itemClass1.name,
+                    productName = t.name,
+                    productDesc = t.description,
+                    productOwner = (t.user.lastName + ", " + t.user.firstName),
+                    productGuid = t.guid
+                }).OrderByDescending(t => t.productName).ToList();
+
+                model.productsDefault = db.products.Where(
+                    a =>
+                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass == 1
+                ).Select(t => new ClassModel
+                {
+                    classID = t.itemClass,
+                    className = t.itemClass1.name,
+                    productName = t.name,
+                    productDesc = t.description,
+                    productOwner = (t.user.lastName + ", " + t.user.firstName),
+                    productGuid = t.guid
+                }).OrderByDescending(t => t.productName).ToList();
+
+            }
+
+
+            return View(model);
         }
 
         //
@@ -139,6 +175,25 @@ namespace Copiosis_Application.Controllers
             }
             return View(model);
         }
+
+
+        private List<SelectListItem> FetchItemClassTemplates(CopiosisEntities db)
+        {
+            List<SelectListItem> itemClasses = new List<SelectListItem>();
+            var items = db.itemClasses.ToList();
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    itemClasses.Add(
+                        new SelectListItem { Text = item.name, Value = item.name }
+                    );
+                }
+            }
+            return itemClasses;
+        }
+
+
 
     }
 }

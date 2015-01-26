@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
+using System.Web.Mvc;
 using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Models
@@ -82,4 +83,23 @@ namespace Copiosis_Application.Models
         public string producer { get; set; }
         public string consumer { get; set; }
     }
+
+    public class ClassOverviewModel
+    {
+        public List<ClassModel> products { get; set; }
+        public List<ClassModel> productsDefault { get; set; }
+        //public Dictionary<string, int> ItemClassTemplates { get; set; }
+        public List<SelectListItem> ItemClassTemplates { get; set; }
+    }
+
+    public class ClassModel
+    {
+        public int classID { get; set; }
+        public string className { get; set; }
+        public string productName { get; set; }
+        public string productDesc { get; set; }
+        public Guid productGuid { get; set; }
+        public string productOwner { get; set; }
+    }
+
 }
