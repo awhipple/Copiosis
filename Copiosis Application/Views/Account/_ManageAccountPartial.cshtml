@@ -15,7 +15,18 @@
                 <div class="validation-summary-errors panel panel-danger"
                      data-valmsg-summary="true">
                     <div class="panel-heading">
-                        <center><strong>Please correct the following errors:</strong></center>
+                        Please correct the following errors:
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            @if (Model.errorList.Count > 0)
+                            {
+                                foreach (KeyValuePair<string, string> error in Model.errorList)
+                                {
+                                    <li>@error.Value</li>
+                                }
+                            }
+                        </ul>
                     </div>
                 </div><br />
             }
