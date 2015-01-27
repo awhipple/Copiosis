@@ -184,3 +184,7 @@ textarea {
 tbody tr {
     cursor:pointer;
 }
+
+.new-item {
+    background-color:#ffd800!important;
+}
