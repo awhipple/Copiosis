@@ -33,6 +33,7 @@ namespace Copiosis_Application.Models
         public int aPrime { get; set; }
 
         [Required(ErrorMessage = "Ccb is required")]
+        [Display(Name = "")]
         public float cCb { get; set; }
 
         [Required(ErrorMessage = "M1 is required")]
