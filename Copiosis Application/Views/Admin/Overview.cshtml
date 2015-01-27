@@ -1,5 +1,113 @@
-﻿@{
-    ViewBag.Title = "Overview";
-}
+﻿@model Copiosis_Application.Models.ClassOverviewModel
+<div class="row">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-8 col-md-7 col-sm-5 col-xs-12" style="padding-left:0px">
+                <h1>Transaction Overview</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col2-sm-12 col-md-12 col-lg-12">
+            <h3>Products still using the default item class</h3>
 
-<h2>Overview</h2>
+            @if (Model.productsDefault.Count() < 1)
+            {
+                <h4>No Products Using Default Item Class.</h4>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th data-sortable="true">Item/Product</th>
+                                <th data-sortable="true">Item Owner</th>
+                                <th data-sortable="true">Item Class</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.productsDefault.Select((value, i) => new { i, value }))
+                            {
+                                <tr id="@item.value.productGuid">
+                                    <td>@item.value.productName</td>
+                                    <td>@item.value.productOwner</td>
+                                    <td>
+                                        @Html.DropDownListFor(model => model.productsDefault[item.i], Model.ItemClassTemplates, new { @id = @item.value.productGuid, @class = "select-box", @placeholder = "Class" })
+                                </td>
+                            </tr>
+                            }
+ 
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <h3>Products using non-default classes</h3>
+            @if (Model.productsDefault.Count() < 1)
+            {
+                <h4>No Products using non-default classes.</h4>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="clickable table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th data-sortable="true">Item/Product</th>
+                                <th data-sortable="true">Item Owner</th>
+                                <th data-sortable="true">Item Class</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.products.Select((value,i) => new {i, value}))
+                            {                          
+                                <tr id="@item.value.productGuid">
+                                    <td>@item.value.productName</td>
+                                    <td>@item.value.productOwner</td>
+                                    <td>@Html.DropDownListFor(model => model.products[item.i], new SelectList(Model.ItemClassTemplates, "Value", "Text", item.value.className), new { @id = @item.value.productGuid, @class = "select-box", @placeholder = "Class" })
+                                    </td>
+                                </tr>
+                            }  
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+    </div>
+    <div class="row">
+        <script>
+            $(function () {
+
+                $(document.body).on('change', '.select-box', function () {
+                    //alert(this.value + " : " + this.id);
+                    itemClass = this.value;
+                    itemID = this.id;
+                    $.ajax({
+                        url: '/Admin/ChangeClass',
+                        type: 'POST',
+                        data: { newClass: itemClass, itemGuid: itemID },
+                        success: function (result) {
+                            if (result)
+                                console.log("Class updated successfully.");
+                            else {
+                                console.log("Error while trying to update class.");
+                            }
+                        },
+                        error: function (result) {
+                            console.log("Error while trying to update class.");
+                        }
+                    });
+                });
+
+            });
+        </script>
+
+    </div>
+</div>
+

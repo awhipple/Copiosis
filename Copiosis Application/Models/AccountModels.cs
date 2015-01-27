@@ -29,23 +29,40 @@ namespace Copiosis_Application.Models
     }
     */
     /* This model may need to change once we have the db schema and seed script */
-    public class LocalPasswordModel
+    public class AccountManagerModel
     {
-        [Required]
+        [Required(ErrorMessage = "Your current password is required")]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
+        public string currentPassword { get; set; }
 
-        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
-        public string NewPassword { get; set; }
+        public string newPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        public string confirmPassword { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "E-mail")]
+        public string emailAddress { get; set; }
+
+        public string currentEmail { get; set; }
+
+        [Display(Name = "First name")]
+        public string firstName { get; set; }
+
+        public string currentFirstName { get; set; }
+
+        [Display(Name = "Last name")]
+        public string lastName { get; set; }
+
+        public string currentLastName { get; set; }
+
+        public Dictionary<string, string> errorList { get; set; }
+
     }
 
     public class LoginModel

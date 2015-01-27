@@ -20,13 +20,15 @@ namespace Copiosis_Application.Filters
                 AccountController controllerContext = (AccountController)filterContext.Controller;
                 TempDataDictionary contextControllerTempData = filterContext.Controller.TempData;
                 string subject = controllerContext.ACCOUNTERROR.ErrorSubject;
+                string message = filterContext.Exception.Message;
+                controllerContext.ACCOUNTERROR.ErrorMessage = message;
                 if (subject == null || subject.Equals("")) //if no error subject was provided
                 {
                     //set to default errsubject:
                     subject = "An internal error occured";
                 }
                 contextControllerTempData.Add(controllerContext.errorDictionaryKeys.ElementAt(0), subject);
-                contextControllerTempData.Add(controllerContext.errorDictionaryKeys.ElementAt(1), filterContext.Exception.Message);
+                contextControllerTempData.Add(controllerContext.errorDictionaryKeys.ElementAt(1), message);
                 filterContext.Result = new ViewResult
                 {
                     ViewName = "Error",

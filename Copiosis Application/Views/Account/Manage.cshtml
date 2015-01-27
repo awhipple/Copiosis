@@ -1,18 +1,46 @@
-﻿@model Copiosis_Application.Models.LocalPasswordModel
+﻿@model Copiosis_Application.Models.AccountManagerModel
 
-<p class="message-success">@ViewBag.StatusMessage</p>
+@Html.Partial("_ManageAccountPartial")
 
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
 
-@if (ViewBag.HasLocalPassword)
-{
-    @Html.Partial("_ChangePasswordPartial")
-}
-else
-{ 
-    @Html.Partial("_SetPasswordPartial")
-}
 
 @section Scripts {
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#confirm-label').hide();
+        $('#confirm-pw').hide();
+        $('#confirm-info').hide();
+        //To clear current password show/hide dynamically
+        $('#new-pw').on('keyup', function () {
+            var newPwValue = $("#new-pw").val();
+            var confirmPwValue = $('#confirm-pw').val();
+            if (newPwValue != '') {
+                $('#confirm-label').fadeIn();
+                $('#confirm-pw').fadeIn();
+                $('#confirm-info').fadeIn();
+                $('#confirm-pw').attr('disable', false);
+            } else {
+                $('#confirm-label').fadeOut();
+                $('#confirm-pw').fadeOut();
+                $('#confirm-info').fadeOut();
+                document.getElementById("confirm-pw").value = "";
+            }
+        });
+        //To clear e-mail validation message
+        $('#e-mail').on('keyup', function () {
+            var emailVal = $('#e-mail').val();
+            if (emailVal == '') {
+                $('.field-validation-error')
+                   .removeClass('field-validation-error')
+                    .addClass('field-validation-valid');
+
+                $('.input-validation-error')
+                .removeClass('input-validation-error')
+                 .addClass('valid');
+            }
+        });
+    });
+</script>
     @Scripts.Render("~/bundles/jqueryval")
 }
