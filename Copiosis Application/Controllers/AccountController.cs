@@ -850,10 +850,7 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(AccountManagerModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            //Dictionary<string, ModelState> errors = dict.ToDictionary<string, ModelState>(p => p.Value);
-            if (ModelState.IsValid && hasLocalAccount)
+            if (ModelState.IsValid)
             {
                 using (var db = new CopiosisEntities())
                 {
