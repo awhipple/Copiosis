@@ -86,45 +86,51 @@ namespace Copiosis_Application.Controllers
         // POST: /Admin/AddClass
         // Add a new item class to Copiosis.
         [HttpPost]
-        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult AddClass(AddClassModel m)
         {
-
-            itemClass itemClass = new itemClass();
-            using (var db = new CopiosisEntities())
+            if (ModelState.IsValid)
             {
-                var isEmpty = db.itemClasses.Where(ic => ic.name == m.name).FirstOrDefault();
-                if (isEmpty == null)
+                itemClass itemClass = new itemClass();
+                using (var db = new CopiosisEntities())
                 {
-                    itemClass.name = m.name;
-                    itemClass.suggestedGateway = m.suggestedGateway;
-                    itemClass.cPdb = m.cPdb;
-                    itemClass.a = m.a;
-                    itemClass.aMax = m.aMax;
-                    itemClass.d = m.d;
-                    itemClass.aPrime = m.aPrime;
-                    itemClass.cCb = m.cCb;
-                    itemClass.m1 = m.m1;
-                    itemClass.pO = m.p0;
-                    itemClass.m2 = m.m2;
-                    itemClass.cEb = m.cEb;
-                    itemClass.s = m.s;
-                    itemClass.m3 = m.m3;
-                    itemClass.sE = m.sE;
-                    itemClass.m4 = m.m4;
-                    itemClass.sH = m.sH;
-                    itemClass.m5 = m.m5;
+                    var isEmpty = db.itemClasses.Where(ic => ic.name == m.name).FirstOrDefault();
+                    if (isEmpty == null)
+                    {
+                        itemClass.name = m.name;
+                        itemClass.suggestedGateway = m.suggestedGateway;
+                        itemClass.cPdb = m.cPdb;
+                        itemClass.a = m.a;
+                        itemClass.aMax = m.aMax;
+                        itemClass.d = m.d;
+                        itemClass.aPrime = m.aPrime;
+                        itemClass.cCb = m.cCb;
+                        itemClass.m1 = m.m1;
+                        itemClass.pO = m.p0;
+                        itemClass.m2 = m.m2;
+                        itemClass.cEb = m.cEb;
+                        itemClass.s = m.s;
+                        itemClass.m3 = m.m3;
+                        itemClass.sE = m.sE;
+                        itemClass.m4 = m.m4;
+                        itemClass.sH = m.sH;
+                        itemClass.m5 = m.m5;
 
-                    db.itemClasses.Add(itemClass);
-                    db.SaveChanges();
+                        db.itemClasses.Add(itemClass);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        m.message = "Name exists";
+                    }
                 }
-                else
-                {
-                    m.message = "Name exists";
-                }
+                return RedirectToAction("Overview");
             }
-            return RedirectToAction("Overview");
-        }
+            else
+            {
+                return View(m);
+            }
+            }
 
         //
         // POST: /Admin/ChangeClass
