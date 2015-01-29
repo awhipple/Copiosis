@@ -21,31 +21,43 @@
             else
             {
                 <div class="table-responsive">
-                    <table data-link="row" class="table table-bordered table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>Service/Item Name</th>
-                                <th>Item Gateway</th>
-                                <th>Producer</th>
-                                <th>Consumer</th>
-                                <th>Date Rejected</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var rejected in Model.rejected)
-                            {
-                                    <tr id="@rejected.transactionID" class="clickable" onclick="location.href='@Url.Action("View", "Account", new { tranId = rejected.transactionID })' " style="cursor:pointer;">
+                    <table id="events-table" data-toggle="table" data-pagination="true" data-page-size="25" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Service/Item Name</th>
+                                    <th>Item Gateway</th>
+                                    <th>Producer</th>
+                                    <th>Consumer</th>
+                                    <th>Date Rejected</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var rejected in Model.rejected)
+                                {
+                                    <tr id="@rejected.transactionID" class="clickable">
                                         <td>@rejected.name</td>
                                         <td>@rejected.gateway</td>
                                         <td>@rejected.producer</td>
                                         <td>@rejected.consumer</td>
                                         <td>@rejected.dateRejected</td>
                                     </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
             }
         </div>
     </div>
+    <script>
+        $(function () {
+            $('table tbody tr').hover(function () {
+                $('table tbody tr').css('cursor', 'pointer');
+            });
+
+            $('tbody').delegate('tr', 'click', function () {
+                $(location).attr('href', '/Account/View/?tranId=' + $(this).attr('id'));
+            });
+        });
+    </script>
+
 </div>
