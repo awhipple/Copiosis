@@ -130,7 +130,7 @@ namespace Copiosis_Application.Controllers
             {
                 return View(m);
             }
-            }
+        }
 
 
         // GET: /Admin/EditClass
