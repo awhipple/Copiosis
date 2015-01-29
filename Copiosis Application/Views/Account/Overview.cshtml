@@ -23,7 +23,7 @@
             }
             else { 
                 <div class="table-responsive">
-                    <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="table table-bordered table-hover table-striped">
+                    <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="table table-hover table-striped">
                         <thead>
                             <tr>
                                 <th data-sortable="true">Service/Item Name</th>
@@ -70,9 +70,9 @@
                 {
                     <div class="table-responsive">
                                              
-                        <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="clickable table table-bordered table-hover table-striped">
-                            <thead>
-                                <tr>
+                        <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="clickable table tablesorter table-hover table-striped">
+                            <thead class="tablesorter-header">
+                                <tr class="tablesorter-headerRow">
                                     <th data-sortable="true">Service/Item Name</th>
                                     <th data-sortable="true">Gateway</th>
                                     <th data-sortable="true">Date Created</th>
@@ -192,7 +192,7 @@
 
                 $('tbody').delegate('tr', 'click', function () {
                     $(location).attr('href', '/Account/View/?tranId=' + $(this).attr('id'));
-                });
+                });                
             });
         </script>
 

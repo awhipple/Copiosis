@@ -455,6 +455,9 @@ namespace Copiosis_Application.Controllers
             {
                 string[] producerName = model.Producer.Split('|');
                 string producerUN = producerName != null ? producerName[1].Trim() : "";
+
+                string[] productName = model.ProductProvided.Split('|');
+                string productUN = productName[0] != null ? productName[0].TrimEnd() : "";
                 using(var db = new CopiosisEntities())
                 {
                     var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
@@ -463,10 +466,10 @@ namespace Copiosis_Application.Controllers
                         throw new ArgumentException(string.Format("Producer {0} not found", producerUN));
                     }
 
-                    var product = db.products.Where(p => p.ownerID == producer.userID && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
+                    var product = db.products.Where(p => p.ownerID == producer.userID && p.name == productUN && p.deletedDate == null).FirstOrDefault();
                     if(product == null)
                     {
-                        throw new ArgumentException("Product not found");
+                        throw new ArgumentException(string.Format("Product {0} not found", productUN));
                     }
                     double? currentUserNBR = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.nbr).FirstOrDefault();
                     if(!currentUserNBR.HasValue || currentUserNBR.Value < product.gateway)
@@ -496,6 +499,9 @@ namespace Copiosis_Application.Controllers
             {
                 string[] consumerName = model.Consumer.Split('|');
                 string consumerUN = consumerName[1] != null ? consumerName[1].Trim(): "";
+
+                string[] productName = model.ProductProvided.Split('|');
+                string productUN = productName[0] != null ? productName[0].TrimEnd() : "";
                 using(var db = new CopiosisEntities())
                 {
                     var consumer = db.users.Where(u => u.username == consumerUN && u.status == 1).FirstOrDefault();
@@ -504,10 +510,10 @@ namespace Copiosis_Application.Controllers
                         throw new ArgumentException(string.Format("Consumer {0} not found", consumerUN));
                     }
 
-                    var product = db.products.Where(p => p.ownerID == WebSecurity.CurrentUserId && p.name == model.ProductProvided && p.deletedDate == null).FirstOrDefault();
+                    var product = db.products.Where(p => p.ownerID == WebSecurity.CurrentUserId && p.name == productUN && p.deletedDate == null).FirstOrDefault();
                     if(product == null)
                     {
-                        throw new ArgumentException("Product not found");
+                        throw new ArgumentException(string.Format("Product {0} not found", productUN));
                     }
 
                     double? consumerNBR = db.users.Where(u => u.userID == consumer.userID).Select(u => u.nbr).FirstOrDefault();
@@ -688,11 +694,12 @@ namespace Copiosis_Application.Controllers
                     throw new ArgumentNullException(string.Format("No user found with name {0}", name));
                 }
                 
-                products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name).Distinct().ToList();
+                products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name + " | Gateway: " + p.gateway).Distinct().ToList();
                 if (products == null)
                 {
                     result = true;
                 }
+
 
             }
 
@@ -850,10 +857,7 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(AccountManagerModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            //Dictionary<string, ModelState> errors = dict.ToDictionary<string, ModelState>(p => p.Value);
-            if (ModelState.IsValid && hasLocalAccount)
+            if (ModelState.IsValid)
             {
                 using (var db = new CopiosisEntities())
                 {
@@ -1208,7 +1212,7 @@ namespace Copiosis_Application.Controllers
                         var initialItemList = FetchInitialProducerItems(initialProducer.userID);
                         foreach (var item in initialItemList)
                         {
-                            products.Add(item.ProductName);
+                            products.Add(item.ProductName + " | Gateway: " + item.Gateway);
                         }
                     }
                 }
@@ -1225,7 +1229,7 @@ namespace Copiosis_Application.Controllers
                 List<string> products = new List<string>();
                 foreach (var item in producerItems)
                 {
-                    products.Add(item.ProductName);
+                    products.Add(item.ProductName + " | Gateway: " + item.Gateway);
                 }
                 model.Products = products;
                 List<string> usernames = new List<string>();
@@ -1250,6 +1254,17 @@ namespace Copiosis_Application.Controllers
             }
 
             return;
+        }
+
+        public static string Sep(string s)
+        {
+            int splitPoint = s.IndexOf("-");
+            if (splitPoint > 0)
+            {
+                return s.Substring(0, splitPoint);
+            }
+            return "";
+
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
