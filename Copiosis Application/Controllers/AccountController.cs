@@ -14,6 +14,7 @@ using Copiosis_Application.Filters;
 using Copiosis_Application.Models;
 using Copiosis_Application.DB_Data;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace Copiosis_Application.Controllers
 {
@@ -66,7 +67,7 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            string sanitizedun = model.UserName.Replace(" ", "");
+            string sanitizedun = Regex.Replace(model.UserName, @"\s+", "");
             if (ModelState.IsValid && WebSecurity.Login(sanitizedun, model.Password, persistCookie: model.RememberMe))
             {
                 using (var db = new CopiosisEntities())
@@ -151,7 +152,7 @@ namespace Copiosis_Application.Controllers
                         vc = rand.Next(1000, 9999);
                     }
 
-                    string sanitizedun = model.UserName.Replace(" ", "");
+                    string sanitizedun = Regex.Replace(model.UserName, @"\s+", "");  //model.UserName.Replace(" ", "");
                     // Make calls for .NET to handle authentication.
                     WebSecurity.CreateUserAndAccount(
                         sanitizedun,
