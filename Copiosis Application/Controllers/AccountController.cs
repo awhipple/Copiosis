@@ -66,7 +66,8 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            string sanitizedun = model.UserName.Replace(" ", "");
+            if (ModelState.IsValid && WebSecurity.Login(sanitizedun, model.Password, persistCookie: model.RememberMe))
             {
                 using (var db = new CopiosisEntities())
                 {
@@ -150,9 +151,10 @@ namespace Copiosis_Application.Controllers
                         vc = rand.Next(1000, 9999);
                     }
 
+                    string sanitizedun = model.UserName.Replace(" ", "");
                     // Make calls for .NET to handle authentication.
                     WebSecurity.CreateUserAndAccount(
-                        model.UserName,
+                        sanitizedun,
                         model.Password,
                         new
                         {
@@ -167,8 +169,8 @@ namespace Copiosis_Application.Controllers
                         }
                         );
 
-                    Roles.AddUserToRole(model.UserName, USERROLE);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    Roles.AddUserToRole(sanitizedun, USERROLE);
+                    WebSecurity.Login(sanitizedun, model.Password);
                     return RedirectToAction("Overview", "Account");
                 }
                 catch (MembershipCreateUserException e)
