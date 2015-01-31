@@ -40,6 +40,19 @@
                  .addClass('valid');
             }
         });
+        //To clear new password validation message
+        $('#new-pw').on('keyup', function () {
+            var emailVal = $('#new-pw').val();
+            if (emailVal == '') {
+                $('.field-validation-error')
+                   .removeClass('field-validation-error')
+                    .addClass('field-validation-valid');
+
+                $('.input-validation-error')
+                .removeClass('input-validation-error')
+                 .addClass('valid');
+            }
+        });
     });
 </script>
     @Scripts.Render("~/bundles/jqueryval")

@@ -15,7 +15,13 @@
                 <div class="validation-summary-errors panel panel-danger"
                      data-valmsg-summary="true">
                     <div class="panel-heading">
-                        <center><strong>Please correct the following fields:</strong></center>
+                        @if (@Model.errorList.Count() <= 0) { 
+                            <center><strong>Please correct the following field:</strong></center>
+                        }
+                        else
+                        {
+                            <center><strong>Please correct the following fields:</strong></center>
+                        }
                     </div>
                 </div><br />
             }
@@ -58,12 +64,25 @@
             <div class="row">
                 <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.lastName).ToString()) ? "has-error" : null)">
                     <div class="col-lg-3 col-md-3 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Type a new valid e-mail address"></span>
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This is your last name. Type a new last name to change it"></span>
                         @Html.LabelFor(m => m.lastName, new { @class = "control-label manage-account-label" })
                     </div>
                     <div class="col-lg-9 col-md-9 col-xs-12">
                         @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = Model.currentLastName })
                         @Html.ValidationMessageFor(m => m.lastName)
+                    </div>
+                </div>
+            </div>
+            @*current password*@
+            <div class="row">
+                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.currentPassword).ToString()) ? "has-error" : null)">
+                    <div class="col-lg-3 col-md-3 col-xs-12">
+                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="REQUIRED: Enter your current password to save these changes"></span>
+                        @Html.LabelFor(m => m.currentPassword, new { @class = "control-label manage-account-label" })
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12">
+                        @Html.PasswordFor(m => m.currentPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.currentPassword)
                     </div>
                 </div>
             </div>
@@ -90,19 +109,6 @@
                     <div class="col-lg-9 col-md-9 col-xs-12">
                         @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @id = "confirm-pw" })
                         @Html.ValidationMessageFor(m => m.confirmPassword)
-                    </div>
-                </div>
-            </div>
-            @*USER PASSWORD*@
-            <div class="row">
-                <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.currentPassword).ToString()) ? "has-error" : null)">
-                    <div class="col-lg-3 col-md-3 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="REQUIRED: Enter your current password to save these changes"></span>
-                        @Html.LabelFor(m => m.currentPassword, new { @class = "control-label manage-account-label" })
-                    </div>
-                    <div class="col-lg-9 col-md-9 col-xs-12">
-                        @Html.PasswordFor(m => m.currentPassword, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.currentPassword)
                     </div>
                 </div>
             </div>
