@@ -49,7 +49,7 @@ namespace Copiosis_Application.Controllers
                     className = t.itemClass1.name,
                     productName = t.name,
                     productDesc = t.description,
-                    productOwner = (t.user.lastName + ", " + t.user.firstName),
+                    productOwner = (t.user.firstName + " " + t.user.lastName),
                     productGuid = t.guid
                 }).OrderByDescending(t => t.productName).ToList();
 
@@ -62,13 +62,38 @@ namespace Copiosis_Application.Controllers
                     className = t.itemClass1.name,
                     productName = t.name,
                     productDesc = t.description,
-                    productOwner = (t.user.lastName + ", " + t.user.firstName),
+                    productOwner = (t.user.firstName + " " + t.user.lastName),
                     productGuid = t.guid
                 }).OrderByDescending(t => t.productName).ToList();
 
             }
 
 
+            return View(model);
+        }
+
+
+        //
+        // GET: /Admin/ViewClasses
+        // View a list of the classes. Clicking one opens EditClass.
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ViewClasses()
+        {
+            ViewClassesModel model = new ViewClassesModel();
+
+            using (var db = new CopiosisEntities())
+            {
+
+                model.ItemClassTemplates = db.itemClasses.Select(t => new ViewClassModel
+                {
+                    classID = t.classID,
+                    className = t.name,
+                    numUsing = db.products.Where(p => p.itemClass == t.classID).Count()
+                
+                }).OrderByDescending(t => t.className).ToList();
+
+            }
             return View(model);
         }
 
@@ -174,7 +199,7 @@ namespace Copiosis_Application.Controllers
             return View(model);
         }
 
-        // GET: /Admin/EditClass
+        // POST: /Admin/EditClass
         // Edit an class. Takes the string representing class name.
         [HttpPost]
         [AllowAnonymous]

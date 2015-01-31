@@ -377,6 +377,7 @@
     <Content Include="Views\Account\Unauthorized.cshtml" />
     <Content Include="Views\Admin\_ClassCRUDPartial.cshtml" />
     <Content Include="Views\Admin\EditClass.cshtml" />
+    <Content Include="Views\Admin\ViewClasses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

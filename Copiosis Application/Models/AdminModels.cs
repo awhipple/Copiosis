@@ -102,6 +102,18 @@ namespace Copiosis_Application.Models
         public string consumer { get; set; }
     }
 
+    public class ViewClassesModel
+    {
+        public List<ViewClassModel> ItemClassTemplates { get; set; }
+    }
+
+    public class ViewClassModel
+    {
+        public int classID { get; set; }
+        public string className { get; set; }
+        public int numUsing { get; set; }
+    }
+
     public class ClassOverviewModel
     {
         public List<ClassModel> products { get; set; }
