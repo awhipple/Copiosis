@@ -79,7 +79,8 @@ namespace Copiosis_Application.Controllers
         [AllowAnonymous]
         public ActionResult AddClass()
         {
-            return View();
+            AddClassModel model = new AddClassModel();
+            return View(model);
         }
 
         //
@@ -95,7 +96,10 @@ namespace Copiosis_Application.Controllers
                 using (var db = new CopiosisEntities())
                 {
                     var isEmpty = db.itemClasses.Where(ic => ic.name == m.name).FirstOrDefault();
-                    if (isEmpty == null)
+                    if (isEmpty != null){
+                        m.message = "Name exists";
+                    }
+                    else
                     {
                         itemClass.name = m.name;
                         itemClass.suggestedGateway = m.suggestedGateway;
@@ -119,10 +123,6 @@ namespace Copiosis_Application.Controllers
                         db.itemClasses.Add(itemClass);
                         db.SaveChanges();
                     }
-                    else
-                    {
-                        m.message = "Name exists";
-                    }
                 }
                 return RedirectToAction("Overview");
             }
@@ -136,7 +136,6 @@ namespace Copiosis_Application.Controllers
         // GET: /Admin/EditClass
         // Edit an class. Takes the string representing class name.
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult EditClass(string className)
         {
             AddClassModel model = new AddClassModel();
@@ -174,44 +173,51 @@ namespace Copiosis_Application.Controllers
             return View(model);
         }
 
-        // GET: /Admin/EditClass
+        // POST: /Admin/EditClass
         // Edit an class. Takes the string representing class name.
         [HttpPost]
-        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult EditClass(AddClassModel model, string className)
         {
-            //ValidateItemModel(model);
-            using (var db = new CopiosisEntities())
+            if (ModelState.IsValid)
             {
-                var iClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
-                if (iClass == null)
+                using (var db = new CopiosisEntities())
                 {
-                    //ACCOUNTERROR.ErrorSubject = "Error while trying to edit an item";
-                    throw new ArgumentException(string.Format("ItemClass with Name {0} not found", className));
+                    var iClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
+                    if (iClass == null)
+                    {
+                        //ACCOUNTERROR.ErrorSubject = "Error while trying to edit an item";
+                        throw new ArgumentException(string.Format("ItemClass with Name {0} not found", className));
+                    }
+                    else
+                    {
+                        iClass.name = model.name;
+                        iClass.suggestedGateway = model.suggestedGateway;
+                        iClass.cPdb = model.cPdb;
+                        iClass.a = model.a;
+                        iClass.aMax = model.aMax;
+                        iClass.d = model.d;
+                        iClass.aPrime = model.aPrime;
+                        iClass.cCb = model.cCb;
+                        iClass.m1 = model.m1;
+                        iClass.pO = model.p0;
+                        iClass.m2 = model.m2;
+                        iClass.cEb = model.cEb;
+                        iClass.s = model.s;
+                        iClass.m3 = model.m3;
+                        iClass.sE = model.sE;
+                        iClass.m4 = model.m4;
+                        iClass.sH = model.sH;
+                        iClass.m5 = model.m5;
+                        db.SaveChanges();
+                    }
                 }
-                else 
-                {
-                    iClass.name = model.name;
-                    iClass.suggestedGateway = model.suggestedGateway;
-                    iClass.cPdb = model.cPdb;
-                    iClass.a = model.a;
-                    iClass.aMax = model.aMax;
-                    iClass.d = model.d;
-                    iClass.aPrime = model.aPrime;
-                    iClass.cCb = model.cCb;
-                    iClass.m1 = model.m1;
-                    iClass.pO = model.p0;
-                    iClass.m2 = model.m2;
-                    iClass.cEb = model.cEb;
-                    iClass.s = model.s;
-                    iClass.m3 = model.m3;
-                    iClass.sE = model.sE;
-                    iClass.m4 = model.m4;
-                    iClass.sH = model.sH;
-                    iClass.m5 = model.m5;
-                }
+                return RedirectToAction("Overview");
             }
-            return RedirectToAction("Overview");
+            else
+            {
+                return View(model);
+            }
         }
 
         //
