@@ -5,11 +5,19 @@
             <div class="col-lg-8 col-md-7 col-sm-5 col-xs-12" style="padding-left:0px">
                 <h1>Transaction Overview</h1>
             </div>
+            <div class="col-lg-4 col-md-5 col-sm-7 col-xs-12">
+                <h4 class="text-center">Admin Options:</h4>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" style="margin-top:5px">
+                    
+                    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("ViewClasses", "Admin")'">Class Overview</button>
+                    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Rejected", "Admin")'">View Rejected</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col2-sm-12 col-md-12 col-lg-12">
-            <h3>Products still using the default item class</h3>
+            <h3>Products still using the default item class:</h3>
 
             @if (Model.productsDefault.Count() < 1)
             {
@@ -46,7 +54,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <h3>Products using non-default classes</h3>
+            <h3>All other products:</h3>
             @if (Model.productsDefault.Count() < 1)
             {
                 <h4>No Products using non-default classes.</h4>
