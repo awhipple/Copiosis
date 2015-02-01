@@ -25,11 +25,11 @@ namespace Copiosis_Application.Controllers
     {
         private static string ADMINROLE = "ADMIN";
         private static string USERROLE = "USER";
-        private static string ERROR_SUBJECT_TEMPDATA_KEY = "errorSubject";
-        private static string ERROR_MESSAGE_TEMPDATA_KEY = "errorMessage";
+        //private static string ERROR_SUBJECT_TEMPDATA_KEY = "errorSubject";
+        //private static string ERROR_MESSAGE_TEMPDATA_KEY = "errorMessage";
         //Used by CustomErrorHandling attribute to set the error messages -- which does most of the error handling logic:
-        public List<string> errorDictionaryKeys = new List<string>{ERROR_SUBJECT_TEMPDATA_KEY, ERROR_MESSAGE_TEMPDATA_KEY};
-        public Models.ErrorModel ACCOUNTERROR = new Models.ErrorModel();
+        //public List<string> errorDictionaryKeys = new List<string>{ERROR_SUBJECT_TEMPDATA_KEY, ERROR_MESSAGE_TEMPDATA_KEY};
+        private Models.ErrorModel ACCOUNTERROR = new Models.ErrorModel();
 
         //
         // GET: /Account/
@@ -636,7 +636,7 @@ namespace Copiosis_Application.Controllers
             using (var db = new CopiosisEntities())
             {
                 int? itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).FirstOrDefault();
-                if (itemClassId == null)
+                if (itemClassId != null)
                 {
                     ACCOUNTERROR.ErrorSubject = "Error while trying to add an item";
                     throw new ArgumentException("Product item class not found");
@@ -1327,6 +1327,11 @@ namespace Copiosis_Application.Controllers
                 default:
                     return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
             }
+        }
+
+        public Models.ErrorModel getError()
+        {
+            return this.ACCOUNTERROR;
         }
         #endregion
     }

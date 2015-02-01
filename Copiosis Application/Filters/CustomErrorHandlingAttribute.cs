@@ -17,22 +17,35 @@ namespace Copiosis_Application.Filters
             }
             else
             {
-                AccountController controllerContext = (AccountController)filterContext.Controller;
-                TempDataDictionary contextControllerTempData = filterContext.Controller.TempData;
-                string subject = controllerContext.ACCOUNTERROR.ErrorSubject;
+                ControllerBase controllerContext = filterContext.Controller;
+                string subject = "";
                 string message = filterContext.Exception.Message;
-                controllerContext.ACCOUNTERROR.ErrorMessage = message;
+                if (controllerContext.GetType() == typeof(HomeController)) {
+                    subject = ((HomeController)controllerContext).getError().ErrorSubject;
+                }
+                else if (controllerContext.GetType() == typeof(AccountController))
+                {
+                    controllerContext = (AccountController)controllerContext;
+                    subject = ((AccountController)controllerContext).getError().ErrorSubject;
+                }
+                else if (controllerContext.GetType() == typeof(AdminController))
+                {
+                    subject = ((AdminController)controllerContext).getError().ErrorSubject;
+                }
+                
+                TempDataDictionary controllerTempData = filterContext.Controller.TempData;
+
                 if (subject == null || subject.Equals("")) //if no error subject was provided
                 {
                     //set to default errsubject:
                     subject = "An internal error occured";
                 }
-                contextControllerTempData.Add(controllerContext.errorDictionaryKeys.ElementAt(0), subject);
-                contextControllerTempData.Add(controllerContext.errorDictionaryKeys.ElementAt(1), message);
+                controllerTempData.Add("errorSubject", subject);
+                controllerTempData.Add("errorMessage", message);
                 filterContext.Result = new ViewResult
                 {
                     ViewName = "Error",
-                    TempData = contextControllerTempData
+                    TempData = controllerTempData
                 };
             }
             filterContext.ExceptionHandled = true;

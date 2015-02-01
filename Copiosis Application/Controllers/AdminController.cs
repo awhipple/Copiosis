@@ -17,8 +17,10 @@ using Copiosis_Application.DB_Data;
 namespace Copiosis_Application.Controllers
 {
     [Authorize(Roles="ADMIN")]
+    [CustomErrorHandling]
     public class AdminController : Controller
     {
+        private Models.ErrorModel ADMINERROR = new Models.ErrorModel();
         //
         // GET: /Admin/
         [HttpGet]
@@ -170,7 +172,7 @@ namespace Copiosis_Application.Controllers
                 var iClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
                 if (iClass == null)
                 {
-                    //ACCOUNTERROR.ErrorSubject = "Error while trying to edit an item";
+                    ADMINERROR.ErrorSubject = "Error while trying to edit an item";
                     throw new ArgumentException(string.Format("ItemClass with Name {0} not found", className));
                 }
                 else
@@ -211,7 +213,7 @@ namespace Copiosis_Application.Controllers
                     var iClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
                     if (iClass == null)
                     {
-                        //ACCOUNTERROR.ErrorSubject = "Error while trying to edit an item";
+                        ADMINERROR.ErrorSubject = "Error while trying to edit an item";
                         throw new ArgumentException(string.Format("ItemClass with Name {0} not found", className));
                     }
                     else
@@ -255,6 +257,7 @@ namespace Copiosis_Application.Controllers
             {
                 var item = db.products.Where(p => p.guid == itemGuid).FirstOrDefault();
                 var classID = db.itemClasses.Where(ic => ic.name == newClass).Select(ic => ic.classID).FirstOrDefault();
+                ADMINERROR.ErrorSubject = "Error while trying to change an item's class";
                 if (item == null)
                 {
                     throw new ArgumentException(string.Format("No product found with GUID: {0}", itemGuid));
@@ -295,7 +298,7 @@ namespace Copiosis_Application.Controllers
             return View(model);
         }
 
-
+        #region Helpers
         private List<SelectListItem> FetchItemClassTemplates(CopiosisEntities db)
         {
             List<SelectListItem> itemClasses = new List<SelectListItem>();
@@ -312,7 +315,10 @@ namespace Copiosis_Application.Controllers
             return itemClasses;
         }
 
-
-
+        public Models.ErrorModel getError()
+        {
+            return this.ADMINERROR;
+        }
+        #endregion
     }
 }
