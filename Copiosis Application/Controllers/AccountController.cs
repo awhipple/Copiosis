@@ -208,7 +208,7 @@ namespace Copiosis_Application.Controllers
                     otherParty      = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName     = t.product.name,
                     productDesc     = t.productDesc,
-                    productGateway  = t.product.gateway
+                    productGateway  = t.productGateway,
                 }).OrderByDescending(t => t.dateAdded).ToList();
 
                 model.pendingOther = db.transactions.Where(
@@ -224,11 +224,11 @@ namespace Copiosis_Application.Controllers
                     status              = t.status,
                     dateAdded           = t.dateAdded,
                     dateClosed          = t.dateClosed ?? DateTime.MinValue,
-                    nbr                 = (t.providerID == userId) ? ((t.nbr == null) ? 0.0 : t.nbr) : t.product.gateway,
+                    nbr                 = (t.providerID == userId) ? ((t.nbr == null) ? 0.0 : t.nbr) : t.productGateway,
                     otherParty          = t.providerID == userId ? (t.receiver.lastName + ", " + t.receiver.firstName) : (t.provider.lastName + ", " + t.provider.firstName),
                     productName         = t.product.name,
                     productDesc         = t.productDesc,
-                    productGateway      = t.product.gateway
+                    productGateway      = t.productGateway,
                 }).OrderByDescending(t => t.dateAdded).ToList();
 
 
@@ -247,7 +247,7 @@ namespace Copiosis_Application.Controllers
                     otherParty          = t.providerID == userId ? (t.receiver.firstName + " " + t.receiver.lastName) : (t.provider.firstName + " " + t.provider.lastName),
                     productName         = t.product.name,
                     productDesc         = t.productDesc,
-                    productGateway      = t.product.gateway,
+                    productGateway      = t.productGateway,
                     isProducer          = t.providerID == userId ? true : false,
                 }).OrderByDescending(t => t.dateClosed).ToList();
 
@@ -301,7 +301,7 @@ namespace Copiosis_Application.Controllers
                     model.productGuid = transaction.product.guid;
                     model.productName = transaction.product.name; 
                     model.productDesc = transaction.productDesc;
-                    model.productGateway = transaction.product.gateway;
+                    model.productGateway = transaction.productGateway;
 
                     // Provider info expected to be displayed.
                     model.providerFirstName = transaction.provider.firstName;
@@ -405,7 +405,7 @@ namespace Copiosis_Application.Controllers
                     if (model.result == "Confirmed")
                     {
                         // Deduct product cost (NBR) from receiver.
-                        transaction.receiver.nbr -= transaction.product.gateway;
+                        transaction.receiver.nbr -= transaction.productGateway;
                         transaction.receiver.nbr += 2;
 
                         // Credit provider with NBR. Bind the NBR to the transaction for records purposes.
@@ -489,7 +489,7 @@ namespace Copiosis_Application.Controllers
                     consumerTran.status = "PENDING";
                     consumerTran.receiverNotes = model.Notes;
                     consumerTran.satisfaction = (short)model.SatisfactionRating;
-
+                    consumerTran.productGateway = product.gateway;
                     db.transactions.Add(consumerTran);
                     db.SaveChanges();
                 }
@@ -533,6 +533,7 @@ namespace Copiosis_Application.Controllers
                     producerTran.receiverID = consumer.userID;
                     producerTran.status = "PENDING";
                     producerTran.providerNotes = model.Notes;
+                    producerTran.productGateway = product.gateway;
 
                     db.transactions.Add(producerTran);
                     db.SaveChanges();
@@ -632,7 +633,7 @@ namespace Copiosis_Application.Controllers
             using (var db = new CopiosisEntities())
             {
                 int? itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).FirstOrDefault();
-                if (itemClassId != null)
+                if (itemClassId == null)
                 {
                     ACCOUNTERROR.ErrorSubject = "Error while trying to add an item";
                     throw new ArgumentException("Product item class not found");
