@@ -105,7 +105,7 @@ namespace Copiosis_Application.Controllers
         public ActionResult AddClass()
         {
             AddClassModel model = new AddClassModel();
-            return View(model);
+             return View(model);
         }
 
         //

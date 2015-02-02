@@ -85,6 +85,27 @@ namespace Copiosis_Application.Models
         public float m5 { get; set; }
 
         public string message { get; set; }
+
+        public AddClassModel()
+        {
+            suggestedGateway = 1;
+            cPdb = 1;
+            a = 1;
+            aMax = 1;
+            d = 1;
+            aPrime = 1;
+            cCb = 1;
+            m1 = 1;
+            p0 = 1;
+            m2 = 1;
+            cEb = 1;
+            s = 1;
+            m3 = 1;
+            sE = 1;
+            m4 = 1;
+            sH = 1;
+            m5 = 1;
+        }
     }
 
     public class RejectedModel
