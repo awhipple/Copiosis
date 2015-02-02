@@ -79,7 +79,6 @@ namespace Copiosis_Application.Controllers
         // GET: /Admin/ViewClasses
         // View a list of the classes. Clicking one opens EditClass.
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult ViewClasses()
         {
             ViewClassesModel model = new ViewClassesModel();
@@ -103,7 +102,6 @@ namespace Copiosis_Application.Controllers
         // GET: /Admin/AddClass
         // Add a new item class to Copiosis. Just returns the view.
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult AddClass()
         {
             AddClassModel model = new AddClassModel();
