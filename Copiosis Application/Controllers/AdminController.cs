@@ -151,7 +151,7 @@ namespace Copiosis_Application.Controllers
                         db.SaveChanges();
                     }
                 }
-                return RedirectToAction("Overview");
+                return RedirectToAction("ViewClasses");
             }
             else
             {
@@ -239,7 +239,7 @@ namespace Copiosis_Application.Controllers
                         db.SaveChanges();
                     }
                 }
-                return RedirectToAction("Overview");
+                return RedirectToAction("ViewClasses");
             }
             else
             {
