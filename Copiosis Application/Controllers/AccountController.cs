@@ -1240,7 +1240,7 @@ namespace Copiosis_Application.Controllers
                         .Select(s => new { FirstName = s.firstName, LastName = s.lastName, Username = s.username, Email = s.email, NBR = s.nbr}).ToList();
                     foreach (var con in c)
                     {
-                        consumers.Add(string.Format("{0} {1} (NBR: {2}) | {3}", con.FirstName, con.LastName, con.NBR, con.Username));
+                        consumers.Add(string.Format("{0} {1} (NBR: {2}) | {3}", con.FirstName, con.LastName, Math.Round(con.NBR.HasValue ? con.NBR.Value : 0, 2), con.Username));
                         usernames.Add(string.Format("{0}", con.Username));
                     }
                 }
