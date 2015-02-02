@@ -940,7 +940,7 @@ namespace Copiosis_Application.Controllers
                 {
                     result = false;
                 }
-                nbr = user.nbr.HasValue ? user.nbr : 0;
+                nbr = user.nbr.HasValue ? Math.Round(user.nbr.Value, 2) : 0;
             }
 
             return Json(new { success = result, nbr = result ? nbr : null }, JsonRequestBehavior.AllowGet);

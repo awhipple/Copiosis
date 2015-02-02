@@ -130,7 +130,7 @@
                                         <!-- <td>@item.dateAdded</td> -->
                                         <td>@item.dateClosed</td>
                                         <td>@item.otherParty</td>
-                                        <td class="greenText bold">+@(item.nbr + 2)</td>
+                                        <td class="greenText bold">+@(Math.Round(item.nbr.Value + 2, 2))</td>
                                         <td class="greenText">@item.status</td>
                                     </tr>
                                 }
