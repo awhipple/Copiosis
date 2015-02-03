@@ -14,6 +14,16 @@
             </div>
         </div>
     </div>
+    @if (ViewBag.savedChanges != null && ViewBag.savedChanges == true)
+    {
+        <br />
+        <div class="panel panel-success"
+             data-valmsg-summary="true">
+            <div class="panel-heading">
+                <center><strong>The new class, @ViewBag.className, has been successfully added</strong></center>
+            </div>
+        </div><br />
+    }
     <div class="row">
         <div class="col2-sm-12 col-md-12 col-lg-12">
             <h3>Click on an item class to edit it:</h3>

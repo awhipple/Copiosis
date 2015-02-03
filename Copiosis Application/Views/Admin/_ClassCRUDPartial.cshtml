@@ -14,7 +14,22 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        
+        bool validState = Html.ViewData.ModelState.IsValid;
+            if (validState == false)
+            {
+                <div class="validation-summary-errors panel panel-danger"
+                     data-valmsg-summary="true">
+                    <div class="panel-heading">
+                        @if (@Html.ViewData.ModelState["name"].Errors.Count == 1) { 
+                            <center><strong>Please correct the following field:</strong></center>
+                        }
+                        else
+                        {
+                            <center><strong>Please correct the following fields:</strong></center>
+                        }
+                    </div>
+                </div><br />
+            }
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
@@ -22,14 +37,14 @@
                     @Html.LabelFor(m => m.name, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @if (Model.name != "" && Model.name != null && Model.name != string.Empty)
+                    @*@if (Model.name != "" && Model.name != null && Model.name != string.Empty)
                     {
                         @Html.TextBoxFor(m => m.name, new { @class = "form-control", @readonly = "readonly", @id = "name" })
                     }
                     else
-                    {
+                    {*@
                         @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Name", @id = "name" })
-                    }
+                    @*}*@
                     @Html.ValidationMessageFor(m => m.name)
                 </div>
             </div>

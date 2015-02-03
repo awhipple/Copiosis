@@ -79,10 +79,14 @@ namespace Copiosis_Application.Controllers
         // GET: /Admin/ViewClasses
         // View a list of the classes. Clicking one opens EditClass.
         [HttpGet]
-        public ActionResult ViewClasses()
+        public ActionResult ViewClasses(string message = null)
         {
             ViewClassesModel model = new ViewClassesModel();
-
+            if (message != null)
+            {
+                ViewBag.savedChanges = true;
+                ViewBag.className = message;
+            }
             using (var db = new CopiosisEntities())
             {
 
@@ -117,39 +121,43 @@ namespace Copiosis_Application.Controllers
         {
             if (ModelState.IsValid)
             {
-                itemClass itemClass = new itemClass();
+                itemClass newItemClass = new itemClass();
                 using (var db = new CopiosisEntities())
                 {
-                    var isEmpty = db.itemClasses.Where(ic => ic.name == m.name).FirstOrDefault();
-                    if (isEmpty != null){
-                        m.message = "Name exists";
+                    itemClass conflictingItemClass = db.itemClasses.Where(ic => ic.name == m.name).FirstOrDefault();
+                    if (conflictingItemClass != null)
+                    {
+                        ModelState.AddModelError("name", "There is already a class of this name");
+                        return View(m);
                     }
                     else
                     {
-                        itemClass.name = m.name;
-                        itemClass.suggestedGateway = m.suggestedGateway;
-                        itemClass.cPdb = m.cPdb;
-                        itemClass.a = m.a;
-                        itemClass.aMax = m.aMax;
-                        itemClass.d = m.d;
-                        itemClass.aPrime = m.aPrime;
-                        itemClass.cCb = m.cCb;
-                        itemClass.m1 = m.m1;
-                        itemClass.pO = m.p0;
-                        itemClass.m2 = m.m2;
-                        itemClass.cEb = m.cEb;
-                        itemClass.s = m.s;
-                        itemClass.m3 = m.m3;
-                        itemClass.sE = m.sE;
-                        itemClass.m4 = m.m4;
-                        itemClass.sH = m.sH;
-                        itemClass.m5 = m.m5;
+                        newItemClass.name = m.name;
+                        newItemClass.suggestedGateway = m.suggestedGateway;
+                        newItemClass.cPdb = m.cPdb;
+                        newItemClass.a = m.a;
+                        newItemClass.aMax = m.aMax;
+                        newItemClass.d = m.d;
+                        newItemClass.aPrime = m.aPrime;
+                        newItemClass.cCb = m.cCb;
+                        newItemClass.m1 = m.m1;
+                        newItemClass.pO = m.p0;
+                        newItemClass.m2 = m.m2;
+                        newItemClass.cEb = m.cEb;
+                        newItemClass.s = m.s;
+                        newItemClass.m3 = m.m3;
+                        newItemClass.sE = m.sE;
+                        newItemClass.m4 = m.m4;
+                        newItemClass.sH = m.sH;
+                        newItemClass.m5 = m.m5;
 
-                        db.itemClasses.Add(itemClass);
+                        db.itemClasses.Add(newItemClass);
                         db.SaveChanges();
+                        ViewBag.savedChanges = true;
+                        ViewBag.className = m.name;
+                        return RedirectToAction("ViewClasses", new { message = m.name });
                     }
                 }
-                return RedirectToAction("ViewClasses");
             }
             else
             {
