@@ -209,11 +209,9 @@ namespace Copiosis_Application.Models
         public List<string> Usernames { get; set; }
         /*POST*/
 
-        [Required]
         [Display(Name = "Consumer:")]
         public string Consumer { get; set; }
 
-        [Required]
         [Display(Name = "Producer:")]
         public string Producer { get; set; }
 
