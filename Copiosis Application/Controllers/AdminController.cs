@@ -153,8 +153,6 @@ namespace Copiosis_Application.Controllers
 
                         db.itemClasses.Add(newItemClass);
                         db.SaveChanges();
-                        ViewBag.savedChanges = true;
-                        ViewBag.className = m.name;
                         return RedirectToAction("ViewClasses", new { message = m.name });
                     }
                 }
