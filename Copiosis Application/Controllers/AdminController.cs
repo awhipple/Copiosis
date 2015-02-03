@@ -81,6 +81,7 @@ namespace Copiosis_Application.Controllers
         [HttpGet]
         public ActionResult ViewClasses(string message = null)
         {
+            ViewBag.savedChanges = false;
             ViewClassesModel model = new ViewClassesModel();
             if (message != null)
             {

@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    @if (ViewBag.savedChanges != null && ViewBag.savedChanges == true)
+    @if (ViewBag.savedChanges == true && ViewBag.className != null)
     {
         <br />
         <div class="panel panel-success"
@@ -22,7 +22,7 @@
             <div class="panel-heading">
                 <center><strong>The new class, @ViewBag.className, has been successfully added</strong></center>
             </div>
-        </div><br />
+        </div>
     }
     <div class="row">
         <div class="col2-sm-12 col-md-12 col-lg-12">
