@@ -183,6 +183,22 @@ footer {
 
 /* menu
 ----------------------------------------------------------*/
+.simpleNav {
+    margin: 30px 0 0 0;
+    padding: 0;
+}
+
+.simpleNav li {
+    display: block;
+    float: left;
+    list-style: none;
+    padding-right: 30px;
+}
+
+.simpleNav li.last-item {
+    padding-right: 0px;
+}
+
 .nav li.last-item a {
     padding-right: 0;
 }
