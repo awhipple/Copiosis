@@ -44,7 +44,7 @@ namespace Copiosis_Application.Controllers
 
                 model.products = db.products.Where(
                     a =>
-                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass != 1
+                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass1.name != "Default"
                 ).Select(t => new ClassModel
                 {
                     classID = t.itemClass,
@@ -57,7 +57,7 @@ namespace Copiosis_Application.Controllers
 
                 model.productsDefault = db.products.Where(
                     a =>
-                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass == 1
+                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass1.name == "Default"
                 ).Select(t => new ClassModel
                 {
                     classID = t.itemClass,
