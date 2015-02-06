@@ -954,7 +954,15 @@ namespace Copiosis_Application.Controllers
             {
                 foreach (var item in items)
                 {
-                    itemClasses.Add(item.name, (int)item.suggestedGateway);
+                    try
+                    {
+                        itemClasses.Add(item.name, (int)item.suggestedGateway);
+                    }
+                    catch (Exception e)
+                    {
+                        ACCOUNTERROR.ErrorSubject = "Error while trying to retrieve a list of item classes";
+                        throw new Exception("Ensure that the item classes in the database have unique names");
+                    }
                 }
             }
             return itemClasses;
