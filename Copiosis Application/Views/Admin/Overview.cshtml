@@ -37,8 +37,8 @@
                                     <td>@item.value.productOwner</td>
                                     <td>
                                         @Html.DropDownListFor(model => model.productsDefault[item.i], Model.ItemClassTemplates, new { @id = @item.value.productGuid, @class = "select-box", @placeholder = "Class" })
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                             }
  
                         </tbody>
@@ -50,7 +50,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <h3>All other products:</h3>
-            @if (Model.productsDefault.Count() < 1)
+            @if (Model.products.Count() < 1)
             {
                 <h4>No Products using non-default classes.</h4>
             }
