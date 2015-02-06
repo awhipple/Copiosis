@@ -123,6 +123,21 @@ namespace Copiosis_Application.Models
         public string consumer { get; set; }
     }
 
+
+    public class ViewUsersModel
+    {
+        public List<UserModel> users { get; set; }
+    }
+
+    public class UserModel
+    {
+        public int userId { get; set; }
+        public string userName { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public int status { get; set; }
+    }
+
     public class ViewClassesModel
     {
         public List<ViewClassModel> ItemClassTemplates { get; set; }

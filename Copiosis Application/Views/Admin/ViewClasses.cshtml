@@ -6,15 +6,7 @@
                 <h1>Classes Overview</h1>
             </div>
             <div class="col-lg-6 col-md-7 col-sm-7 col-xs-12">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:0px">
-
-                    <ul class="simpleNav">
-                        <li>@Html.ActionLink("Overview", "Overview", "Admin")</li>
-                        <li>@Html.ActionLink("Edit Classes", "ViewClasses", "Admin")</li>
-                        <li>@Html.ActionLink("Add New Class", "AddClass", "Admin")</li>
-                        <li class="last-item">@Html.ActionLink("Rejected Transactions", "Rejected", "Admin")</li>
-                    </ul>
-                </div>
+                @Html.Partial("_AdminMenu")
             </div>
         </div>
     </div>

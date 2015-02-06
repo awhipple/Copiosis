@@ -75,6 +75,57 @@ namespace Copiosis_Application.Controllers
         }
 
 
+
+        //
+        // GET: /Admin/Users
+        // View a list of the users in Copiosis. Each user will have a ListBox which controls whether
+        // they are active or not, and what their rank is (Admin or not).
+        // Changes to the ListBoxes will call backend actions via Ajax.
+        [HttpGet]
+        public ActionResult ViewUsers()
+        {
+            ViewUsersModel model = new ViewUsersModel();
+
+            using (var db = new CopiosisEntities())
+            {
+
+                model.users = db.users.Select(t => new UserModel
+                {
+                    userId = t.userID,
+                    userName = t.username,
+                    firstName = t.firstName,
+                    lastName = t.lastName
+
+                }).OrderByDescending(t => t.userName).ToList();
+
+            }
+            return View(model);
+        }
+
+
+        //
+        // POST: /Admin/ChangeUserIsAdmin
+        // Change whether a user is an Admin in Copiosis.
+        [HttpPost]
+        public ActionResult ChangeUserIsAdmin(string role, int userId)
+        {
+            using (var db = new CopiosisEntities())
+            {
+                var user = db.users.Where(p => p.userID == userId).FirstOrDefault();
+
+                ADMINERROR.ErrorSubject = "Error while trying to change an item's class";
+                if (user == null)
+                {
+                    throw new ArgumentException(string.Format("No user found with that ID: {0}", userId));
+                }
+
+                // user.itemClass = classID;
+                db.SaveChanges();
+            }
+            return Json(new { success = true });
+        }
+
+
         //
         // GET: /Admin/ViewClasses
         // View a list of the classes. Clicking one opens EditClass.
