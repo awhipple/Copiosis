@@ -409,7 +409,7 @@ namespace Copiosis_Application.Controllers
                         transaction.receiver.nbr += 2;
 
                         // Credit provider with NBR. Bind the NBR to the transaction for records purposes.
-                        float providerReward  = CalculateNBR((int)transaction.satisfaction, transaction.productID, transaction.providerID) + 2;
+                        float providerReward  = CalculateNBR((int)transaction.satisfaction, transaction.productID, transaction.providerID);
                         transaction.provider.nbr += providerReward;
                         transaction.nbr = providerReward;
                     }
