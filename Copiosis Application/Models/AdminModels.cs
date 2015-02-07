@@ -48,7 +48,7 @@ namespace Copiosis_Application.Models
         [Display(Name = "M1")]
         public float m1 { get; set; }
 
-        [Required(ErrorMessage = "P0 is required")]
+        [Required(ErrorMessage = "PO is required")]
         [Display(Name = "Consumer objective benefit")]
         public int pO { get; set; }
 
