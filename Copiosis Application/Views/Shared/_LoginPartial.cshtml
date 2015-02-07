@@ -1,10 +1,10 @@
 ﻿﻿@if (Request.IsAuthenticated)
 {
-        <li id="overviewNav"><a href="@Url.Action("Overview", "Account")">Transaction Overview</a></li>
-        <li id="itemsNav"><a href="@Url.Action("Items", "Account")">Item Management</a></li>
-        <li id="createItemNav"><a href="@Url.Action("AddItem", "Account")">Create Item</a></li>
-        <li id="producerTransNav"><a href="@Url.Action("Create", "Account", new { type = "producer" }, null)">I Benefited Someone</a></li>
-        <li id="consumerTransNav"><a href="@Url.Action("Create", "Account", new { type = "consumer" }, null)">I Received Benefit</a></li>
+    <li id="overviewNav"><a href="@Url.Action("Overview", "Account")">Transaction Overview</a></li>
+    <li id="itemsNav"><a href="@Url.Action("Items", "Account")">Item Management</a></li>
+    <li id="createItemNav"><a href="@Url.Action("AddItem", "Account")">Create Item</a></li>
+    <li id="producerTransNav"><a href="@Url.Action("Create", "Account", new { type = "producer" }, null)">I Benefited Someone</a></li>
+    <li id="consumerTransNav"><a href="@Url.Action("Create", "Account", new { type = "consumer" }, null)">I Received Benefit</a></li>
     
 }
 else
