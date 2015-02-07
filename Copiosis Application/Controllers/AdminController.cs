@@ -130,14 +130,33 @@ namespace Copiosis_Application.Controllers
         // GET: /Admin/ViewClasses
         // View a list of the classes. Clicking one opens EditClass.
         [HttpGet]
-        public ActionResult ViewClasses(string message = null)
+        public ActionResult ViewClasses()
         {
             ViewBag.savedChanges = false;
+            ViewBag.noEdit = false;
             ViewClassesModel model = new ViewClassesModel();
-            if (message != null)
+            //Handle cases for success banner in the Admin/ViewClasses view
+            if (TempData["AddClass"] != null || TempData["EditClass"] != null)
             {
+                //Case 1: The admin adds a new class and it is successful
+                if (TempData["AddClass"] != null)
+                {
+                    ViewBag.newClass = true;
+                    ViewBag.className = TempData["AddClass"];
+                }
+                //Case 2: The admin edits a class and it is successful
+                else if (TempData["EditClass"] != null)
+                {
+                    ViewBag.newClass = false;
+                    ViewBag.className = TempData["EditClass"];
+                }
                 ViewBag.savedChanges = true;
-                ViewBag.className = message;
+            }
+            //Case 3: The admin presses the submit button from the EditClass page but changes nothing
+            else if (TempData["NoEdit"] != null)
+            {
+                ViewBag.noEdit = true;
+                ViewBag.className = TempData["NoEdit"];
             }
             using (var db = new CopiosisEntities())
             {
@@ -202,10 +221,11 @@ namespace Copiosis_Application.Controllers
                         newItemClass.m4 = m.m4;
                         newItemClass.sH = m.sH;
                         newItemClass.m5 = m.m5;
-
+                        //save changes
                         db.itemClasses.Add(newItemClass);
                         db.SaveChanges();
-                        return RedirectToAction("ViewClasses", new { message = m.name });
+                        TempData["AddClass"] = newItemClass.name;
+                        return RedirectToAction("ViewClasses");
                     }
                 }
             }
@@ -283,6 +303,12 @@ namespace Copiosis_Application.Controllers
                                 return View(model);
                             }
                         }
+                        //Case when the are no changes to the current class
+                        else if (model.Equals(currentItemClass) == true)
+                        {
+                            TempData["NoEdit"] = currentItemClass.name;
+                            return RedirectToAction("ViewClasses");
+                        }
                         currentItemClass.name = model.name;
                         currentItemClass.suggestedGateway = model.suggestedGateway;
                         currentItemClass.cPdb = model.cPdb;
@@ -302,9 +328,11 @@ namespace Copiosis_Application.Controllers
                         currentItemClass.sH = model.sH;
                         currentItemClass.m5 = model.m5;
                         db.SaveChanges();
+                        TempData["EditClass"] = currentItemClass.name;
+                        return RedirectToAction("ViewClasses");
+                        
                     }
                 }
-                return RedirectToAction("ViewClasses");
             }
             else
             {

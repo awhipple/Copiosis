@@ -10,13 +10,23 @@
             </div>
         </div>
     </div>
-    @if (ViewBag.savedChanges == true && ViewBag.className != null)
+    @if (ViewBag.savedChanges == true || ViewBag.noEdit == true)
     {
         <br />
         <div class="panel panel-success"
              data-valmsg-summary="true">
             <div class="panel-heading">
-                <center><strong>The new class, @ViewBag.className, has been successfully added</strong></center>
+                @if (ViewBag.newClass == true) { 
+                    <center><strong>The new class, @ViewBag.className, has been successfully added</strong></center>
+                }
+                else if (ViewBag.noEdit == false)
+                {
+                    <center><strong>Changes to the @ViewBag.className class have been saved</strong></center>
+                }
+                else if (ViewBag.noEdit == true)
+                {
+                    <center><strong>No changes were made to the @ViewBag.className class</strong></center>
+                }
             </div>
         </div>
     }

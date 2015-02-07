@@ -106,6 +106,13 @@ namespace Copiosis_Application.Models
             sH = 1;
             m5 = 1;
         }
+
+        public bool Equals(itemClass itemClass)
+        {
+            return itemClass.name == this.name && itemClass.suggestedGateway == this.suggestedGateway && itemClass.cPdb == this.cPdb && itemClass.a == this.a && itemClass.aMax == this.aMax && itemClass.d == this.d &&
+                itemClass.aPrime == this.aPrime && itemClass.cCb == this.cCb && itemClass.m1 == this.m1 && itemClass.pO == this.p0 && itemClass.m2 == this.m2 && itemClass.cEb == this.cEb &&
+                itemClass.s == this.s && itemClass.m3 == this.m3 && itemClass.sE == this.sE && itemClass.m4 == this.m4 && itemClass.sH == this.sH && itemClass.m5 == this.m5;
+        }
     }
 
     public class RejectedModel
