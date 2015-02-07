@@ -212,7 +212,7 @@ namespace Copiosis_Application.Controllers
                         newItemClass.aPrime = m.aPrime;
                         newItemClass.cCb = m.cCb;
                         newItemClass.m1 = m.m1;
-                        newItemClass.pO = m.p0;
+                        newItemClass.pO = m.pO;
                         newItemClass.m2 = m.m2;
                         newItemClass.cEb = m.cEb;
                         newItemClass.s = m.s;
@@ -262,7 +262,7 @@ namespace Copiosis_Application.Controllers
                     model.aPrime = (int)currentItemClass.aPrime;
                     model.cCb = (float)currentItemClass.cCb;
                     model.m1 = (float)currentItemClass.m1;
-                    model.p0 = (int)currentItemClass.pO;
+                    model.pO = (int)currentItemClass.pO;
                     model.m2 = (float)currentItemClass.m2;
                     model.cEb = (float)currentItemClass.cEb;
                     model.s = (int)currentItemClass.s;
@@ -318,7 +318,7 @@ namespace Copiosis_Application.Controllers
                         currentItemClass.aPrime = model.aPrime;
                         currentItemClass.cCb = model.cCb;
                         currentItemClass.m1 = model.m1;
-                        currentItemClass.pO = model.p0;
+                        currentItemClass.pO = model.pO;
                         currentItemClass.m2 = model.m2;
                         currentItemClass.cEb = model.cEb;
                         currentItemClass.s = model.s;
