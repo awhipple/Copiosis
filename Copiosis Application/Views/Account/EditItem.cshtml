@@ -9,7 +9,6 @@
 
 @section Scripts {
 <script type="text/javascript">
-
     $("#class-dropdown").change(function () {
         var currentChoice = $(this).val();
         $.ajax({
@@ -24,6 +23,8 @@
             }
         });
     });
+
+    $('#itemsNav').addClass('active');
 </script>
     @Scripts.Render("~/bundles/jqueryval")
 }
