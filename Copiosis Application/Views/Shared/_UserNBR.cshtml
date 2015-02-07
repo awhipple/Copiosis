@@ -12,6 +12,12 @@
                 {
                     <li role="link"><a href="@Url.Action("Overview", "Admin")">Administrator Overview</a></li>
                 }
+                <li class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                }
             </ul>
         </div> 
         <span id="userNBR" class="inline-override"> Your Current NBR is:<span id="nbr-number"></span></span>
