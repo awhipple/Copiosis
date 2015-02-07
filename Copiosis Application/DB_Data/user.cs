@@ -20,6 +20,7 @@ namespace Copiosis_Application.DB_Data
             this.producerTransactions = new HashSet<transaction>();
             this.consumerTransactions = new HashSet<transaction>();
             this.products = new HashSet<product>();
+            this.webpages_Roles = new HashSet<webpages_Roles>();
         }
     
         public int userID { get; set; }
@@ -39,5 +40,6 @@ namespace Copiosis_Application.DB_Data
         public virtual ICollection<transaction> producerTransactions { get; set; }
         public virtual ICollection<transaction> consumerTransactions { get; set; }
         public virtual ICollection<product> products { get; set; }
+        public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
     }
 }

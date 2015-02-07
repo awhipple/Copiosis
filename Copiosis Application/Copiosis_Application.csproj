@@ -219,6 +219,9 @@
     <Compile Include="DB_Data\user.cs">
       <DependentUpon>CopiosisDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB_Data\webpages_Roles.cs">
+      <DependentUpon>CopiosisDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Filters\CustomErrorHandlingAttribute.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">

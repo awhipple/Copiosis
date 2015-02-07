@@ -85,20 +85,24 @@ namespace Copiosis_Application.Controllers
         public ActionResult ViewUsers()
         {
             ViewUsersModel model = new ViewUsersModel();
-
+            
             using (var db = new CopiosisEntities())
             {
+                model.roles = FetchUserRoles(db);
 
                 model.users = db.users.Select(t => new UserModel
                 {
                     userId = t.userID,
                     userName = t.username,
                     firstName = t.firstName,
-                    lastName = t.lastName
+                    lastName = t.lastName,
+                    roleId = t.webpages_Roles.FirstOrDefault().RoleId,
+                    roleName = t.webpages_Roles.FirstOrDefault().RoleName
 
                 }).OrderByDescending(t => t.userName).ToList();
 
             }
+            
             return View(model);
         }
 
@@ -119,7 +123,8 @@ namespace Copiosis_Application.Controllers
                     throw new ArgumentException(string.Format("No user found with that ID: {0}", userId));
                 }
 
-                // user.itemClass = classID;
+
+                //db.webpages_Roles.Where(p => p.RoleName == role).FirstOrDefault().users.Add(user);
                 db.SaveChanges();
             }
             return Json(new { success = true });
@@ -369,6 +374,22 @@ namespace Copiosis_Application.Controllers
                 }
             }
             return itemClasses;
+        }
+
+        private List<SelectListItem> FetchUserRoles(CopiosisEntities db)
+        {
+            List<SelectListItem> roles = new List<SelectListItem>();
+            var items = db.webpages_Roles.ToList();
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    roles.Add(
+                        new SelectListItem { Text = item.RoleName, Value = item.RoleName }
+                    );
+                }
+            }
+            return roles;
         }
 
         public Models.ErrorModel getError()

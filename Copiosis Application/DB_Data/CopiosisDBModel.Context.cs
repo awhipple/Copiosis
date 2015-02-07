@@ -30,5 +30,6 @@ namespace Copiosis_Application.DB_Data
         public virtual DbSet<product> products { get; set; }
         public virtual DbSet<transaction> transactions { get; set; }
         public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<webpages_Roles> webpages_Roles { get; set; }
     }
 }
