@@ -19,7 +19,7 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Items must be given a class"></span>
+                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title='Please assign a class to your item. If you uncertain which class to select, leave at “Default”'></span>
                     @Html.LabelFor(m => m.ItemClass, new { @class = "control-label add-item-label", })
                 </div>
                 <div class="col-lg-9 col-md-9 col-xs-12">
@@ -31,7 +31,7 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Items must be given a type (Product or Service)"></span>
+                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title='Please select whether your item is a “Product” or a “Service"'></span>
                     @Html.LabelFor(m => m.ItemType, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-9 col-md-9 col-xs-12">
@@ -44,7 +44,7 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Items must be given a name"></span>
+                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Please assign a name to your item"></span>
                     @Html.LabelFor(m => m.Name, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-9 col-md-9 col-xs-12">
@@ -57,7 +57,7 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Provide an in depth description of your item. Make sure you mention the units in which you are offering this product or service."></span>
+                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title='Please provide an in-depth description of your item. Remember to include the “per unit” description. If you offer a dozen eggs, for example, specify that you’re offering “one dozen” eggs as opposed to “one egg"'></span>
                     @Html.LabelFor(m => m.Description, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-9 col-md-9 col-xs-12">
@@ -70,7 +70,7 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representation of the gateway of your item (ex: 1 or 10)"></span>
+                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title='Please indicate how many NBR are needed for a consumer to own your product or service. NBR should be whole numbers (ex: 1, 5, 15, 100)'></span>
                     @Html.LabelFor(m => m.Gateway, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-9 col-md-9 col-xs-12">
