@@ -15,10 +15,12 @@
     @if (ViewContext.RouteData.Values.ContainsValue("EditClass") == true)
     { 
         <h2 id="add-item-title" class="text-center">Edit A Class</h2>
+        <script>$('#editClassesNav').addClass('active');</script>
     }
     else if (ViewContext.RouteData.Values.ContainsValue("AddClass") == true)
     {
         <h2 id="add-item-title" class="text-center">Create A Class</h2>
+        <script>$('#addClassNav').addClass('active');</script>
     }
 
     @using (Html.BeginForm())
