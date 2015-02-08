@@ -13,8 +13,7 @@
 
     <div class="row">
         <div class="col2-sm-12 col-md-12 col-lg-12">
-            <h3>Change user options below:</h3>
-
+            <h3>Admin Users:</h3>
             <div class="table-responsive">
                 <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="table table-bordered table-hover table-striped">
                     <thead>
@@ -22,58 +21,78 @@
                             <th data-sortable="true">Username</th>
                             <th data-sortable="true">First Name</th>
                             <th data-sortable="true">Last Name</th>
-                            <th>&nbsp;</th>
+                            <th>Remove user as an Admin</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.users.Select((value, i) => new { i, value }))
+                        @foreach (var item in Model.adminUsers.Select((value, i) => new { i, value }))
                         {
                             <tr id="@item.value.userName">
                                 <td>@item.value.userName</td>
                                 <td>@item.value.firstName</td>
                                 <td>@item.value.lastName</td>
                                 <td>
-                                    @Html.DropDownListFor(model => model.users[item.i], new SelectList(Model.roles, "Value", "Text", item.value.roleName), new { @id = @item.value.userId, @class = "select-box", @placeholder = "Class" })
+                                    <div class="btn-group-sm">
+                                        <button type="button" class="btn-sm" onclick="changeAdmin(this, 'demote')">Remove as Admin</button>
+                                    </div>
                                 </td>
                             </tr>
                         }
-
+                    </tbody>
+                </table>
+            </div>
+            <h3>Non-Admin Users:</h3>
+            <div class="table-responsive">
+                <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Username</th>
+                            <th data-sortable="true">First Name</th>
+                            <th data-sortable="true">Last Name</th>
+                            <th>Make user an Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.nonadminUsers.Select((value, i) => new { i, value }))
+                        {
+                            <tr id="@item.value.userName">
+                                <td>@item.value.userName</td>
+                                <td>@item.value.firstName</td>
+                                <td>@item.value.lastName</td>
+                                <td>
+                                    <div class="btn-group-sm">
+                                        <button type="button" class="btn-sm" onclick="changeAdmin(this, 'promote')">Promote to Admin</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <script>
-            $(function () {
-
-                $(document.body).on('change', '.select-box', function () {
-                    userRole = this.value;
-                    userID = this.id;
-                    $.ajax({
-                        url: '/Admin/ChangeUserIsAdmin',
-                        type: 'POST',
-                        data: { role: userRole, userId: userID },
-                        success: function (result) {
-                            if (result)
-                                console.log("User updated successfully.");
-                            else {
-                                console.log("Error while trying to update user.");
-                            }
-                        },
-                        error: function (result) {
-                            console.log("Error while trying to update user.");
-                        }
-                    });
-                });
-
-            });
-        </script>
-
-    </div>
 </div>
 <script>
     $('#usersNav').addClass('active');
+    function changeAdmin(button, action) {
+        var roleAction = action;
+        var userName = $(button).parent().parent().parent().attr("id");
+        $.ajax({
+            url: '/Admin/ChangeUserIsAdmin',
+            type: 'POST',
+            data: { roleAction: roleAction, userName: userName },
+            success: function (result) {
+                if (result) {
+                    console.log("User updated successfully.");
+                    location.reload();
+                } else {
+                    console.log("Error while trying to update user.");
+                }
+            },
+            error: function (result) {
+                console.log("Error while trying to update user.");
+            }
+        });
+    }
 </script>
 

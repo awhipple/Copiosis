@@ -133,8 +133,8 @@ namespace Copiosis_Application.Models
 
     public class ViewUsersModel
     {
-        public List<UserModel> users { get; set; }
-        public List<SelectListItem> roles { get; set; }
+        public List<UserModel> adminUsers { get; set; }
+        public List<UserModel> nonadminUsers { get; set; }
     }
 
     public class UserModel
@@ -146,6 +146,7 @@ namespace Copiosis_Application.Models
         public int status { get; set; }
         public int roleId { get; set; }
         public string roleName { get; set; }
+
     }
 
     public class ViewClassesModel

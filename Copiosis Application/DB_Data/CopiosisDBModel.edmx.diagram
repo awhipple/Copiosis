@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6409368ce0194d25b0c6e200261715d9" Name="Diagram1" ZoomLevel="55">
+      <Diagram DiagramId="6409368ce0194d25b0c6e200261715d9" Name="Diagram1" ZoomLevel="94">
         <EntityTypeShape EntityType="CopiosisDBModel.itemClass" Width="1.5" PointX="6" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CopiosisDBModel.location" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CopiosisDBModel.product" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />

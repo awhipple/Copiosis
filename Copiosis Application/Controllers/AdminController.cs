@@ -88,19 +88,7 @@ namespace Copiosis_Application.Controllers
             
             using (var db = new CopiosisEntities())
             {
-                model.roles = FetchUserRoles(db);
-
-                model.users = db.users.Select(t => new UserModel
-                {
-                    userId = t.userID,
-                    userName = t.username,
-                    firstName = t.firstName,
-                    lastName = t.lastName,
-                    roleId = t.webpages_Roles.FirstOrDefault().RoleId,
-                    roleName = t.webpages_Roles.FirstOrDefault().RoleName
-
-                }).OrderByDescending(t => t.userName).ToList();
-
+                FetchUserRoles(db, model);
             }
             
             return View(model);
@@ -111,20 +99,42 @@ namespace Copiosis_Application.Controllers
         // POST: /Admin/ChangeUserIsAdmin
         // Change whether a user is an Admin in Copiosis.
         [HttpPost]
-        public ActionResult ChangeUserIsAdmin(string role, int userId)
+        public ActionResult ChangeUserIsAdmin(string roleAction, string userName)
         {
             using (var db = new CopiosisEntities())
             {
-                var user = db.users.Where(p => p.userID == userId).FirstOrDefault();
+                var user = db.users.Where(p => p.username == userName).FirstOrDefault();
+                var roles = db.webpages_Roles.Where(r => r.RoleName == "ADMIN").FirstOrDefault();
 
-                ADMINERROR.ErrorSubject = "Error while trying to change an item's class";
+                //ADMINERROR.ErrorSubject = "Error while trying to change an item's class";
                 if (user == null)
                 {
-                    throw new ArgumentException(string.Format("No user found with that ID: {0}", userId));
+                    throw new ArgumentException(string.Format("No user found with that username: {0}", userName));
+                }
+                if(roles == null)
+                {
+                    throw new ArgumentException(string.Format("The role: {0} does not exist", "ADMIN"));
                 }
 
-
-                //db.webpages_Roles.Where(p => p.RoleName == role).FirstOrDefault().users.Add(user);
+                //we are adding
+                if (roleAction.ToLower() == "promote")
+                {
+                    if (!roles.users.Contains(user))
+                    {
+                        roles.users.Add(user);
+                    }
+                }
+                else
+                {
+                    if (roles.users.Contains(user))
+                    {
+                        roles.users.Remove(user);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(string.Format("{0} is not currently an admin.", user.username));
+                    }
+                }
                 db.SaveChanges();
             }
             return Json(new { success = true });
@@ -413,20 +423,71 @@ namespace Copiosis_Application.Controllers
             return itemClasses;
         }
 
-        private List<SelectListItem> FetchUserRoles(CopiosisEntities db)
+        //List<SelectListItem> 
+        private void FetchUserRoles(CopiosisEntities db, ViewUsersModel model)
         {
             List<SelectListItem> roles = new List<SelectListItem>();
+            List<UserModel> adminUsers = new List<UserModel>();
+            List<int> adminIds = new List<int>();
+            List<UserModel> nonAdminUsers = new List<UserModel>();
             var items = db.webpages_Roles.ToList();
             if (items != null)
             {
                 foreach (var item in items)
                 {
-                    roles.Add(
-                        new SelectListItem { Text = item.RoleName, Value = item.RoleName }
-                    );
+                    if (item.RoleName == "ADMIN")
+                    {
+                        string remove = "Remove as Admin";
+                        roles.Add(
+                            new SelectListItem { Text = remove, Value = "demote" }
+                        );
+
+                        foreach (var user in item.users)
+                        {
+                            UserModel temp = new UserModel();
+                            temp.firstName = user.firstName;
+                            temp.lastName = user.lastName;
+                            temp.roleId = item.RoleId;
+                            temp.roleName = remove;
+                            temp.status = user.status;
+                            temp.userId = user.userID;
+                            temp.userName = user.username;
+                            adminIds.Add(temp.userId);
+                            adminUsers.Add(temp);
+                        }
+                    }
+                    else if (item.RoleName == "USER")
+                    {
+                        string promote = "Promote to Admin";
+                        roles.Add(
+                            new SelectListItem { Text = promote, Value = "promote" }
+                        );
+
+                        foreach (var user in item.users)
+                        {
+                            if (!adminIds.Contains(user.userID))
+                            {
+                                UserModel temp = new UserModel();
+                                temp.firstName = user.firstName;
+                                temp.lastName = user.lastName;
+                                temp.roleId = item.RoleId;
+                                temp.roleName = promote;
+                                temp.status = user.status;
+                                temp.userId = user.userID;
+                                temp.userName = user.username;
+                                nonAdminUsers.Add(temp);
+                            }
+                        }
+                    }
+
+                    
                 }
             }
-            return roles;
+
+            model.roles = roles;
+            model.adminUsers = adminUsers;
+            model.nonadminUsers = nonAdminUsers;
+            
         }
 
         public Models.ErrorModel getError()
