@@ -1,14 +1,12 @@
 ﻿@{
     ViewBag.Title = "_AdminMenu";
 }
-
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:0px">
-
-    <ul class="simpleNav">
-        <li>@Html.ActionLink("Overview", "Overview", "Admin")</li>
-        <li>@Html.ActionLink("Edit Classes", "ViewClasses", "Admin")</li>
-        <li>@Html.ActionLink("Add New Class", "AddClass", "Admin")</li>
-        <li>@Html.ActionLink("Rejected Transactions", "Rejected", "Admin")</li>
-        <li class="last-item">@Html.ActionLink("Users", "ViewUsers", "Admin")</li>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:0px; padding-right:0;">
+    <ul class="nav nav-tabs navbar-right">
+        <li id="adminOverviewNav">@Html.ActionLink("Overview", "Overview", "Admin")</li>
+        <li id="editClassesNav">@Html.ActionLink("Edit Classes", "ViewClasses", "Admin")</li>
+        <li id="addClassNav">@Html.ActionLink("Add New Class", "AddClass", "Admin")</li>
+        <li id="rejectedTransNav">@Html.ActionLink("Rejected Transactions", "Rejected", "Admin")</li>
+        <li id="usersNav" class="last-item">@Html.ActionLink("Users", "ViewUsers", "Admin")</li>
     </ul>
 </div>

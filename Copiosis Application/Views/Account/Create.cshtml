@@ -6,10 +6,12 @@
         @if (Model.IsProducer == true)
         {
             <h2 id="add-item-title" class="text-center">Producer: Add a Transaction</h2>
+            <script>$('#producerTransNav').addClass('active');</script>
         }
         else
         {
             <h2 id="add-item-title" class="text-center">Consumer: Add a Transaction</h2>
+            <script>$('#consumerTransNav').addClass('active');</script>
         }
         @using (Html.BeginForm())
         {

@@ -44,7 +44,7 @@ namespace Copiosis_Application.Controllers
 
                 model.products = db.products.Where(
                     a =>
-                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass != 1
+                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass1.name != "Default"
                 ).Select(t => new ClassModel
                 {
                     classID = t.itemClass,
@@ -57,7 +57,7 @@ namespace Copiosis_Application.Controllers
 
                 model.productsDefault = db.products.Where(
                     a =>
-                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass == 1
+                    (a.deletedDate == null || a.deletedDate == DateTime.MinValue) && a.itemClass1.name == "Default"
                 ).Select(t => new ClassModel
                 {
                     classID = t.itemClass,
@@ -135,14 +135,33 @@ namespace Copiosis_Application.Controllers
         // GET: /Admin/ViewClasses
         // View a list of the classes. Clicking one opens EditClass.
         [HttpGet]
-        public ActionResult ViewClasses(string message = null)
+        public ActionResult ViewClasses()
         {
             ViewBag.savedChanges = false;
+            ViewBag.noEdit = false;
             ViewClassesModel model = new ViewClassesModel();
-            if (message != null)
+            //Handle cases for success banner in the Admin/ViewClasses view
+            if (TempData["AddClass"] != null || TempData["EditClass"] != null)
             {
+                //Case 1: The admin adds a new class and it is successful
+                if (TempData["AddClass"] != null)
+                {
+                    ViewBag.newClass = true;
+                    ViewBag.className = TempData["AddClass"];
+                }
+                //Case 2: The admin edits a class and it is successful
+                else if (TempData["EditClass"] != null)
+                {
+                    ViewBag.newClass = false;
+                    ViewBag.className = TempData["EditClass"];
+                }
                 ViewBag.savedChanges = true;
-                ViewBag.className = message;
+            }
+            //Case 3: The admin presses the submit button from the EditClass page but changes nothing
+            else if (TempData["NoEdit"] != null)
+            {
+                ViewBag.noEdit = true;
+                ViewBag.className = TempData["NoEdit"];
             }
             using (var db = new CopiosisEntities())
             {
@@ -198,7 +217,7 @@ namespace Copiosis_Application.Controllers
                         newItemClass.aPrime = m.aPrime;
                         newItemClass.cCb = m.cCb;
                         newItemClass.m1 = m.m1;
-                        newItemClass.pO = m.p0;
+                        newItemClass.pO = m.pO;
                         newItemClass.m2 = m.m2;
                         newItemClass.cEb = m.cEb;
                         newItemClass.s = m.s;
@@ -207,10 +226,11 @@ namespace Copiosis_Application.Controllers
                         newItemClass.m4 = m.m4;
                         newItemClass.sH = m.sH;
                         newItemClass.m5 = m.m5;
-
+                        //save changes
                         db.itemClasses.Add(newItemClass);
                         db.SaveChanges();
-                        return RedirectToAction("ViewClasses", new { message = m.name });
+                        TempData["AddClass"] = newItemClass.name;
+                        return RedirectToAction("ViewClasses");
                     }
                 }
             }
@@ -230,32 +250,32 @@ namespace Copiosis_Application.Controllers
 
             using (var db = new CopiosisEntities())
             {
-                var iClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
-                if (iClass == null)
+                var currentItemClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
+                if (currentItemClass == null)
                 {
                     ADMINERROR.ErrorSubject = "Error while trying to edit an item";
                     throw new ArgumentException(string.Format("ItemClass with Name {0} not found", className));
                 }
                 else
                 {
-                    model.name = iClass.name;
-                    model.suggestedGateway = (int)iClass.suggestedGateway;
-                    model.cPdb = (float)iClass.cPdb;
-                    model.a = (float)iClass.a;
-                    model.aMax = (int)iClass.aMax;
-                    model.d = (int)iClass.d;
-                    model.aPrime = (int)iClass.aPrime;
-                    model.cCb = (float)iClass.cCb;
-                    model.m1 = (float)iClass.m1;
-                    model.p0 = (int)iClass.pO;
-                    model.m2 = (float)iClass.m2;
-                    model.cEb = (float)iClass.cEb;
-                    model.s = (int)iClass.s;
-                    model.m3 = (float)iClass.m3;
-                    model.sE = (short)iClass.sE;
-                    model.m4 = (float)iClass.m4;
-                    model.sH = (short)iClass.sH;
-                    model.m5 = (float)iClass.m5;
+                    model.name = currentItemClass.name;
+                    model.suggestedGateway = (int)currentItemClass.suggestedGateway;
+                    model.cPdb = (float)currentItemClass.cPdb;
+                    model.a = (float)currentItemClass.a;
+                    model.aMax = (int)currentItemClass.aMax;
+                    model.d = (int)currentItemClass.d;
+                    model.aPrime = (int)currentItemClass.aPrime;
+                    model.cCb = (float)currentItemClass.cCb;
+                    model.m1 = (float)currentItemClass.m1;
+                    model.pO = (int)currentItemClass.pO;
+                    model.m2 = (float)currentItemClass.m2;
+                    model.cEb = (float)currentItemClass.cEb;
+                    model.s = (int)currentItemClass.s;
+                    model.m3 = (float)currentItemClass.m3;
+                    model.sE = (short)currentItemClass.sE;
+                    model.m4 = (float)currentItemClass.m4;
+                    model.sH = (short)currentItemClass.sH;
+                    model.m5 = (float)currentItemClass.m5;
                 }
             }
             return View(model);
@@ -271,36 +291,53 @@ namespace Copiosis_Application.Controllers
             {
                 using (var db = new CopiosisEntities())
                 {
-                    var iClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
-                    if (iClass == null)
+                    var currentItemClass = db.itemClasses.Where(p => p.name == className).FirstOrDefault();
+                    if (currentItemClass == null)
                     {
                         ADMINERROR.ErrorSubject = "Error while trying to edit an item";
                         throw new ArgumentException(string.Format("ItemClass with Name {0} not found", className));
                     }
                     else
                     {
-                        iClass.name = model.name;
-                        iClass.suggestedGateway = model.suggestedGateway;
-                        iClass.cPdb = model.cPdb;
-                        iClass.a = model.a;
-                        iClass.aMax = model.aMax;
-                        iClass.d = model.d;
-                        iClass.aPrime = model.aPrime;
-                        iClass.cCb = model.cCb;
-                        iClass.m1 = model.m1;
-                        iClass.pO = model.p0;
-                        iClass.m2 = model.m2;
-                        iClass.cEb = model.cEb;
-                        iClass.s = model.s;
-                        iClass.m3 = model.m3;
-                        iClass.sE = model.sE;
-                        iClass.m4 = model.m4;
-                        iClass.sH = model.sH;
-                        iClass.m5 = model.m5;
+                        if (model.name.Equals(currentItemClass.name) == false)
+                        {
+                            itemClass conflictingItemClass = db.itemClasses.Where(ic => ic.name == model.name).FirstOrDefault();
+                            if (conflictingItemClass != null)
+                            {
+                                ModelState.AddModelError("name", "There is already a class of this name");
+                                return View(model);
+                            }
+                        }
+                        //Case when the are no changes to the current class
+                        else if (model.Equals(currentItemClass) == true)
+                        {
+                            TempData["NoEdit"] = currentItemClass.name;
+                            return RedirectToAction("ViewClasses");
+                        }
+                        currentItemClass.name = model.name;
+                        currentItemClass.suggestedGateway = model.suggestedGateway;
+                        currentItemClass.cPdb = model.cPdb;
+                        currentItemClass.a = model.a;
+                        currentItemClass.aMax = model.aMax;
+                        currentItemClass.d = model.d;
+                        currentItemClass.aPrime = model.aPrime;
+                        currentItemClass.cCb = model.cCb;
+                        currentItemClass.m1 = model.m1;
+                        currentItemClass.pO = model.pO;
+                        currentItemClass.m2 = model.m2;
+                        currentItemClass.cEb = model.cEb;
+                        currentItemClass.s = model.s;
+                        currentItemClass.m3 = model.m3;
+                        currentItemClass.sE = model.sE;
+                        currentItemClass.m4 = model.m4;
+                        currentItemClass.sH = model.sH;
+                        currentItemClass.m5 = model.m5;
                         db.SaveChanges();
+                        TempData["EditClass"] = currentItemClass.name;
+                        return RedirectToAction("ViewClasses");
+                        
                     }
                 }
-                return RedirectToAction("ViewClasses");
             }
             else
             {

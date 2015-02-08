@@ -1,7 +1,26 @@
 ﻿﻿@if (Request.IsAuthenticated)
 {
-    <div class="pull-right text-right">
-        <p id="userNBR" class="">Hello <strong>@Html.ActionLink(User.Identity.Name, "Manage", "Account")</strong>. Your Current NBR is:<span id="nbr-number"></span></p>
+    <div class="pull-right">
+        <div class="btn-group">
+            <a class="btn btn-primary dropdown-toggle"  data-toggle="dropdown" href="#" style="color: white">
+                @User.Identity.Name
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li role="link"><a href="@Url.Action("Manage", "Account")">Manage Your Account</a></li>
+                @if (Roles.IsUserInRole("ADMIN"))
+                {
+                    <li role="link"><a href="@Url.Action("Overview", "Admin")">Administrator Overview</a></li>
+                }
+                <li class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                }
+            </ul>
+        </div> 
+        <span id="userNBR" class="inline-override"> Your Current NBR is:<span id="nbr-number"></span></span>
     </div>
     <script>
         $(function () {
