@@ -460,6 +460,8 @@ namespace Copiosis_Application.Controllers
                 using(var db = new CopiosisEntities())
                 {
                     var producer = db.users.Where(u => u.username == producerUN && u.status == 1).FirstOrDefault();
+                    string producerFirstLast = db.users.Where(m => m.username == producerUN).Select(u => u.firstName).FirstOrDefault()
+                        + " " + db.users.Where(m => m.username == producerUN).Select(u => u.lastName).FirstOrDefault();
                     if (producer == null)
                     {
                         throw new ArgumentException(string.Format("Producer {0} not found", producerUN));
@@ -473,7 +475,7 @@ namespace Copiosis_Application.Controllers
                     double? currentUserNBR = db.users.Where(u => u.userID == WebSecurity.CurrentUserId).Select(u => u.nbr).FirstOrDefault();
                     if(!currentUserNBR.HasValue || currentUserNBR.Value < product.gateway)
                     {
-                        ModelState.AddModelError("InsufficientNBR", "You do not have enough NBR for this good or service");
+                        ModelState.AddModelError("Producer", "You do not have enough NBR for this good or service");
                         PopulateNewTransactionModel(type, model);
                         return View(model);
                     }
@@ -493,20 +495,20 @@ namespace Copiosis_Application.Controllers
                     db.transactions.Add(consumerTran);
                     db.SaveChanges();
                     TempData["consumerAdd"] = true;
-                    TempData["producerIs"] = db.users.Where(m => m.username == producerUN).Select(u => u.firstName).FirstOrDefault() 
-                        + " " + db.users.Where(m => m.username == producerUN).Select(u => u.lastName).FirstOrDefault();
+                    TempData["producerIs"] = producerFirstLast;
                 }
             }
             else if(type == "producer")
             {
                 string[] consumerName = model.Consumer.Split('|');
                 string consumerUN = consumerName[1] != null ? consumerName[1].Trim(): "";
-
                 string[] productName = model.ProductProvided.Split('|');
                 string productUN = productName[0] != null ? productName[0].TrimEnd() : "";
                 using(var db = new CopiosisEntities())
                 {
                     var consumer = db.users.Where(u => u.username == consumerUN && u.status == 1).FirstOrDefault();
+                    TempData["consumerIs"] = db.users.Where(m => m.username == consumerUN).Select(u => u.firstName).FirstOrDefault()
+                        + " " + db.users.Where(m => m.username == consumerUN).Select(u => u.lastName).FirstOrDefault();
                     if(consumer == null)
                     {
                         throw new ArgumentException(string.Format("Consumer {0} not found", consumerUN));
@@ -521,7 +523,7 @@ namespace Copiosis_Application.Controllers
                     double? consumerNBR = db.users.Where(u => u.userID == consumer.userID).Select(u => u.nbr).FirstOrDefault();
                     if (!consumerNBR.HasValue || consumerNBR.Value < product.gateway)
                     {
-                        ModelState.AddModelError("InsufficientNBR", "This consumer does not have enough NBR for this good or service");
+                        ModelState.AddModelError("Consumer", "The consumer " + TempData["consumerIs"] + " does not have enough NBR for this good or service");
                         PopulateNewTransactionModel(type, model);
                         return View(model);
                     }
@@ -541,8 +543,7 @@ namespace Copiosis_Application.Controllers
                     db.transactions.Add(producerTran);
                     db.SaveChanges();
                     TempData["producerAdd"] = true;
-                    TempData["consumerIs"] = TempData["producerIs"] = db.users.Where(m => m.username == consumerUN).Select(u => u.firstName).FirstOrDefault()
-                        + " " + db.users.Where(m => m.username == consumerUN).Select(u => u.lastName).FirstOrDefault();
+                    
                 }
             }
             else

@@ -16,18 +16,36 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            @Html.Partial("ValidationSummary", ViewData.ModelState)
-
+            bool consumerHasEnough = true;
+            bool producerHasEnough = true;
+            if (ViewData.ModelState.IsValid == false)
+            {
+                <div class="validation-summary-errors panel panel-danger"
+                        data-valmsg-summary="true">
+                    <div class="panel-heading">
+                        <center><strong>Cannot add this transaction. Please try again later</strong></center>
+                        @if (ViewData.ModelState["Consumer"].Errors.Count() >= 1)
+                        {
+                            consumerHasEnough = false;
+                        }
+                        else
+                        {
+                            producerHasEnough = false;
+                        }
+                    </div>
+                </div><br />
+            }
             @*If user is using producer form*@
             if (Model.IsProducer == true)
             {
                 <div class="row">
-                    <div class="form-group">
+                    <div class="form-group @(consumerHasEnough ? null : "has error")">
                         <div class="col-lg-3 col-md-3 col-xs-12">
                             @Html.LabelFor(m => m.Consumer, new { @class = "control-label transaction-label" })
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
                             @Html.DropDownListFor(m => m.Consumer, new SelectList(Model.Consumers), new { @id = "consumer-dropdown", @class = "select-box", @placeholder = "Select the Consumer's Name" })
+                            @Html.ValidationMessageFor(m => m.Consumer)
                         </div>
                     </div>
                 </div>
@@ -65,12 +83,13 @@
             else
             {
                 <div class="row">
-                    <div class="form-group">
+                    <div class="form-group @(producerHasEnough? null : "has error")">
                         <div class="col-lg-3 col-md-3 col-xs-12">
                             @Html.LabelFor(m => m.Producer, new { @class = "control-label transaction-label" })
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
                             @Html.DropDownListFor(m => m.Producer, new SelectList(Model.Producers), new { @id = "producer-dropdown", @class = "select-box", @placeholder = "Select the Consumer's Name" })
+                            @Html.ValidationMessageFor(m => m.Producer)
                         </div>
                     </div>
                 </div>
