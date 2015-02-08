@@ -18,17 +18,17 @@
             @Html.AntiForgeryToken()
             bool consumerHasEnough = true;
             bool producerHasEnough = true;
-            if (ViewData.ModelState.IsValid == false)
+            if (!ViewData.ModelState.IsValid)
             {
                 <div class="validation-summary-errors panel panel-danger"
                         data-valmsg-summary="true">
                     <div class="panel-heading">
                         <center><strong>Cannot add this transaction. Please try again later</strong></center>
-                        @if (ViewData.ModelState["Consumer"].Errors.Count() >= 1)
+                        @if (ViewData.ModelState["Consumer"] != null && ViewData.ModelState["Consumer"].Errors.Count() >= 1)
                         {
                             consumerHasEnough = false;
                         }
-                        else
+                        else if (ViewData.ModelState["Producer"] != null && ViewData.ModelState["Producer"].Errors.Count() >= 1)
                         {
                             producerHasEnough = false;
                         }
@@ -39,7 +39,7 @@
             if (Model.IsProducer == true)
             {
                 <div class="row">
-                    <div class="form-group @(consumerHasEnough ? null : "has error")">
+                    <div class="form-group @(consumerHasEnough ? null : "error")">
                         <div class="col-lg-3 col-md-3 col-xs-12">
                             @Html.LabelFor(m => m.Consumer, new { @class = "control-label transaction-label" })
                         </div>
@@ -83,7 +83,7 @@
             else
             {
                 <div class="row">
-                    <div class="form-group @(producerHasEnough? null : "has error")">
+                    <div class="form-group">
                         <div class="col-lg-3 col-md-3 col-xs-12">
                             @Html.LabelFor(m => m.Producer, new { @class = "control-label transaction-label" })
                         </div>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group">
+                    <div class="form-group @(producerHasEnough ? null : "error")">
                         <div class="col-lg-3 col-md-3 col-xs-12">
                             @Html.LabelFor(m => m.ProductProvided, new { @class = "control-label transaction-label" })
                         </div>
