@@ -146,6 +146,7 @@ namespace Copiosis_Application.Models
         public string ItemClass { get; set; }
 
         [Required(ErrorMessage = "Gateway is required")]
+        [Range((int)0, int.MaxValue, ErrorMessage = "Gateway cannot be a negative number")]
         public int Gateway { get; set; }
 
         [Display(Name = "Type")]

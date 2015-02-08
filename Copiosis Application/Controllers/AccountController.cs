@@ -628,7 +628,12 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddItem(AddItemModel model)
         {
-            ValidateItemModel(model);
+            //ValidateItemModel(model);
+            if (!model.ItemType.Equals("Product", StringComparison.OrdinalIgnoreCase) && !model.ItemType.Equals("Service", StringComparison.OrdinalIgnoreCase))
+            {
+                ACCOUNTERROR.ErrorSubject = "Error while trying to add an item";
+                throw new ArgumentException("Items can only be of type Product or Service");
+            }
             product p = new product();
             using (var db = new CopiosisEntities())
             {
@@ -647,11 +652,11 @@ namespace Copiosis_Application.Controllers
                 p.createdDate = DateTime.Now;
                 p.itemClass = (int)itemClassId;
                 p.type = model.ItemType;
-
                 db.products.Add(p);
                 db.SaveChanges();
+                TempData["currentItem"] = p.name;
+                TempData["addSuccess"] = true;
             }
-
             return RedirectToAction("Items");
         }
 
@@ -741,7 +746,6 @@ namespace Copiosis_Application.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditItem(AddItemModel model, Guid itemId)
         {
-            ValidateItemModel(model);
             using (var db = new CopiosisEntities())
             {
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
@@ -759,9 +763,11 @@ namespace Copiosis_Application.Controllers
                     item.itemClass = itemClassId;
                     item.type = model.ItemType;
                     db.SaveChanges();
+                    TempData["currentItem"] = item.name;
+                    TempData["editSuccessful"] = true;
+
                 }
             }
-
             return RedirectToAction("Items");
         }
 
@@ -966,30 +972,6 @@ namespace Copiosis_Application.Controllers
                 }
             }
             return itemClasses;
-        }
-
-        private void ValidateItemModel(AddItemModel model)
-        {
-            ACCOUNTERROR.ErrorSubject = "Error while validating an item";
-            if (model.Name == null || model.Name == string.Empty)
-            {
-                throw new ArgumentException("Product name is required");
-            }
-
-            if (model.Gateway < 0)
-            {
-                throw new ArgumentException("Product cannot have a negative gateway");
-            }
-
-            if (model.Description == null || model.Description == string.Empty)
-            {
-                throw new ArgumentException("Product description is required");
-            }
-
-            if(!model.ItemType.Equals("Product", StringComparison.OrdinalIgnoreCase) && !model.ItemType.Equals("Service", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new ArgumentException("Items can only be of type Product or Service");
-            }
         }
 
         /// <summary>

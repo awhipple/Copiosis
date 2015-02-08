@@ -17,6 +17,20 @@
                         <p>@ViewData.ModelState["DeletionError"].Errors[0].ErrorMessage</p>
                     </div>
                 }
+                else if (TempData["editSuccessful"] != null || TempData["addSuccess"] != null)
+                {
+                    <div id="itemChangedBanner" class="panel panel-success" data-valmsg-summary="true">
+                        <div class="panel-heading">
+                            @if (TempData["editSuccessful"] != null && TempData["editSuccessful"].Equals(true)) { 
+                                <center><strong>Changes to @TempData["currentItem"] was successfully saved</strong></center>
+                            }
+                            else if (TempData["addSuccess"] != null && TempData["addSuccess"].Equals(true))
+                            {
+                                <center><strong>The new item, @TempData["currentItem"], was successfully saved</strong></center>
+                            }
+                        </div>
+                    </div><br />
+                }
                 @* detemine if model list has data available *@
                 bool hasItems = Model.Count() > 0;
                 
@@ -89,4 +103,5 @@
 </div>
 <script>
     $('#itemsNav').addClass('active');
+    $('#itemChangedBanner').delay(3000).fadeOut();
 </script>

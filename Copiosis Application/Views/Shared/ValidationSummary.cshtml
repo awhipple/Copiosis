@@ -1,17 +1,19 @@
 ﻿@model ModelStateDictionary
 
-<div class="@(Html.ViewData.ModelState.IsValid ? "validation-summary-valid" : "validation-summary-errors") panel panel-danger"
-     data-valmsg-summary="true">
-    <div class="panel-heading">
-        <p>Please correct the following errors:</p>
-    </div>
-    <div class="panel-body">
-        <ul>
-            @foreach (var modelError in Model.SelectMany(keyValuePair => keyValuePair.Value.Errors))
+@if (@Model.IsValid == false)
+{
+    <div class="validation-summary-errors panel panel-danger"
+         data-valmsg-summary="true">
+        <div class="panel-heading">
+            @if (@Model.Count() <= 1)
             {
-                <li>@modelError.ErrorMessage</li>
+                <center><strong>Please correct the following field:</strong></center>
             }
-        </ul>
-    </div>
-</div>
+            else
+            {
+                <center><strong>Please correct the following fields:</strong></center>
+            }
+        </div>
+    </div><br />
+}
 

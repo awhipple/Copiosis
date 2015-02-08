@@ -3,11 +3,11 @@
 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3">
     @if (Model.Name != "" && Model.Name != null && Model.Name != string.Empty)
     {
-        <h2 id="add-item-title" class="text-center">Edit A Item</h2>
+        <h2 id="add-item-title" class="text-center">Edit An Item</h2>
     }
     else
     {
-        <h2 id="add-item-title" class="text-center">Create A Item</h2>
+        <h2 id="add-item-title" class="text-center">Create An Item</h2>
     }
 
 
@@ -37,6 +37,7 @@
                 <div class="col-lg-9 col-md-9 col-xs-12">
                     <label class="radio-inline">@Html.RadioButtonFor(m => m.ItemType, "Product")Product</label>
                     <label class="radio-inline">@Html.RadioButtonFor(m => m.ItemType, "Service")Service</label>
+                    <div>@Html.ValidationMessageFor(m => m.ItemType)</div>
                 </div>
             </div>
         </div>
