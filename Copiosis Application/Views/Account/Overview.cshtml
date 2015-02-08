@@ -16,6 +16,22 @@
     </div>    
     <div class="row">
         <div class="col2-sm-12 col-md-12 col-lg-12">
+            @if (TempData["consumerAdd"] != null || TempData["producerAdd"] != null)
+            {
+                <br />
+                <div id="newTransactionBanner" class="panel panel-success" data-valmsg-summary="true">
+                    <div class="panel-heading">
+                        @if (TempData["consumerAdd"] != null && TempData["consumerAdd"].Equals(true))
+                        {
+                            <center><strong>Your new transaction with @TempData["producerIs"] was just added</strong></center>
+                        }
+                        else if (TempData["producerAdd"] != null && TempData["producerAdd"].Equals(true))
+                        {
+                            <center><strong>Your new transaction with @TempData["consumerIs"] was just added</strong></center>
+                        }
+                    </div>
+                </div>
+            }
             <h3>Transactions Awaiting Your Approval</h3>
 
             @if (Model.pendingUser.Count() < 1) { 
@@ -200,4 +216,5 @@
 </div>
 <script>
     $('#overviewNav').addClass('active');
+    $('#newTransactionBanner').delay(3000).fadeOut();
 </script>

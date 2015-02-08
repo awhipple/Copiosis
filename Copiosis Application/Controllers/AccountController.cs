@@ -492,6 +492,9 @@ namespace Copiosis_Application.Controllers
                     consumerTran.productGateway = product.gateway;
                     db.transactions.Add(consumerTran);
                     db.SaveChanges();
+                    TempData["consumerAdd"] = true;
+                    TempData["producerIs"] = db.users.Where(m => m.username == producerUN).Select(u => u.firstName).FirstOrDefault() 
+                        + " " + db.users.Where(m => m.username == producerUN).Select(u => u.lastName).FirstOrDefault();
                 }
             }
             else if(type == "producer")
@@ -537,6 +540,9 @@ namespace Copiosis_Application.Controllers
 
                     db.transactions.Add(producerTran);
                     db.SaveChanges();
+                    TempData["producerAdd"] = true;
+                    TempData["consumerIs"] = TempData["producerIs"] = db.users.Where(m => m.username == consumerUN).Select(u => u.firstName).FirstOrDefault()
+                        + " " + db.users.Where(m => m.username == consumerUN).Select(u => u.lastName).FirstOrDefault();
                 }
             }
             else
