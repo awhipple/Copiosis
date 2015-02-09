@@ -83,9 +83,11 @@ namespace Copiosis_Application.Controllers
         public ActionResult ViewUsers()
         {
             ViewUsersModel model = new ViewUsersModel();
-            
+
             using (var db = new CopiosisEntities())
+            {
                 FetchUserRoles(db, model);
+            }
             
             return View(model);
         }
@@ -122,8 +124,7 @@ namespace Copiosis_Application.Controllers
                 else
                 {
                     if (roles.users.Contains(user))
-                        roles.users.Remove(user);
-                    
+                        roles.users.Remove(user);                  
                     else
                         throw new ArgumentException(string.Format("{0} is not currently an admin.", user.username));                   
                 }
