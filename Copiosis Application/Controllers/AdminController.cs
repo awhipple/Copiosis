@@ -105,6 +105,9 @@ namespace Copiosis_Application.Controllers
                 //ADMINERROR.ErrorSubject = "Error while trying to change an item's class";
                 if (user == null)
                     throw new ArgumentException(string.Format("No user found with that username: {0}", userName));
+
+                if (user.userID == WebSecurity.CurrentUserId)
+                    throw new ArgumentException(string.Format("Sorry, you can't demote yourself!: {0}", userName));
                 
                 if(roles == null)
                     throw new ArgumentException(string.Format("The role: {0} does not exist", "ADMIN"));
