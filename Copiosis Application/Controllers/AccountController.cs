@@ -814,7 +814,6 @@ namespace Copiosis_Application.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.AccountChangesSaved ? "Your account changes were saved"
-                : message == ManageMessageId.PasswordRequired ? "Your password is required"
                 : "";
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
@@ -828,10 +827,11 @@ namespace Copiosis_Application.Controllers
             }
             try
             {
-                bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(WebSecurity.CurrentUserName));
-                if (hasLocalAccount == false)
+                if (WebSecurity.IsAuthenticated == false)
                 {
-                    return RedirectToAction("Register");
+                    //Current user is not authorized to manage this account
+                    WebSecurity.Logout();
+                    return RedirectToAction("Login");
                 }
                 using (var db = new CopiosisEntities())
                 {
@@ -860,8 +860,6 @@ namespace Copiosis_Application.Controllers
                 }
                 throw new Exception(e.Message);
             }
-            //Not authorized to view to this page. Redirect to register a new account
-            return RedirectToAction("Register");
         }
 
         //
@@ -971,7 +969,7 @@ namespace Copiosis_Application.Controllers
                     {
                         itemClasses.Add(item.name, (int)item.suggestedGateway);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         ACCOUNTERROR.ErrorSubject = "Error while trying to retrieve a list of item classes";
                         throw new Exception("Ensure that the item classes in the database have unique names");
