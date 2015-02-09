@@ -27,12 +27,18 @@
     {
         @Html.AntiForgeryToken()
         bool validState = Html.ViewData.ModelState.IsValid;
+        int errorCount = 0;
             if (validState == false)
             {
                 <div class="validation-summary-errors panel panel-danger"
                      data-valmsg-summary="true">
                     <div class="panel-heading">
-                        @if (@Html.ViewData.ModelState["name"].Errors.Count == 1) { 
+                        @foreach (ModelState value in ViewData.ModelState.Values) {
+                            if (value.Errors.Count() >= 1) {
+                                ++errorCount;
+                            }
+                        }
+                        @if (errorCount == 1) { 
                             <center><strong>Please correct the following field:</strong></center>
                         }
                         else
