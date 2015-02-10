@@ -794,6 +794,7 @@ namespace Copiosis_Application.Controllers
                 {
                     item.deletedDate = DateTime.Now;
                     db.SaveChanges();
+                    TempData["itemDeleted"] = item.name;
                 }
             }
             

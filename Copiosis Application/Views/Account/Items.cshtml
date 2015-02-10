@@ -17,7 +17,7 @@
                         <p>@ViewData.ModelState["DeletionError"].Errors[0].ErrorMessage</p>
                     </div>
                 }
-                else if (TempData["editSuccessful"] != null || TempData["addSuccess"] != null)
+                else if (TempData["editSuccessful"] != null || TempData["addSuccess"] != null || TempData["itemDeleted"] != null)
                 {
                     <div id="itemChangedBanner" class="panel panel-success" data-valmsg-summary="true">
                         <div class="panel-heading">
@@ -27,6 +27,10 @@
                             else if (TempData["addSuccess"] != null && TempData["addSuccess"].Equals(true))
                             {
                                 <center><strong>The new item, @TempData["currentItem"], was successfully saved</strong></center>
+                            }
+                            else if (TempData["itemDeleted"] != null)
+                            {
+                                <center><strong>@TempData["itemDeleted"] was successfully deleted</strong></center>
                             }
                         </div>
                     </div><br />
