@@ -102,7 +102,6 @@ namespace Copiosis_Application.Controllers
                 var user = db.users.Where(p => p.username == userName).FirstOrDefault();
                 var roles = db.webpages_Roles.Where(r => r.RoleName == "ADMIN").FirstOrDefault();
 
-                //ADMINERROR.ErrorSubject = "Error while trying to change an item's class";
                 if (user == null)
                     throw new ArgumentException(string.Format("No user found with that username: {0}", userName));
 
@@ -110,8 +109,8 @@ namespace Copiosis_Application.Controllers
                     throw new ArgumentException(string.Format("Sorry, you can't demote yourself!: {0}", userName));
                 
                 if(roles == null)
-                    throw new ArgumentException(string.Format("The role: {0} does not exist", "ADMIN"));
-                
+                    throw new ArgumentException(string.Format("The role: {0} does not exist", "ADMIN"));             
+
 
                 //we are adding
                 if (roleAction.ToLower() == "promote")
@@ -437,8 +436,11 @@ namespace Copiosis_Application.Controllers
                             temp.status = user.status;
                             temp.userId = user.userID;
                             temp.userName = user.username;
-                            adminIds.Add(temp.userId);
-                            adminUsers.Add(temp);
+                            if (temp.userId != WebSecurity.CurrentUserId)
+                            {
+                                adminIds.Add(temp.userId);
+                                adminUsers.Add(temp);
+                            }
                         }
                     }
                     else if (item.RoleName == "USER")
