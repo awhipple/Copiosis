@@ -86,6 +86,7 @@ namespace Copiosis_Application.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [RegularExpression("^[a-zA-Z0-9_]+$", ErrorMessage = "Usernames may only contain lowercase and uppercase letters, numbers, and underscores.")]
         public string UserName { get; set; }
 
         [Required]
@@ -102,6 +103,7 @@ namespace Copiosis_Application.Models
         [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
