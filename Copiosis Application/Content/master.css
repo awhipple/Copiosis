@@ -188,3 +188,8 @@ tbody tr {
 .new-item {
     background-color:#ffd800!important;
 }
+
+#registerSentence {
+    color: #00B800;
+    font-weight: bold;
+}
