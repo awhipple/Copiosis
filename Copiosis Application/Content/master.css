@@ -124,9 +124,7 @@ ul, ol
 }
 
 .custom-q-mark {
-    float: left;
-    margin-right: 13px;
-    margin-top: 13px;
+    border:0px none;
     cursor: pointer;
 }
 
@@ -188,3 +186,12 @@ tbody tr {
 .new-item {
     background-color:#ffd800!important;
 }
+
+.a-label {
+    padding-top:10px;
+    padding-right:65px;
+ }
+
+/*.no-border{
+    border:0px none;
+}*/
