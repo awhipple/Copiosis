@@ -633,38 +633,55 @@ namespace Copiosis_Application.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddItem(AddItemModel model)
+        public ActionResult AddItem(AddItemModel m)
         {
-            //ValidateItemModel(model);
-            if (!model.ItemType.Equals("Product", StringComparison.OrdinalIgnoreCase) && !model.ItemType.Equals("Service", StringComparison.OrdinalIgnoreCase))
+            if (ModelState.IsValid)
             {
-                ACCOUNTERROR.ErrorSubject = "Error while trying to add an item";
-                throw new ArgumentException("Items can only be of type Product or Service");
-            }
-            product p = new product();
-            using (var db = new CopiosisEntities())
-            {
-                int? itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).FirstOrDefault();
-                if (itemClassId == null)
+                //ValidateItemModel(model);
+                if (!m.ItemType.Equals("Product", StringComparison.OrdinalIgnoreCase) && !m.ItemType.Equals("Service", StringComparison.OrdinalIgnoreCase))
                 {
                     ACCOUNTERROR.ErrorSubject = "Error while trying to add an item";
-                    throw new ArgumentException("Product item class not found");
+                    throw new ArgumentException("Items can only be of type Product or Service");
                 }
+                product p = new product();
+                using (var db = new CopiosisEntities())
+                {
+                    int? itemClassId = db.itemClasses.Where(ic => ic.name == m.ItemClass).Select(i => i.classID).FirstOrDefault();
+                    if (itemClassId == null)
+                    {
+                        ACCOUNTERROR.ErrorSubject = "Error while trying to add an item";
+                        throw new ArgumentException("Product item class not found");
+                    }
 
-                p.name = model.Name;
-                p.ownerID = WebSecurity.CurrentUserId;
-                p.guid = Guid.NewGuid();
-                p.gateway = model.Gateway;
-                p.description = model.Description;
-                p.createdDate = DateTime.Now;
-                p.itemClass = (int)itemClassId;
-                p.type = model.ItemType;
-                db.products.Add(p);
-                db.SaveChanges();
-                TempData["currentItem"] = p.name;
-                TempData["addSuccess"] = true;
+
+                    int existing = db.products.Where(i => i.name == m.Name).Count();
+                    if (existing > 0)
+                    {
+                        m.ItemClassTemplates = FetchItemClassTemplates(db);
+                        ModelState.AddModelError("name", "There is already an item of this name. Please try again.");
+                        return View(m);
+                    }
+
+
+                    p.name = m.Name;
+                    p.ownerID = WebSecurity.CurrentUserId;
+                    p.guid = Guid.NewGuid();
+                    p.gateway = m.Gateway;
+                    p.description = m.Description;
+                    p.createdDate = DateTime.Now;
+                    p.itemClass = (int)itemClassId;
+                    p.type = m.ItemType;
+                    db.products.Add(p);
+                    db.SaveChanges();
+                    TempData["currentItem"] = p.name;
+                    TempData["addSuccess"] = true;
+                }
+                return RedirectToAction("Items");
             }
-            return RedirectToAction("Items");
+            else
+            {
+                return View(m);
+            }
         }
 
         [HttpGet]
@@ -757,10 +774,17 @@ namespace Copiosis_Application.Controllers
             {
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
                 int itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).First();
+                int existing = db.products.Where(i => i.name == model.Name).Count();
                 if (item == null)
                 {
                     ACCOUNTERROR.ErrorSubject = "Error while trying to edit an item";
                     throw new ArgumentException(string.Format("Product with ID {0} not found", itemId));
+                }
+                else if (existing > 0 && model.Name != item.name)
+                {
+                    model.ItemClassTemplates = FetchItemClassTemplates(db);
+                    ModelState.AddModelError("name", "There is already an item of this name. Please try again.");
+                    return View(model);
                 }
                 else
                 {

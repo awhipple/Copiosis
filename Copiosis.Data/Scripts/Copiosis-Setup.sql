@@ -78,7 +78,7 @@ CREATE TABLE product (
 productID int IDENTITY(1,1) NOT NULL PRIMARY KEY,
 type varchar(25) NOT NULL DEFAULT 'Product',
 name varchar(155) NOT NULL,
-description varchar(255) NOT NULL,
+description varchar(max) NOT NULL,
 gateway int NOT NULL,
 itemClass int NOT NULL FOREIGN KEY REFERENCES itemClass(classID),
 createdDate datetime NOT NULL, 

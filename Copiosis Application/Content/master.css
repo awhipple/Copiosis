@@ -187,6 +187,7 @@ tbody tr {
     background-color:#ffd800!important;
 }
 
+
 .a-label {
     padding-top:10px;
     padding-right:65px;
@@ -195,3 +196,9 @@ tbody tr {
 /*.no-border{
     border:0px none;
 }*/
+
+#registerSentence {
+    color: #00B800;
+    font-weight: bold;
+}
+
