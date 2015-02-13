@@ -15,12 +15,12 @@
     {
         @Html.AntiForgeryToken()
         @*Handle other error cases that are caught after the POST request*@
-        if (ViewData.ModelState.IsValid == false)
+        if (Html.ViewData.ModelState.IsValid == false)
         {
             <div id="errorBanner" class="validation-summary-errors panel panel-danger"
                     data-valmsg-summary="true">
                 <div class="panel-heading">
-                    @if (ViewData.ModelState.Count() == 1)
+                    @if (Html.ViewData.ModelState.Count() == 1)
                     {
                         <center><strong>Please correct the following field:</strong></center>
                     }
