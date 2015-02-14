@@ -9,26 +9,6 @@ using Copiosis_Application.DB_Data;
 
 namespace Copiosis_Application.Models
 {
-    /*public class UsersContext : DbContext
-    {
-        public UsersContext()
-            : base("DefaultConnection")
-        {s
-        }
-
-        public DbSet<UserProfile> UserProfiles { get; set; }
-    }
-
-    [Table("UserProfile")]
-    public class UserProfile
-    {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-    }
-    */
-    /* This model may need to change once we have the db schema and seed script */
     public class AccountManagerModel
     {
         [Required(ErrorMessage = "Your current password is required")]
@@ -213,8 +193,10 @@ namespace Copiosis_Application.Models
         /*POST*/
 
         [Display(Name = "Consumer:")]
+        [Required(ErrorMessage = "Please select the consumer")]
         public string Consumer { get; set; }
 
+        [Required(ErrorMessage = "Please select the producer")]
         [Display(Name = "Producer:")]
         public string Producer { get; set; }
 

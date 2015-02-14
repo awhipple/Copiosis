@@ -4,9 +4,9 @@
     <div>
         @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
         @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
-        <input id="confirm" type="button" value="Confirm Transaction Details" />
-        <input id="reject" type="button" value="Reject Transaction" />
-        <button type="button" onclick="confirmBack()">Cancel</button>
+        <button class="btn btn-primary" id="confirm" type="button">Confirm Transaction Details</button>
+        <button class="btn btn-danger" id="reject" type="button">Reject Transaction</button>
+        <button class="btn btn-default" type="button" onclick="confirmBack()">Cancel</button>
     </div>
 }
 else if (Model.isPendingUser == false && Model.dateClosed == DateTime.MinValue)
@@ -15,7 +15,7 @@ else if (Model.isPendingUser == false && Model.dateClosed == DateTime.MinValue)
         <input id="updateResult" class="hidden" type="text" value="null" />
         @Html.TextBoxFor(m => m.transactionID, new { @class = "hidden", @val = Model.transactionID })
         @Html.TextBoxFor(m => m.result, new { @class = "hidden" })
-        <input id="update" type="button" value="Update Transaction Details" />
-        <button type="button" onclick="confirmBack()">Cancel</button>
+        <button class="btn btn-primary" id="update" type="button">Update Transaction Details</button>
+        <button class="btn btn-default" type="button" onclick="confirmBack()">Cancel</button>
     </div>
 }
