@@ -703,36 +703,33 @@ namespace Copiosis_Application.Controllers
         }
 
         [HttpGet]
-        public ActionResult FetchProducerItems(string name, int idx, string username)
+        public ActionResult FetchProducerItems(string name, string username)
         {
             List<string> products = new List<string>();
             bool result = true;
 
-            /* Note: this is not a great way to be doing this, relying soley on the first name last name as these may not be unique. But the only solution
-             * seems to be to include the username which has been stated that they do not want */
-            string[] producerName = name.Split(' ');
-            string producerFirstName = producerName[0];
-            string producerLastName = producerName[1];
-            string currentUserName = username;
-            using (var db = new CopiosisEntities())
-            {
-                int? producerID = db.users.Where(u => u.username == currentUserName).Select(uID => uID.userID).FirstOrDefault();
-                if(producerID == null)
+                /* Note: this is not a great way to be doing this, relying soley on the first name last name as these may not be unique. But the only solution
+                * seems to be to include the username which has been stated that they do not want */
+                string[] producerName = name.Split('|');
+                string currentUserName = producerName != null ? producerName[1].Trim() : "";
+                using (var db = new CopiosisEntities())
                 {
-                    ACCOUNTERROR.ErrorSubject = "Error while trying to retrieve item(s)";
-                    throw new ArgumentNullException(string.Format("No user found with name {0}", name));
+                    int? producerID = db.users.Where(u => u.username == currentUserName).Select(uID => uID.userID).FirstOrDefault();
+                    if (producerID == null)
+                    {
+                        ACCOUNTERROR.ErrorSubject = "Error while trying to retrieve item(s)";
+                        throw new ArgumentNullException(string.Format("No user found with name {0}", name));
+                    }
+
+                    products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name + " | Gateway: " + p.gateway).Distinct().ToList();
+                    if (products == null)
+                    {
+                        result = false;
+                    }
+
+
                 }
-                
-                products = db.products.Where(po => po.ownerID == producerID && po.deletedDate == null).Select(p => p.name + " | Gateway: " + p.gateway).Distinct().ToList();
-                if (products == null)
-                {
-                    result = true;
-                }
-
-
-            }
-
-            return Json(new { success = result, products = result ? products : null }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = result, products = result ? products : null }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: /Account/EditItem

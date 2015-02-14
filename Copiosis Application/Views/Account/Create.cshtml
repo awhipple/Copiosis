@@ -154,41 +154,38 @@
     <script type="text/javascript">
         $("#producer-dropdown").change(function (e) {
             var currentChoice = $(this).val();
-            var index = $("#producer-dropdown option:selected").index()
-            var userNameList = [];
-            @foreach(string username in Model.Usernames)
-            {
-                <text>userNameList.push("@(username)");
-                </text>
+            console.log(currentChoice);
+            if (currentChoice) {
+                //Transfer the list of items to an array before finding where to put them in the DOM, that way I can just drop it all in together.
+                var temp = [];
+                $.ajax({
+                    url: "/Account/FetchProducerItems/",
+                    type: "get",
+                    data: { name: currentChoice },
+                    success: function (result) {
+                        if (result) {
+                            //For each result we get, store a string in our temp array of what we need the html to look like.
+                            $.each(result.products, function (idx, str) {
+                                temp.push('<option value="' + str + '">' + str + '</option>');
+                            });
+                            //Empty the current list of items
+                            $('#product-dropdown').find('option').remove();
+                            //Drop in our array of strings
+                            $('#product-dropdown').empty().append(temp.join(''));
+                        }
+                        else {
+                            $('#product-dropdown').find('option').remove();
+
+                            $('#product-dropdown').empty().append("Select a user to see their products.");
+                        }
+                    },
+                    error: function (result) {
+                        console.log("Error receiving list of products owned by: " + currentChoice);
+                    }
+                });
+            } else {
+                $('#product-dropdown').find('option').remove();
             }
-            var selectedUserName = userNameList[index];
-            //Transfer the list of items to an array before finding where to put them in the DOM, that way I can just drop it all in together.
-            var temp = [];
-            $.ajax({
-                url: "/Account/FetchProducerItems/",
-                type: "get",
-                data: { name: currentChoice, idx: index, username: selectedUserName},
-                success: function (result) {
-                    if (result) {
-                        //For reach result we get, store a string in our temp array of what we need the html to look like.
-                        $.each(result.products, function (idx, str) {
-                            temp.push('<option value="' + str + '">' + str + '</option>');
-                        });
-                        //Empty the current list of items
-                        $('#product-dropdown').find('option').remove();
-                        //Drop in our array of strings
-                        $('#product-dropdown').empty().append(temp.join(''));
-                    }
-                    else {
-                        $('#product-dropdown').find('option').remove();
-                        
-                        $('#product-dropdown').empty().append("No available products owned by this producer");
-                    }
-                },
-                error: function (result) {
-                    console.log("Error receiving list of products owned by: " + currentChoice);
-                }
-            });
         }).trigger('change');
     </script>
 
