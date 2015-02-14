@@ -190,7 +190,7 @@ tbody tr {
 
 .a-label {
     padding-top:10px;
-    padding-right:65px;
+    padding-right:75px;
  }
 
 /*.no-border{
@@ -202,3 +202,11 @@ tbody tr {
     font-weight: bold;
 }
 
+.input-group{
+    width:100%;
+}
+
+#class-dropdown{
+    min-width:100px;
+    width:100%;
+}
