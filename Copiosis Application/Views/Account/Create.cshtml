@@ -44,8 +44,7 @@
                             @Html.LabelFor(m => m.Consumer, new { @class = "control-label transaction-label" })
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
-                            
-                            @Html.DropDownListFor(m => m.Consumer, new SelectList(Model.Consumers), "Select...",  new { @id = "consumer-dropdown", @class = "select-box" })
+                            @Html.DropDownListFor(m => m.Consumer, new SelectList(Model.Consumers), "Select ...",  new { @id = "consumer-dropdown", @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Consumer)
                         </div>
                     </div>
@@ -56,7 +55,7 @@
                             @Html.LabelFor(m => m.ProductProvided, "Product I Provided:", new { @class = "control-label transaction-label", @id="product-provided-producer"})
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
-                            @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "product-dropdown", @class = "select-box", @placeholder = "Select the Product you provided" })
+                            @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "product-dropdown", @class = "form-control", @placeholder = "Select the Product you provided" })
                         </div>
                     </div>
                 </div>
@@ -71,11 +70,12 @@
                         </div>
                     </div>
                 </div>
+                <br />
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center">
-                            <input type="submit" value="Submit" />
-                            <button type="button" onclick="confirmBack()">Cancel</button>
+                        <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center;">
+                            <button class="btn btn-primary"   type="submit" value="Submit">Submit</button>
+                            <button class="btn btn-default"  onclick="confirmBack()">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             @Html.LabelFor(m => m.Producer, new { @class = "control-label transaction-label" })
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
-                            @Html.DropDownListFor(m => m.Producer, new SelectList(Model.Producers), "Select...", new { @id = "producer-dropdown", @class = "select-box"})
+                            @Html.DropDownListFor(m => m.Producer, new SelectList(Model.Producers), "Select ...", new { @id = "producer-dropdown", @class = "form-control"})
                             @Html.ValidationMessageFor(m => m.Producer)
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                             @Html.LabelFor(m => m.ProductProvided, new { @class = "control-label transaction-label" })
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12">
-                            @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "product-dropdown", @class = "select-box", @placeholder = "Select the Product you provided" })
+                            @Html.DropDownListFor(m => m.ProductProvided, new SelectList(Model.Products), new { @id = "product-dropdown", @class = "form-control", @placeholder = "Select the Product you provided" })
                         </div>
                     </div>
                 </div>
@@ -135,11 +135,12 @@
                         </div>
                     </div>
                 </div>
+                <br />
                 <div class="row">
                     <div class="form-group">
                         <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center;">
-                            <input type="submit" value="Submit" />
-                            <button type="button" onclick="confirmBack()">Cancel</button>
+                            <button class="btn btn-primary" type="submit" value="Submit">Submit</button>
+                            <button class="btn btn-default" onclick="confirmBack()">Cancel</button>
                         </div>
                     </div>
                 </div>
