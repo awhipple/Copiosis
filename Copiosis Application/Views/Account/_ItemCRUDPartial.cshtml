@@ -11,7 +11,7 @@
     }
 
 
-    @using (Html.BeginForm(new { @class = "form-horizontal"} ))
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
         @*Handle other error cases that are caught after the POST request*@
