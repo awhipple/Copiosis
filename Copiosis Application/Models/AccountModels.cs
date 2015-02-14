@@ -206,6 +206,7 @@ namespace Copiosis_Application.Models
     {
         /*GET*/
         public bool IsProducer { get; set; }
+        [Display(Prompt = "Please select a consumer")]
         public List<string> Consumers { get; set; }
         public List<string> Producers { get; set; }
         public List<string> Products { get; set; }
@@ -213,8 +214,10 @@ namespace Copiosis_Application.Models
         /*POST*/
 
         [Display(Name = "Consumer:")]
+        [Required(ErrorMessage = "Please select the consumer")]
         public string Consumer { get; set; }
 
+        [Required(ErrorMessage = "Please select the producer")]
         [Display(Name = "Producer:")]
         public string Producer { get; set; }
 
