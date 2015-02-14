@@ -9,8 +9,8 @@
                 <h4 class="text-center">Create a Transaction</h4>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" style="margin-top:5px">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="You are the producer" onclick="location.href='@Url.Action("Create", "Account", new { type = "producer" })'">I Benefited Someone</button>
-                        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="You are the consumer" onclick="location.href='@Url.Action("Create", "Account", new { type = "consumer" })'">I Received Benefit</button>
+                        <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="You are the producer" onclick="location.href='@Url.Action("Create", "Account", new { type = "producer" })'">I Benefited Someone</button>
+                        <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" data-original-title="You are the consumer" onclick="location.href='@Url.Action("Create", "Account", new { type = "consumer" })'">I Received Benefit</button>
                     </div>
                 </div>
             </div>
@@ -218,5 +218,7 @@
 </div>
 <script>
     $('#overviewNav').addClass('active');
-    $('#newTransactionBanner').delay(3000).fadeOut()
+    $(function () {
+        $('button').tooltip({ placement: 'bottom' });
+    });
 </script>

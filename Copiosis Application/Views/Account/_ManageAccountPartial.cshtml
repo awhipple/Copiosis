@@ -37,12 +37,11 @@
             @*email*@
             <div class="row">
                 <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.emailAddress).ToString()) ? "has-error" : null)">
-                    <div class="col-lg-3 col-md-4 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This is your e-mail address. Type a new e-mail address to change it"></span>
+                    <div class="col-lg-4 col-md-4 col-xs-12">
                         @Html.LabelFor(m => m.emailAddress, new { @class = "control-label manage-account-label" })
                     </div>
-                    <div class="col-lg-9 col-md-8 col-xs-12">
-                        @Html.TextBoxFor(m => m.emailAddress, new { @class = "form-control", @id = "e-mail", @type = "email", @placeholder = Model.currentEmail })
+                    <div class="col-lg-8 col-md-8 col-xs-12">
+                        @Html.TextBoxFor(m => m.emailAddress, new { @class = "form-control", @id = "e-mail", @type = "email", @placeholder = Model.currentEmail, @data_toggle = "tooltip", @data_original_title = "This is your e-mail address. Type a new e-mail address to change it" })
                         @Html.ValidationMessageFor(m => m.emailAddress)
                     </div>
                 </div>
@@ -50,12 +49,11 @@
             @*first name*@
             <div class="row">
                 <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.firstName).ToString()) ? "has-error" : null)">
-                    <div class="col-lg-3 col-md-4 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This is your first name. Type a new a first name to change it"></span>
+                    <div class="col-lg-4 col-md-4 col-xs-12">
                         @Html.LabelFor(m => m.firstName, new { @class = "control-label manage-account-label" })
                     </div>
-                    <div class="col-lg-9 col-md-8 col-xs-12">
-                        @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", @placeholder = Model.currentFirstName })
+                    <div class="col-lg-8 col-md-8 col-xs-12">
+                        @Html.TextBoxFor(m => m.firstName, new { @class = "form-control", @placeholder = Model.currentFirstName, @data_toggle = "tooltip", @data_original_title = "This is your first name. Type a new a first name to change it" })
                         @Html.ValidationMessageFor(m => m.firstName)
                     </div>
                 </div>
@@ -63,12 +61,11 @@
             @*last name*@
             <div class="row">
                 <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.lastName).ToString()) ? "has-error" : null)">
-                    <div class="col-lg-3 col-md-4 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="This is your last name. Type a new last name to change it"></span>
+                    <div class="col-lg-4 col-md-4 col-xs-12">
                         @Html.LabelFor(m => m.lastName, new { @class = "control-label manage-account-label" })
                     </div>
-                    <div class="col-lg-9 col-md-8 col-xs-12">
-                        @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = Model.currentLastName })
+                    <div class="col-lg-8 col-md-8 col-xs-12">
+                        @Html.TextBoxFor(m => m.lastName, new { @class = "form-control", @placeholder = Model.currentLastName, @data_toggle = "tooltip", @data_original_title = "This is your last name. Type a new last name to change it" })
                         @Html.ValidationMessageFor(m => m.lastName)
                     </div>
                 </div>
@@ -76,12 +73,11 @@
             @*current password*@
             <div class="row">
                 <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.currentPassword).ToString()) ? "has-error" : null)">
-                    <div class="col-lg-3 col-md-4 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Your current password is requried to save the changes you make"></span>
+                    <div class="col-lg-4 col-md-4 col-xs-12">
                         @Html.LabelFor(m => m.currentPassword, new { @class = "control-label manage-account-label" })
                     </div>
-                    <div class="col-lg-9 col-md-8 col-xs-12">
-                        @Html.PasswordFor(m => m.currentPassword, new { @class = "form-control" })
+                    <div class="col-lg-8 col-md-8 col-xs-12">
+                        @Html.PasswordFor(m => m.currentPassword, new { @class = "form-control", @data_toggle = "tooltip", @data_original_title = "Your current password is requried to save the changes you make" })
                         @Html.ValidationMessageFor(m => m.currentPassword)
                     </div>
                 </div>
@@ -89,12 +85,11 @@
             @*new password*@
             <div class="row">
                 <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.newPassword).ToString()) ? "has-error" : null)">
-                    <div class="col-lg-3 col-md-4 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Type a new password to change your current one"></span>
+                    <div class="col-lg-4 col-md-4 col-xs-12">
                         @Html.LabelFor(m => m.newPassword, new { @class = "control-label manage-account-label" })
                     </div>
-                    <div class="col-lg-9 col-md-8 col-xs-12">
-                        @Html.PasswordFor(m => m.newPassword, new { @class = "form-control", @id = "new-pw" })
+                    <div class="col-lg-8 col-md-8 col-xs-12">
+                        @Html.PasswordFor(m => m.newPassword, new { @class = "form-control", @id = "new-pw", @data_toggle = "tooltip", @data_original_title = "Type a new password to change your current one" })
                         @Html.ValidationMessageFor(m => m.newPassword)
                     </div>
                 </div>
@@ -102,12 +97,11 @@
             @*confirm password*@
             <div class="row">
                 <div class="form-group @(Model.errorList.Keys.Contains(Html.IdFor(m => m.confirmPassword).ToString()) ? "has-error" : null)">
-                    <div class="col-lg-3 col-md-4 col-xs-12">
-                        <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" id="confirm-info" title="Re-type your new password to confirm it is correct"></span>
+                    <div class="col-lg-4 col-md-4 col-xs-12">
                         @Html.LabelFor(m => m.confirmPassword, new { @class = "control-label manage-account-label", @id = "confirm-label" })
                     </div>
-                    <div class="col-lg-9 col-md-8 col-xs-12">
-                        @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @id = "confirm-pw" })
+                    <div class="col-lg-8 col-md-8 col-xs-12">
+                        @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @id = "confirm-pw", @data_toggle = "tooltip", @data_original_title = "Re-type your new password to confirm it is correct" })
                         @Html.ValidationMessageFor(m => m.confirmPassword)
                     </div>
                 </div>
@@ -125,3 +119,8 @@
         }
     </div>
 </div>
+<script>
+    $(function () {
+        $('input').tooltip({ placement: 'bottom' });
+    });
+</script>
