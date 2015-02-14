@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CopiosisDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CopiosisDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="itemClass">
           <Key>
             <PropertyRef Name="classID" />
@@ -46,7 +46,7 @@
           </Key>
           <Property Name="productID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="155" Nullable="false" />
-          <Property Name="description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="varchar(max)" Nullable="false" />
           <Property Name="gateway" Type="int" Nullable="false" />
           <Property Name="itemClass" Type="int" Nullable="false" />
           <Property Name="createdDate" Type="datetime" Nullable="false" />
@@ -118,7 +118,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__product__ownerID__34C8D9D1">
+        <Association Name="FK__product__ownerID__5AEE82B9">
           <End Role="user" Type="Self.user" Multiplicity="1" />
           <End Role="product" Type="Self.product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -226,7 +226,7 @@
             <End Role="itemClass" EntitySet="itemClass" />
             <End Role="product" EntitySet="product" />
           </AssociationSet>
-          <AssociationSet Name="FK__product__ownerID__34C8D9D1" Association="Self.FK__product__ownerID__34C8D9D1">
+          <AssociationSet Name="FK__product__ownerID__5AEE82B9" Association="Self.FK__product__ownerID__5AEE82B9">
             <End Role="user" EntitySet="user" />
             <End Role="product" EntitySet="product" />
           </AssociationSet>
@@ -306,7 +306,7 @@
           </Key>
           <Property Name="productID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="155" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="gateway" Type="Int32" Nullable="false" />
           <Property Name="itemClass" Type="Int32" Nullable="false" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
