@@ -35,7 +35,7 @@
                                 <tr id="@item.value.productGuid">
                                     <td>@item.value.productName</td>
                                     <td>@item.value.productOwner</td>
-                                    <td>@Html.DropDownListFor(model => model.productsDefault[item.i], new SelectList(Model.ItemClassTemplates, "Value", "Text", item.value.className), new { @id = @item.value.productGuid, @class = "select-box", @placeholder = "Class" })</td>
+                                    <td>@Html.DropDownListFor(model => model.productsDefault[item.i], new SelectList(Model.ItemClassTemplates, "Value", "Text", item.value.className), new { @id = @item.value.productGuid, @class = "select", @placeholder = "Class" })</td>
                                         @*@Html.DropDownListFor(model => model.productsDefault[item.i], Model.ItemClassTemplates, new { @id = @item.value.productGuid, @class = "select-box", @placeholder = "Class" })*@
                                 </tr>
                             }

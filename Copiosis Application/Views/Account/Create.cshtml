@@ -123,15 +123,15 @@
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12" id="satisfaction-rating-radios">
                             @Html.RadioButtonFor(m => m.SatisfactionRating, -2, new { @name = "SR", @id="very-unsatisfied"})
-                            <label for="very-unsatisfied" style="margin-left:40px"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
+                            <label for="very-unsatisfied" style="margin-left:40px"><img src="~/Content/cry.ico" height="32" width="32" data-toggle="tooltip" data-original-title="Very Unsatisfied" /></label>
                             @Html.RadioButtonFor(m => m.SatisfactionRating, -1, new { @name ="SR", @id ="unsatisfied" })
-                            <label for="unsatisfied"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
+                            <label for="unsatisfied"><img src="~/Content/sad.ico" height="32" width="32" data-toggle="tooltip" data-original-title="Unsatisfied"/></label>
                             @Html.RadioButtonFor(m => m.SatisfactionRating, 0, new { @name = "SR", @id = "neutral" })
-                            <label for="neutral"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32"/></label>
+                            <label for="neutral"><img src="~/Content/smiley_neutral.ico" height="32" width="32" data-toggle="tooltip" data-original-title="Neutral"/></label>
                             @Html.RadioButtonFor(m => m.SatisfactionRating, 1, new { @name = "SR", @id = "satisfied" })
-                            <label for="satisfied"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
+                            <label for="satisfied"><img src="~/Content/smile_1.ico" height="32" width="32" data-toggle="tooltip" data-original-title="Satisfied"/></label>
                             @Html.RadioButtonFor(m => m.SatisfactionRating, 2, new { @name = "SR", @id = "very-satisfied" })
-                            <label for="very-satisfied"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>    
+                            <label for="very-satisfied"><img src="~/Content/happy.ico" height="32" width="32" data-toggle="tooltip" data-original-title="Very Satisfied" /></label>    
                         </div>
                     </div>
                 </div>
@@ -191,6 +191,9 @@
 
     @*This is to handle the satisfaction rating*@
     <script type="text/javascript">
+        $(function () {
+            $('img').tooltip({ placement: 'bottom' });
+        });
         $('#satisfaction-rating-radios input:radio').addClass('input_hidden');
         $('#satisfaction-rating-radios label').click(function () {
             $(this).addClass('selected').siblings().removeClass('selected');
