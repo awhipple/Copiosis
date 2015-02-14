@@ -31,84 +31,45 @@ else if (WebSecurity.CurrentUserId == Model.receiverID && Model.status.CompareTo
         <p>Satisfaction Rating:</p>
     </div>
     <div class="col-lg-9 col-md-9 col-xs-12" id="satisfaction-rating-radios">
+        @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
+        <label for="very-unsatisfied" id="veryUnsatisfiedLabel"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Very Unsatisfied" /></label>
+        @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
+        <label for="unsatisfied" id="unsatisfiedLabel"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Unsatisfied" /></label>
+        @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
+        <label for="neutral" id="neutralLabel"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" data-toggle="tooltip" data-original-title="Neutral" /></label>
+        @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
+        <label for="satisfied" id="satisfiedLabel"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Satisfied" /></label>
+        @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
+        <label for="very-satisfied" id="verySatisfiedLabel"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Very Satisfied" /></label>
         @if (Model.satisfaction == -2)
         {
-            @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-            <label for="very-unsatisfied" id="veryUnsatisfiedLabel" class="selected"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-            <label for="unsatisfied" id="unsatisfiedLabel"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-            <label for="neutral" id="neutralLabel"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-            <label for="satisfied" id="satisfiedLabel"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-            <label for="very-satisfied" id="verySatisfiedLabel"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+            <script>
+                $('#veryUnsatisfiedLabel').addClass('selected');
+            </script>
         }
-        @if (Model.satisfaction == -1)
+        else if (Model.satisfaction == -1)
         {
-            @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-            <label for="very-unsatisfied" id="veryUnsatisfiedLabel"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-            <label for="unsatisfied" class="selected" id="unsatisfiedLabel"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-            <label for="neutral" id="neutralLabel"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-            <label for="satisfied" id="satisfiedLabel"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-            <label for="very-satisfied" id="verySatisfiedLabel"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+            <script>
+                $('#unsatisfiedLabel').addClass('selected');
+            </script>
         }
-        @if (Model.satisfaction == 0)
+        else if (Model.satisfaction == 0)
         {
-            @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-            <label for="very-unsatisfied" id="veryUnsatisfiedLabel"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-            <label for="unsatisfied" id="unsatisfiedLabel"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-            <label for="neutral" id="neutralLabel" class="selected"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-            <label for="satisfied" id="satisfiedLabel"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-            <label for="very-satisfied" id="verySatisfiedLabel"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+            <script>
+                $('#neutralLabel').addClass('selected');
+            </script>
         }
-        @if (Model.satisfaction == 1)
+        else if (Model.satisfaction == 1)
         {
-            @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-            <label for="very-unsatisfied" id="veryUnsatisfiedLabel"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-            <label for="unsatisfied" id="unsatisfiedLabel"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-            <label for="neutral" id="neutralLabel"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-            <label for="satisfied" class="selected" id="satisfiedLabel"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-            <label for="very-satisfied" id="verySatisfiedLabel"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+            <script>
+                $('#satisfiedLabel').addClass('selected');
+            </script>
         }
-        @if (Model.satisfaction == 2)
+        else if (Model.satisfaction == 2)
         {
-            @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-            <label for="very-unsatisfied" id="veryUnsatisfiedLabel"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-            <label for="unsatisfied" id="unsatisfiedLabel"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-            <label for="neutral" id="neutralLabel"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-            <label for="satisfied" id="satisfiedLabel"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-            <label for="very-satisfied" class="selected" id="verySatisfiedLabel"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
-        }
-
-        @if (Model.satisfaction == null)
-        {
-            @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
-            <label for="very-unsatisfied" id="veryUnsatisfiedLabel"><img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, -1, new { @name = "SR", @id = "unsatisfied" })
-            <label for="unsatisfied" id="unsatisfiedLabel"><img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 0, new { @name = "SR", @id = "neutral" })
-            <label for="neutral" id="neutralLabel"><img src="~/Content/smiley_neutral.ico" alt="neutral" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 1, new { @name = "SR", @id = "satisfied" })
-            <label for="satisfied" id="satisfiedLabel"><img src="~/Content/smile_1.ico" alt="satisfied" height="32" width="32" /></label>
-            @Html.RadioButtonFor(m => m.satisfaction, 2, new { @name = "SR", @id = "very-satisfied" })
-            <label for="very-satisfied" id="verySatisfiedLabel"><img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" /></label>
+            <script>
+                $('#verySatisfiedLabel').addClass('selected');
+            </script>
         }
     </div>
 }
@@ -116,3 +77,9 @@ else if (WebSecurity.CurrentUserId == Model.providerID && Model.status.CompareTo
 {
     <p>Satisfaction Rating: <span style="font-weight:bold">Pending Transaction Confirmation or Rejection</span></p>
 }
+
+<script>
+    $(function () {
+    $('img').tooltip({ placement: 'bottom' });
+    });
+</script>
