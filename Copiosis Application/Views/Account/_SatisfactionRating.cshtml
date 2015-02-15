@@ -2,33 +2,33 @@
 @if (Model.status.CompareTo("PENDING") != 0 && Model.status.CompareTo("Rejected") != 0)
 {
     <p>
-        Satisfaction Rating =
+        <strong>Satisfaction Rating:</strong>
         @if (Model.satisfaction == -2)
         {
-            <img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" />
+            <img src="~/Content/cry.ico" alt="Very Unsatisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Very Unsatisfied" />
         }
         @if (Model.satisfaction == -1)
         {
-            <img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" />
+            <img src="~/Content/sad.ico" alt="Unsatisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Unsatisfied" />
         }
         @if (Model.satisfaction == 0)
         {
-            <img src="~/Content/smiley_neutral.ico" alt="Neutral" height="32" width="32" />
+            <img src="~/Content/smiley_neutral.ico" alt="Neutral" height="32" width="32" data-toggle="tooltip" data-original-title="Neutral" />
         }
         @if (Model.satisfaction == 1)
         {
-            <img src="~/Content/smile_1.ico" alt="Satisfied" height="32" width="32" />
+            <img src="~/Content/smile_1.ico" alt="Satisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Satisfied" />
         }
         @if (Model.satisfaction == 2)
         {
-            <img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" />
+            <img src="~/Content/happy.ico" alt="Very Satisfied" height="32" width="32" data-toggle="tooltip" data-original-title="Very Satisfied" />
         }
     </p>
 }
 else if (WebSecurity.CurrentUserId == Model.receiverID && Model.status.CompareTo("Rejected") != 0)
 {
     <div class="col-lg-3 col-md-3 col-xs-12" style="margin-top:24px; padding-left:0">
-        <p>Satisfaction Rating:</p>
+        <p><strong>Satisfaction Rating:</strong></p>
     </div>
     <div class="col-lg-9 col-md-9 col-xs-12" id="satisfaction-rating-radios">
         @Html.RadioButtonFor(m => m.satisfaction, -2, new { @name = "SR", @id = "very-unsatisfied" })
@@ -75,7 +75,7 @@ else if (WebSecurity.CurrentUserId == Model.receiverID && Model.status.CompareTo
 }
 else if (WebSecurity.CurrentUserId == Model.providerID && Model.status.CompareTo("Rejected") != 0)
 {
-    <p>Satisfaction Rating: <span style="font-weight:bold">Pending Transaction Confirmation or Rejection</span></p>
+    <p><strong>Satisfaction Rating: </strong><span style="font-weight:bold; color:darkorange;">Pending your Confirmation or Rejection</span></p>
 }
 
 <script>

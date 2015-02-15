@@ -10,9 +10,18 @@
         {
             @Html.AntiForgeryToken()
             @Html.Partial("ValidationSummary", ViewData.ModelState)
-
-            <p style="color:#33CC33; font-weight:bold" id="updateSuccess" class="hidden">Update Success!</p>
-
+            @*Success banner on update success*@
+            <div id="updateSuccess" class="panel panel-success hidden" data-valmsg-summary="true" style="display: none;">
+                <div class="panel-heading">
+                    <center><strong>Your transaction was successfully updated</strong></center>
+                </div>
+             </div>
+            @*Failure banner on failed update*@
+            <div id="updateFail" class="validation-summary-errors panel panel-danger hidden" data-valmsg-summary="true">
+                <div class="panel-heading">
+                    <center><strong>An error occurred. Could not update your transaction at this time</strong></center>
+                </div>
+            </div>
         if (Model.providerID == WebSecurity.CurrentUserId || Model.receiverID == WebSecurity.CurrentUserId)
         {
         <div>
@@ -65,12 +74,17 @@
             //Send the controller the information it needs
             data: { participant: userType, notes: userNotes, tranId: transGuid, newSatisfaction: selectedSatisfaction},
             success: function (result) {
-                $("#updateSuccess").removeClass('hidden')
+                $("#updateSuccess").removeClass('hidden');
+                $("#updateSuccess").removeAttr('style');
             },
             error: function (result) {
                 console.log("Error updating transaction: " + transGuid);
+                $('#updateFail').removeClass('hidden');
+                $('#updateFail').removeAttr('style');
             }
         });
+        $('#updateSuccess').delay(3000).fadeOut();
+        $('#updateFail').delay(3000).fadeOut();
     })
     @*This is to handle the satisfaction rating*@
     $('#satisfaction-rating-radios input:radio').addClass('input_hidden');

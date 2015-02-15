@@ -1,11 +1,11 @@
 ﻿@model Copiosis_Application.Models.TransactionModel
 @if (Model.providerID == WebSecurity.CurrentUserId && Model.status.CompareTo("PENDING") == 0)
 {
-    <p>Producer Notes -- <span id="add-provider-notes" class="clickable">Add Notes</span></p>
+    <p><strong>Producer Notes &mdash;</strong> <span id="add-provider-notes" class="clickable">Add Notes</span></p>
 }
 else if (Model.providerNotes != null)
 {
-    <p>Producer Notes</p>
+    <p><strong>Producer Notes</strong></p>
 }
 @if (Model.status.CompareTo("PENDING") == 0)
 {

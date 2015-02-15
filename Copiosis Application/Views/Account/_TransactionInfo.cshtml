@@ -1,21 +1,21 @@
 ﻿@model Copiosis_Application.Models.TransactionModel
 <div class="row">
     <div class="col-lg-6 col-md-6 col-xs-12">
-        <p>Producer: @Model.providerFirstName @Model.providerLastName</p>
-        <p>Consumer: @Model.receiverFirstName @Model.receiverLastName</p>
-        <p>Product/Service: @Model.productName</p>
+        <p><strong>Producer:</strong> @Model.providerFirstName @Model.providerLastName</p>
+        <p><strong>Consumer:</strong> @Model.receiverFirstName @Model.receiverLastName</p>
+        <p><strong>Product/Service:</strong> @Model.productName</p>
     </div>
     <div class="col-lg-6 col-md-6 col-xs-12">
-        <p>Date Created: @Model.dateAdded</p>
+        <p><strong>Date Created:</strong> @Model.dateAdded</p>
         @if (Model.dateClosed != DateTime.MinValue)
         {
-            <p>Date Complete: @Model.dateClosed</p>
+            <p><strong>Date Complete:</strong> @Model.dateClosed</p>
         }
-        <p>Product Gateway: @Model.productGateway</p>
+        <p><strong>Product Gateway:</strong> @Model.productGateway</p>
         @if (Model.status.CompareTo("PENDING") != 0)
         {
             <p>
-                Transaction Status:
+                <strong>Transaction Status:</strong>
                 @if (Model.status.CompareTo("Rejected") == 0)
                 {
                     <span style="font-weight:bold; color:red">@Model.status</span>
