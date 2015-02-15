@@ -51,11 +51,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="ItemClasses must be given a name"></span>
                     @Html.LabelFor(m => m.name, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Name", @id = "name" })
+                    @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Name", @id = "name" , @data_toggle = "tooltip", @data_original_title = "Item classes require a unique name"})
                     @Html.ValidationMessageFor(m => m.name)
                 </div>
             </div>
@@ -64,11 +63,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing the suggestedGateway"></span>
                     @Html.LabelFor(m => m.suggestedGateway, new { @class = "control-label add-item-label", })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.suggestedGateway, new { @class = "form-control", @placeholder = "SuggestedGateway", @id = "suggestedGateway" })
+                    @Html.TextBoxFor(m => m.suggestedGateway, new { @class = "form-control", @placeholder = "SuggestedGateway", @id = "suggestedGateway", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Suggested Gateway" })
                     @Html.ValidationMessageFor(m => m.suggestedGateway)
                 </div>
             </div>
@@ -77,11 +75,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing Cpdb"></span>
                     @Html.LabelFor(m => m.cPdb, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.cPdb, new { @class = "form-control", @placeholder = "Cpdb", @id = "cPbd" })
+                    @Html.TextBoxFor(m => m.cPdb, new { @class = "form-control", @placeholder = "Cpdb", @id = "cPbd", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable Cpdb" })
                     @Html.ValidationMessageFor(m => m.cPdb)
                 </div>
             </div>
@@ -90,11 +87,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing A"></span>
                     @Html.LabelFor(m => m.a, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.a, new { @class = "form-control", @placeholder = "A", @id = "a" })
+                    @Html.TextBoxFor(m => m.a, new { @class = "form-control", @placeholder = "A", @id = "a", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Resource abundance" })
                     @Html.ValidationMessageFor(m => m.a)
                 </div>
             </div>
@@ -103,11 +99,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representing Amax"></span>
                     @Html.LabelFor(m => m.aMax, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.aMax, new { @class = "form-control", @placeholder = "Amax", @id = "aMax" })
+                    @Html.TextBoxFor(m => m.aMax, new { @class = "form-control", @placeholder = "Amax", @id = "aMax", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable Max resources" })
                     @Html.ValidationMessageFor(m => m.aMax)
                 </div>
             </div>
@@ -116,11 +111,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representing D"></span>
                     @Html.LabelFor(m => m.d, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.d, new { @class = "form-control", @placeholder = "D", @id = "d" })
+                    @Html.TextBoxFor(m => m.d, new { @class = "form-control", @placeholder = "D", @id = "d", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Consumer demand" })
                     @Html.ValidationMessageFor(m => m.d)
                 </div>
             </div>
@@ -129,11 +123,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representing Aprime"></span>
                     @Html.LabelFor(m => m.aPrime, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.aPrime, new { @class = "form-control", @placeholder = "Aprime", @id = "aPrime" })
+                    @Html.TextBoxFor(m => m.aPrime, new { @class = "form-control", @placeholder = "Aprime", @id = "aPrime", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Producer population" })
                     @Html.ValidationMessageFor(m => m.aPrime)
                 </div>
             </div>
@@ -142,11 +135,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing Ccb"></span>
                     @Html.LabelFor(m => m.cCb, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.cCb, new { @class = "form-control", @placeholder = "Ccb", @id = "cCb" })
+                    @Html.TextBoxFor(m => m.cCb, new { @class = "form-control", @placeholder = "Ccb", @id = "cCb", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable Ccb" })
                     @Html.ValidationMessageFor(m => m.cCb)
                 </div>
             </div>
@@ -155,11 +147,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing M1"></span>
                     @Html.LabelFor(m => m.m1, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.m1, new { @class = "form-control", @placeholder = "M1", @id = "m1" })
+                    @Html.TextBoxFor(m => m.m1, new { @class = "form-control", @placeholder = "M1", @id = "m1", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable M1" })
                     @Html.ValidationMessageFor(m => m.m1)
                 </div>
             </div>
@@ -168,11 +159,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representing P0"></span>
                     @Html.LabelFor(m => m.pO, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.pO, new { @class = "form-control", @placeholder = "PO", @id = "pO" })
+                    @Html.TextBoxFor(m => m.pO, new { @class = "form-control", @placeholder = "PO", @id = "pO", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Consumer objective benefit" })
                     @Html.ValidationMessageFor(m => m.pO)
                 </div>
             </div>
@@ -181,11 +171,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing M2"></span>
                     @Html.LabelFor(m => m.m2, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.m2, new { @class = "form-control", @placeholder = "M2", @id = "m2" })
+                    @Html.TextBoxFor(m => m.m2, new { @class = "form-control", @placeholder = "M2", @id = "m2", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable M2" })
                     @Html.ValidationMessageFor(m => m.m2)
                 </div>
             </div>
@@ -194,11 +183,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing Ceb"></span>
                     @Html.LabelFor(m => m.cEb, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.cEb, new { @class = "form-control", @placeholder = "Ceb", @id = "cEb" })
+                    @Html.TextBoxFor(m => m.cEb, new { @class = "form-control", @placeholder = "Ceb", @id = "cEb", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable Ceb" })
                     @Html.ValidationMessageFor(m => m.cEb)
                 </div>
             </div>
@@ -207,24 +195,22 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representing S"></span>
                     @Html.LabelFor(m => m.s, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.s, new { @class = "form-control", @placeholder = "S", @id = "s" })
+                    @Html.TextBoxFor(m => m.s, new { @class = "form-control", @placeholder = "S", @id = "s", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Social benefit" })
                     @Html.ValidationMessageFor(m => m.s)
-                </div>
+              </div>
             </div>
         </div>
 
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing M3"></span>
                     @Html.LabelFor(m => m.m3, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.m3, new { @class = "form-control", @placeholder = "M3", @id = "m3" })
+                    @Html.TextBoxFor(m => m.m3, new { @class = "form-control", @placeholder = "M3", @id = "m3", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable M3" })
                     @Html.ValidationMessageFor(m => m.m3)
                 </div>
             </div>
@@ -233,11 +219,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representing Se"></span>
                     @Html.LabelFor(m => m.sE, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.sE, new { @class = "form-control", @placeholder = "Se", @id = "sE" })
+                    @Html.TextBoxFor(m => m.sE, new { @class = "form-control", @placeholder = "Se", @id = "sE", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Environmental impact" })
                     @Html.ValidationMessageFor(m => m.sE)
                 </div>
             </div>
@@ -246,11 +231,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing M4"></span>
                     @Html.LabelFor(m => m.m4, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.m4, new { @class = "form-control", @placeholder = "M4", @id = "m4" })
+                    @Html.TextBoxFor(m => m.m4, new { @class = "form-control", @placeholder = "M4", @id = "m4", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable M4" })
                     @Html.ValidationMessageFor(m => m.m4)
                 </div>
             </div>
@@ -259,11 +243,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a integer representing Sh"></span>
                     @Html.LabelFor(m => m.sH, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.sH, new { @class = "form-control", @placeholder = "Sh", @id = "sH" })
+                    @Html.TextBoxFor(m => m.sH, new { @class = "form-control", @placeholder = "Sh", @id = "sH", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the Human impact" })
                     @Html.ValidationMessageFor(m => m.sH)
                 </div>
             </div>
@@ -272,11 +255,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-lg-8 col-md-8 col-xs-12">
-                    <span class="custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign" title="Enter a float representing M5"></span>
                     @Html.LabelFor(m => m.m5, new { @class = "control-label add-item-label" })
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
-                    @Html.TextBoxFor(m => m.m5, new { @class = "form-control", @placeholder = "M5", @id = "m5" })
+                    @Html.TextBoxFor(m => m.m5, new { @class = "form-control", @placeholder = "M5", @id = "m5", @data_toggle = "tooltip", @data_original_title = "Enter a number representing the variable M5" })
                     @Html.ValidationMessageFor(m => m.m5)
                 </div>
             </div>
@@ -293,3 +275,9 @@
         </div>
     }
 </div>
+
+<script>
+    $(function () {
+        $('input').tooltip({ placement: 'bottom' });
+    });
+</script>
