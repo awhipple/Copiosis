@@ -47,11 +47,11 @@
                     @Html.LabelFor(m => m.ItemType, new { @class = "col-sm-3 control-label a-label" })
                     <div class="col-sm-9">
                         <div class="radio-inline">
-                            @Html.RadioButtonFor(m => m.ItemType, "Product", new { @id = "product", @class = "radio-button input-group-addon" })
+                            @Html.RadioButtonFor(m => m.ItemType, "Product", new { @id = "product", @class = "in-line radio-button " })
                             @Html.Label("product")
                         </div>
                         <div class="radio-inline">
-                            @Html.RadioButtonFor(m => m.ItemType, "Service", new { @id = "service", @class="radio-button input-group-addon" })@*removed class"in-line"*@
+                            @Html.RadioButtonFor(m => m.ItemType, "Service", new { @id = "service", @class="in-line radio-button " })@*removed class"in-line"*@
                             @Html.Label("service")                           
                         </div>
                         <div>@Html.ValidationMessageFor(m => m.ItemType)</div>
