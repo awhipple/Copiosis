@@ -34,16 +34,16 @@
                     </div>
                 </div>
             }
-            <h3>Transactions Awaiting Your Approval</h3>
+            <h3 style="font-weight:600">Transactions Awaiting Your Approval</h3>
 
             @if (Model.pendingUser.Count() < 1) { 
-                <h4>No Pending Personal Transactions</h4>
+                <center><h4>No Pending Pesonal Transaction</h4></center>
             }
             else { 
-                <div class="table-responsive">
-                    <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="table table-hover table-striped">
+                <div class="table table-condensed table-hover table-striped" style="padding-top:3px;">
+                    <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc">
                         <thead>
-                            <tr>
+                            <tr style="font-size:12px;">
                                 <th data-sortable="true">Service/Item Name</th>
                                 <th data-sortable="true">Gateway</th>
                                 <th data-sortable="true">Date Created</th>
@@ -79,18 +79,17 @@
     </div>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <h3>Transactions Awaiting Other Party's Approval</h3>
+                <h3 style="font-weight:600">Transactions Awaiting Other Party's Approval</h3>
                 @if (Model.pendingOther.Count() < 1)
                 {
-                    <h4>No Pending Requested Transactions</h4>
+                    <center><h4>No Pending Requested Transactions</h4></center>
                 }
                 else
                 {
-                    <div class="table-responsive">
-                                             
-                        <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="clickable table tablesorter table-hover table-striped">
+                    <div class="table table-condensed" style="padding-top:3px;">              
+                        <table data-link="row" data-toggle="table" data-sort-name="name" data-sort-order="desc" class="tablesorter table-hover table-striped">
                             <thead class="tablesorter-header">
-                                <tr class="tablesorter-headerRow">
+                                <tr class="tablesorter-headerRow" style="font-size:12px;">
                                     <th data-sortable="true">Service/Item Name</th>
                                     <th data-sortable="true">Gateway</th>
                                     <th data-sortable="true">Date Created</th>
@@ -116,20 +115,20 @@
         </div>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <h3>Completed Transactions</h3>
+            <h3 style="font-weight:600">Completed Transactions</h3>
             @if (Model.completed.Count() < 1)
             {
-                <h4>No Recently Completed Transactions</h4>
+                <center><h4>No Recently Completed Transactions</h4></center>
             }
             else { 
-                <div>
+                <div class="table table-condensed" style="padding-top:3px;">
                     <div id="result">
                         
                     </div>
                           
-                    <table id="events-table" data-toggle="table" data-pagination="true" class="table table-striped table-hover">
+                    <table id="events-table" data-toggle="table" data-pagination="true" class="tablesorter table-hover table-striped">
                         <thead>
-                            <tr>
+                            <tr style="font-size:12px">
                                 <th data-sortable="true">Service/Item Name</th>
                                 <!-- <th>Date Created</th> -->
                                 <th data-sortable="true">Date Completed</th>
@@ -221,4 +220,5 @@
     $(function () {
         $('button').tooltip({ placement: 'bottom' });
     });
+    $('#newTransactionBanner').delay(3000).fadeOut();
 </script>

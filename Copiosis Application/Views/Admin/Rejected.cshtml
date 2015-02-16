@@ -16,17 +16,17 @@
     </div>
     <div class="row">
         <div class="col2-sm-12 col-md-12 col-lg-12">
-            <h3>Click on a rejected transaction to view it:</h3>
+            <h3 style="font-weight:600;">Click on a rejected transaction to view it:</h3>
             @if (Model.rejected.Count() < 1)
             {
-                <h4>No Rejected Transactions</h4>
+                <center><h4>No Rejected Transactions</h4></center>
             }
             else
             {
-                <div class="table-responsive">
+                <div class="table table-condensed" style="padding-top:3px;">
                     <table id="events-table" data-toggle="table" data-pagination="true" data-page-size="25" class="table table-striped table-hover">
                             <thead>
-                                <tr>
+                                <tr style="font-size:12px;">
                                     <th>Service/Item Name</th>
                                     <th>Item Gateway</th>
                                     <th>Producer</th>

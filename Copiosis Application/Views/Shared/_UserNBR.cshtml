@@ -2,7 +2,7 @@
 {
     <div class="pull-right">
         <div class="btn-group">
-            <a class="btn btn-primary dropdown-toggle"  data-toggle="dropdown" href="#" style="color: white">
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" style="color: white">
                 @User.Identity.Name
                 <span class="caret"></span>
             </a>
@@ -19,8 +19,8 @@
                     @Html.AntiForgeryToken()
                 }
             </ul>
-        </div> 
-        <span id="userNBR" class="inline-override"> Your Current NBR is:<span id="nbr-number"></span></span>
+        </div>
+        <span id="userNBR" class="inline-override" data-toggle="tooltip" data-original-title="Net Benefit Reward (NBR) is your spending power within Copiosis"> Your Current NBR is:<span id="nbr-number"></span></span>
     </div>
     <script>
         $(function () {
@@ -31,10 +31,9 @@
                     /* If the result.success == true then the get worked and then you grab result.nbr to get
                     * the current users NBR. You can take a look at the UsersNBR in AccountController to see what I
                     * did. It should probably have some error checking as right now it will just crash and burn if something goes wrong */
-                    if(result)
+                    if (result)
                         $("#userNBR span").text(result.nbr);
-                    else
-                    {
+                    else {
                         $('#userNBR').text("Error retrieving current NBR value");
                         $('#userNBR').css('color', 'red');
                     }
@@ -45,6 +44,9 @@
                     $('#userNBR').css('color', 'red');
                 }
             });
+        });
+        $(function () {
+            $('span').tooltip({ placement: 'bottom' });
         });
     </script>
 }
