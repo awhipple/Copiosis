@@ -33,27 +33,25 @@
         }
             <div class="form-group">
                 <div class="input-group">
-                    <span class="hidden-xs custom-q-mark glyphicon glyphicon-question-sign glyphicon-align-left input-group-addon" title='Please assign a class to your item. If you are uncertain which class to select, leave at “Default”'></span>
                     @Html.LabelFor(m => m.ItemClass, new { @class = "col-sm-3 control-label a-label" })@*removed class add-item-lable*@
                     <div class="col-sm-9 col-xs-9">@*removed class col-lg-9, col-md-9, col-xs12*@
-                        @Html.DropDownListFor(m => m.ItemClass, new SelectList(Model.ItemClassTemplates.Keys), new { @id = "class-dropdown", @class = "form-control select-box", @placeholder = "Class"})@*class = removed select-box*@
+                        @Html.DropDownListFor(m => m.ItemClass, new SelectList(Model.ItemClassTemplates.Keys), new { @id = "class-dropdown", @class = "form-control select-box", @placeholder = "Class", @data_toggle = "tooltip", @data_original_title = "Please assign a class to your item. If you are uncertain which class to select, leave at “Default”" })@*class = removed select-box*@
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="input-group">
-                    <span class="hidden-xs custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign input-group-addon" title='Please select whether your item is a “Product” or a “Service"'></span>
                     @Html.LabelFor(m => m.ItemType, new { @class = "col-sm-3 control-label a-label" })
-                    <div class="col-sm-9">
-                        <div class="radio-inline">
-                            @Html.RadioButtonFor(m => m.ItemType, "Product", new { @id = "product", @class = "in-line radio-button " })
-                            @Html.Label("product")
-                        </div>
-                        <div class="radio-inline">
-                            @Html.RadioButtonFor(m => m.ItemType, "Service", new { @id = "service", @class="in-line radio-button " })@*removed class"in-line"*@
-                            @Html.Label("service")                           
-                        </div>
+                    <div class="form-inline">
+                        <label class="radio">
+                            @Html.RadioButtonFor(m => m.ItemType, "Product", new { @id = "product", @class = "radio ", @value = "Product", @data_toggle = "tooltip", @data_original_title = "Choose this if the item is a type of \"Product\"" })
+                            Product
+                        </label>
+                        <label class="radio">
+                            @Html.RadioButtonFor(m => m.ItemType, "Service", new { @id = "service", @class = "radio", @value = "Service", @data_toggle = "tooltip", @data_original_title = "Choose this if the item is a type of \"Service\"" })@*removed class"in-line"*@
+                            Service
+                        </label>
                         <div>@Html.ValidationMessageFor(m => m.ItemType)</div>
                     </div>
                 </div>
@@ -61,10 +59,9 @@
         
             <div class="form-group">
                 <div class="input-group">
-                    <span class="hidden-xs custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign input-group-addon" title="Please assign a name to your item"></span>
                     @Html.LabelFor(m => m.Name, new { @class = "col-sm-3 control-label a-label" })
                     <div class="col-sm-9">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Item Name" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Item Name", @data_toggle = "tooltip", @data_original_title = "Assign a name to this item" })
                         @Html.ValidationMessageFor(m => m.Name)
                     </div>
                 </div>
@@ -72,10 +69,9 @@
 
             <div class="form-group">
                 <div class="input-group">
-                    <span class="hidden-xs custom-q-mark glyphicon glyphicon-align-left glyphicon-question-sign input-group-addon" title='Please provide an in-depth description of your item. Remember to include the “per unit” description. If you offer a dozen eggs, for example, specify that you’re offering “one dozen” eggs as opposed to “one egg"'></span>
                     @Html.LabelFor(m => m.Description, new { @class = "col-sm-3 control-label a-label" })
                     <div class="col-sm-9">
-                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @placeholder = "Item Description", @style = "min-height:30px" })
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @placeholder = "Item Description", @style = "min-height:30px", @data_toggle = "tooltip", @data_original_title = "Provide an in-depth description of your item. Remember to include the \"per unit\" description. If you offer a dozen eggs, for example, specify that you’re offering \"one dozen\" eggs as opposed to \"one egg\"" })
                         @Html.ValidationMessageFor(m => m.Description)
                     </div>
                 </div>
@@ -83,10 +79,9 @@
 
             <div class="form-group">
                 <div class="input-group">
-                    <span class="hidden-xs custom-q-mark  glyphicon glyphicon-align-left glyphicon-question-sign input-group-addon" title='Please indicate how many NBR are needed for a consumer to own your product or service. NBR should be whole numbers (ex: 1, 5, 15, 100)'></span>
                     @Html.LabelFor(m => m.Gateway, new { @class = "col-sm-3 control-label a-label" })
                     <div class="col-sm-9">
-                        @Html.TextBoxFor(m => m.Gateway, new { @class = "form-control", @placeholder = "Suggested Gateway", @id = "suggested-gateway" })
+                        @Html.TextBoxFor(m => m.Gateway, new { @class = "form-control", @placeholder = "Suggested Gateway", @id = "suggested-gateway", @data_toggle = "tooltip", @data_original_title = "Indicate how many NBR are needed for a consumer to own your product or service. NBR should be whole numbers (ex: 1, 5, 15, 100)" })
                         @Html.ValidationMessageFor(m => m.Gateway)
                     </div>
                 </div>
@@ -106,3 +101,9 @@
        
     }
 </div>
+<script>
+    $(function () {
+        $('select').tooltip({ placement: 'bottom' });
+        $('input').tooltip({ placement: 'bottom', container: 'body'});
+    });
+</script>
