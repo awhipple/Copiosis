@@ -480,6 +480,13 @@ namespace Copiosis_Application.Controllers
                         return View(model);
                     }
 
+                    if (model.SatisfactionRating < -2 || model.SatisfactionRating > 2)
+                    {
+                        ModelState.AddModelError("Satisfaction", "You must select a satisfaction rating by selecting an icon.");
+                        PopulateNewTransactionModel(type, model);
+                        return View(model);
+                    }
+
                     transaction consumerTran = new transaction();
                     consumerTran.transactionID = Guid.NewGuid();
                     consumerTran.createdBy = WebSecurity.CurrentUserId;
@@ -654,7 +661,7 @@ namespace Copiosis_Application.Controllers
                     }
 
 
-                    int existing = db.products.Where(i => i.name == m.Name).Count();
+                    int existing = db.products.Where(i => i.name == m.Name && i.ownerID == WebSecurity.CurrentUserId).Count();
                     if (existing > 0)
                     {
                         m.ItemClassTemplates = FetchItemClassTemplates(db);
@@ -771,7 +778,7 @@ namespace Copiosis_Application.Controllers
             {
                 var item = db.products.Where(p => p.guid == itemId && p.ownerID == WebSecurity.CurrentUserId).FirstOrDefault();
                 int itemClassId = db.itemClasses.Where(ic => ic.name == model.ItemClass).Select(i => i.classID).First();
-                int existing = db.products.Where(i => i.name == model.Name).Count();
+                int existing = db.products.Where(i => i.name == model.Name && i.ownerID == WebSecurity.CurrentUserId).Count();
                 if (item == null)
                 {
                     ACCOUNTERROR.ErrorSubject = "Error while trying to edit an item";
