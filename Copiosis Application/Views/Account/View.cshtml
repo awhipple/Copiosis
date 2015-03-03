@@ -94,18 +94,43 @@
 
     $('#veryUnsatisfiedLabel').click(function () {
         $('#updateResult').val("-2");
+        $("#very-unsatisfied").attr('checked', true);
+        $("#neutral").attr('checked', false);
+        $("#satisfied").attr('checked', false);
+        $("#very-satisfied").attr('checked', false);
+        $("#unsatisfied").attr('checked', false);
     })
     $('#unsatisfiedLabel').click(function () {
         $('#updateResult').val("-1");
+        $("#unsatisfied").attr('checked', true);
+        $("#very-satisfied").attr('checked', false);
+        $("#very-unsatisfied").attr('checked', false);
+        $("#satisfied").attr('checked', false);
+        $("#neutral").attr('checked', false);
     })
     $('#neutralLabel').click(function () {
         $('#updateResult').val("0");
+        $("#neutral").attr('checked', false);
+        $("#satisfied").attr('checked', false);
+        $("#unsatisfied").attr('checked', false);
+        $("#very-satisfied").attr('checked', false);
+        $("#very-unsatisfied").attr('checked', false);
     })
     $('#satisfiedLabel').click(function () {
         $('#updateResult').val("1");
+        $("#satisfied").attr('checked', true);
+        $("#very-unsatisfied").attr('checked', false);
+        $("#unsatisfied").attr('checked', false);
+        $("#neutral").attr('checked', false);
+        $("#very-satisfied").attr('checked', false);
     })
     $('#verySatisfiedLabel').click(function () {
         $('#updateResult').val("2");
+        $("#very-satisfied").attr('checked', true);
+        $("#unsatisfied").attr('checked', false);
+        $("#neutral").attr('checked', false);
+        $("#very-unsatisfied").attr('checked', false);
+        $("#satisfied").attr('checked', false);
     })
 
     $("#reject").click(function (e) {
