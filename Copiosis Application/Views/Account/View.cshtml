@@ -15,41 +15,38 @@
                 <div class="panel-heading">
                     <center><strong>Your transaction was successfully updated</strong></center>
                 </div>
-             </div>
+            </div>
             @*Failure banner on failed update*@
             <div id="updateFail" class="validation-summary-errors panel panel-danger hidden" data-valmsg-summary="true">
                 <div class="panel-heading">
                     <center><strong>An error occurred. Could not update your transaction at this time</strong></center>
                 </div>
             </div>
-        if (Model.providerID == WebSecurity.CurrentUserId || Model.receiverID == WebSecurity.CurrentUserId)
-        {
-        <div>
-            
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-xs-12">
-                    
-                    @Html.Partial("_TransactionInfo")
-                    @Html.Partial("_ProducerNotes")
-                    @Html.Partial("_ConsumerNotes")
-                    @Html.Partial("_SatisfactionRating")
-                    @Html.Partial("_ConfirmRejectTransaction")
+            <div>
 
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+
+                        @Html.Partial("_TransactionInfo")
+                        @Html.Partial("_ProducerNotes")
+                        @Html.Partial("_ConsumerNotes")
+                        @Html.Partial("_SatisfactionRating")
+                        @Html.Partial("_ConfirmRejectTransaction")
+
+                    </div>
                 </div>
             </div>
-        </div>
-        }
         }
     </div>
 </div>
 
 @section Scripts {
-<script type="text/javascript">
-    //Function for updating
-    $("#update").click(function (e) {
-        var userType;
-        //Check to see what type of user is logged in and update userType
-        @if(WebSecurity.CurrentUserId == Model.receiverID)
+    <script type="text/javascript">
+        //Function for updating
+        $("#update").click(function (e) {
+            var userType;
+            //Check to see what type of user is logged in and update userType
+            @if(WebSecurity.CurrentUserId == Model.receiverID)
         {
             <text>userType = 'consumer';</text>
         }
@@ -57,101 +54,100 @@
         {
             <text>userType = 'producer';</text>
         }
-                    
-        var userNotes;
-        //Grab our transactionID from the model
-        var transGuid = '@Model.transactionID';
-        //Determine updated satisfaction rating if any
-        var selectedSatisfaction = $('#updateResult').val();
-        //Grab the correct notes
-        if(userType === "consumer")
-            userNotes = $('#receiver-notes').val();
-        else
-            userNotes = $('#provider-notes').val();
-        $.ajax({
-            url: "/Account/AddNotes/",
-            type: "post",
-            //Send the controller the information it needs
-            data: { participant: userType, notes: userNotes, tranId: transGuid, newSatisfaction: selectedSatisfaction},
-            success: function (result) {
-                $("#updateSuccess").removeClass('hidden');
-                $("#updateSuccess").removeAttr('style');
-            },
-            error: function (result) {
-                console.log("Error updating transaction: " + transGuid);
-                $('#updateFail').removeClass('hidden');
-                $('#updateFail').removeAttr('style');
-            }
+
+            var userNotes;
+            //Grab our transactionID from the model
+            var transGuid = '@Model.transactionID';
+            //Determine updated satisfaction rating if any
+            var selectedSatisfaction = $('#updateResult').val();
+            //Grab the correct notes
+            if (userType === "consumer")
+                userNotes = $('#receiver-notes').val();
+            else
+                userNotes = $('#provider-notes').val();
+            $.ajax({
+                url: "/Account/AddNotes/",
+                type: "post",
+                //Send the controller the information it needs
+                data: { participant: userType, notes: userNotes, tranId: transGuid, newSatisfaction: selectedSatisfaction },
+                success: function (result) {
+                    $("#updateSuccess").removeClass('hidden');
+                    $("#updateSuccess").removeAttr('style');
+                },
+                error: function (result) {
+                    console.log("Error updating transaction: " + transGuid);
+                    $('#updateFail').removeClass('hidden');
+                    $('#updateFail').removeAttr('style');
+                }
+            });
+            $('#updateSuccess').delay(3000).fadeOut();
+            $('#updateFail').delay(3000).fadeOut();
+        })
+        @*This is to handle the satisfaction rating*@
+        $('#satisfaction-rating-radios input:radio').addClass('input_hidden');
+        $('#satisfaction-rating-radios label').click(function () {
+            $(this).addClass('selected').siblings().removeClass('selected');
         });
-        $('#updateSuccess').delay(3000).fadeOut();
-        $('#updateFail').delay(3000).fadeOut();
-    })
-    @*This is to handle the satisfaction rating*@
-    $('#satisfaction-rating-radios input:radio').addClass('input_hidden');
-    $('#satisfaction-rating-radios label').click(function () {
-        $(this).addClass('selected').siblings().removeClass('selected');
-    });
 
-    $('#veryUnsatisfiedLabel').click(function () {
-        $('#updateResult').val("-2");
-        $("#very-unsatisfied").attr('checked', true);
-        $("#neutral").attr('checked', false);
-        $("#satisfied").attr('checked', false);
-        $("#very-satisfied").attr('checked', false);
-        $("#unsatisfied").attr('checked', false);
-    })
-    $('#unsatisfiedLabel').click(function () {
-        $('#updateResult').val("-1");
-        $("#unsatisfied").attr('checked', true);
-        $("#very-satisfied").attr('checked', false);
-        $("#very-unsatisfied").attr('checked', false);
-        $("#satisfied").attr('checked', false);
-        $("#neutral").attr('checked', false);
-    })
-    $('#neutralLabel').click(function () {
-        $('#updateResult').val("0");
-        $("#neutral").attr('checked', false);
-        $("#satisfied").attr('checked', false);
-        $("#unsatisfied").attr('checked', false);
-        $("#very-satisfied").attr('checked', false);
-        $("#very-unsatisfied").attr('checked', false);
-    })
-    $('#satisfiedLabel').click(function () {
-        $('#updateResult').val("1");
-        $("#satisfied").attr('checked', true);
-        $("#very-unsatisfied").attr('checked', false);
-        $("#unsatisfied").attr('checked', false);
-        $("#neutral").attr('checked', false);
-        $("#very-satisfied").attr('checked', false);
-    })
-    $('#verySatisfiedLabel').click(function () {
-        $('#updateResult').val("2");
-        $("#very-satisfied").attr('checked', true);
-        $("#unsatisfied").attr('checked', false);
-        $("#neutral").attr('checked', false);
-        $("#very-unsatisfied").attr('checked', false);
-        $("#satisfied").attr('checked', false);
-    })
+        $('#veryUnsatisfiedLabel').click(function () {
+            $('#updateResult').val("-2");
+            $("#very-unsatisfied").attr('checked', true);
+            $("#neutral").attr('checked', false);
+            $("#satisfied").attr('checked', false);
+            $("#very-satisfied").attr('checked', false);
+            $("#unsatisfied").attr('checked', false);
+        })
+        $('#unsatisfiedLabel').click(function () {
+            $('#updateResult').val("-1");
+            $("#unsatisfied").attr('checked', true);
+            $("#very-satisfied").attr('checked', false);
+            $("#very-unsatisfied").attr('checked', false);
+            $("#satisfied").attr('checked', false);
+            $("#neutral").attr('checked', false);
+        })
+        $('#neutralLabel').click(function () {
+            $('#updateResult').val("0");
+            $("#neutral").attr('checked', false);
+            $("#satisfied").attr('checked', false);
+            $("#unsatisfied").attr('checked', false);
+            $("#very-satisfied").attr('checked', false);
+            $("#very-unsatisfied").attr('checked', false);
+        })
+        $('#satisfiedLabel').click(function () {
+            $('#updateResult').val("1");
+            $("#satisfied").attr('checked', true);
+            $("#very-unsatisfied").attr('checked', false);
+            $("#unsatisfied").attr('checked', false);
+            $("#neutral").attr('checked', false);
+            $("#very-satisfied").attr('checked', false);
+        })
+        $('#verySatisfiedLabel').click(function () {
+            $('#updateResult').val("2");
+            $("#very-satisfied").attr('checked', true);
+            $("#unsatisfied").attr('checked', false);
+            $("#neutral").attr('checked', false);
+            $("#very-unsatisfied").attr('checked', false);
+            $("#satisfied").attr('checked', false);
+        })
 
-    $("#reject").click(function (e) {
-        $("#result").val("Rejected");
-        $("#very-unsatisfied").attr('checked', true);
-        $("#ConfirmForm").submit();
-    })
+        $("#reject").click(function (e) {
+            $("#result").val("Rejected");
+            $("#very-unsatisfied").attr('checked', true);
+            $("#ConfirmForm").submit();
+        })
 
-    $("#confirm").click(function (e) {
-        $("#result").val("Confirmed");
-        $("#ConfirmForm").submit();
-    })
+        $("#confirm").click(function (e) {
+            $("#result").val("Confirmed");
+            $("#ConfirmForm").submit();
+        })
 
-    $('#add-consumer-notes').click(function(){
-        $('#receiver-notes').toggleClass('hidden-notes');
-    })
+        $('#add-consumer-notes').click(function () {
+            $('#receiver-notes').toggleClass('hidden-notes');
+        })
 
-    $('#add-provider-notes').click(function(){
-        $('#provider-notes').toggleClass('hidden-notes');
-    })
-</script>
-
+        $('#add-provider-notes').click(function () {
+            $('#provider-notes').toggleClass('hidden-notes');
+        })
+    </script>
     @Scripts.Render("~/bundles/jqueryval")
 }
