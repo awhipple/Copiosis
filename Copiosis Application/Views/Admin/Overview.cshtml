@@ -70,7 +70,7 @@
                                 <tr id="@item.value.productGuid">
                                     <td>@item.value.productName</td>
                                     <td>@item.value.productOwner</td>
-                                    <td>@Html.DropDownListFor(model => model.products[item.i], new SelectList(Model.ItemClassTemplates, "Value", "Text", item.value.className), new { @id = @item.value.productGuid, @class = "form-control", @placeholder = "Class" })</td>
+                                    <td>@Html.DropDownListFor(model => model.products[item.i], new SelectList(Model.ItemClassTemplates, "Value", "Text", item.value.className), new { @id = @item.value.productGuid, @class = "select", @placeholder = "Class" })</td>
                                 </tr>
                             }  
                         </tbody>
