@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="Default Web Site/Copiosis" />
+  <setParameter name="CopiosisEntities-Web.config Connection String" value="metadata=res://*/DB_Data.CopiosisDBModel.csdl|res://*/DB_Data.CopiosisDBModel.ssdl|res://*/DB_Data.CopiosisDBModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.\SQLEXPRESS;initial catalog=Copiosis;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" />
+  <setParameter name="CopiosisConnection-Web.config Connection String" value="Server=.\SQLEXPRESS;Database=Copiosis;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" />
+</parameters>
